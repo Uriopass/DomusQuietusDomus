@@ -3,8 +3,14 @@
     <img class="quote-image-full" src="$imagefull" alt="Screenshot" loading="lazy">
     <div class="quote-content">
         <div class="quote-base">
-            <div class="quote-timecode">$timecode</div>
-            <div class="quote-title">$title</div>
+            <div class="quote-title">
+                <div class="quote-timecode">$timecode</div>
+                $title
+            </div>
+            <div class="quote-share">
+                <img src="assets/share.svg" height="16" width="16" onclick="sh('$id')" alt="Partager la citation" title="Partager la citation"/>
+                <a href="quotes/$id.html"><img src="assets/permalink.svg" height="16" width="16" alt="Lien permanent" title="Lien permanent"/></a>
+            </div>
         </div>
         <div class="quote-expanded">
             $longtext

@@ -3,6 +3,7 @@ from string import Template
 import os
 import shutil
 import sys
+import time
 
 
 def prepare_html(text: str) -> str:
@@ -50,23 +51,26 @@ def parseData() -> [dict]:
         next(reader)  # skip headers
 
         for row in reader:
-            timecode_parsed = row[0].split(':')  # hh:mm:ss
+            if row[1] == '':
+                continue
+            timecode_parsed = row[1].split(':')  # hh:mm:ss
 
             if len(timecode_parsed) == 3:
                 timecode_seconds: int = int(timecode_parsed[0]) * 3600 + int(timecode_parsed[1]) * 60 + int(
                     timecode_parsed[2])
             else:
-                raise ValueError(f"Invalid timecode format: {row[0]} (expected hh:mm:ss or mm:ss)")
+                raise ValueError(f"Invalid timecode format: {row[1]} (expected hh:mm:ss or mm:ss)")
 
-            tags = row[3].split(',')
+            tags = row[4].split(',')
 
             data.append({
-                'timecode': row[0],  # 'hh:mm:ss'
+                'id': row[0],  # ''
+                'timecode': row[1],  # 'hh:mm:ss'
                 'timecode_seconds': timecode_seconds,  # 1234
-                'title': row[1],  # 'title'
-                'long_text': row[2],  # 'long text'
+                'title': row[2],  # 'title'
+                'long_text': row[3],  # 'long text'
                 'tags': tags,  # ['tag1', 'tag2']
-                'explanation': row[4]  # 'explanation'
+                'explanation': row[5]  # 'explanation'
             })
 
     return data
@@ -82,6 +86,7 @@ def genQuotes(data: [dict]):
         image_preview = f'images/{timecode_seconds}_preview.jpg'
 
         quote = quote_template.substitute(
+            id=datum['id'],
             imagefull=image,
             imagepreview=image_preview,
             timecode=datum['timecode'],
@@ -93,6 +98,30 @@ def genQuotes(data: [dict]):
 
         quotes += quote
     return quotes
+
+
+def genQuotesPages(data: [dict]):
+    quote_template = Template(open('front/quote_page_template.html', 'r', encoding="utf8").read())
+    footer = open('front/footer.html', 'r', encoding="utf8").read()
+
+    for datum in data:
+        id = datum['id']
+        timecode_seconds = datum['timecode_seconds']
+        image = f'images/{timecode_seconds}.jpg'
+
+        quote = quote_template.substitute(
+            id=id,
+            imagefull=image,
+            timecode=datum['timecode'],
+            title=prepare_html(datum['title']),
+            longtext=genLongText(datum['long_text']),
+            tags=genTags(datum['tags']),
+            explanation=genExplanation(datum['explanation']),
+            footer=footer
+        )
+
+        with open(f'build/quotes/{id}.html', 'w', encoding="utf8") as quote_file:
+            quote_file.write(quote)
 
 
 def genImages(data: [dict], videoFilePath: str):
@@ -112,12 +141,14 @@ def genImages(data: [dict], videoFilePath: str):
         else:
             print(f"Error while generating image for {timecode_seconds}")
 
+
 def genIndex(quotes: str):
     index = open('front/index_template.html', 'r', encoding="utf8").read()
     index = index.replace("$content", quotes)
     index = index.replace("$footer", open('front/footer.html', 'r', encoding="utf8").read())
     with open('build/index.html', 'w', encoding="utf8") as index_file:
         index_file.write(index)
+
 
 def compressFront(verbose=True):
     import gzip
@@ -139,8 +170,10 @@ def compressFront(verbose=True):
             f.write(content)
         printv(f"compressed {file} to {file}.gz")
 
+
 def doTheProcessing(release=False, verbose=True):
     os.makedirs('build/images', exist_ok=True)
+    os.makedirs('build/quotes', exist_ok=True)
 
     printv = print if verbose else lambda *a, **k: None
 
@@ -150,8 +183,11 @@ def doTheProcessing(release=False, verbose=True):
     quotes = genQuotes(data)
     printv("quotes generated")
 
-    index = genIndex(quotes)
+    genIndex(quotes)
     printv("build/index.html generated")
+
+    genQuotesPages(data)
+    printv("build/quotes generated")
 
     shutil.copytree('front/assets', 'build/assets', dirs_exist_ok=True)
     printv("build/assets copied from front/assets")
@@ -166,9 +202,24 @@ def doTheProcessing(release=False, verbose=True):
         printv("No video file provided, skipping image generation")
 
 
+def startDevServer():
+    import threading
+    from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+
+    class Handler(SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory="build", **kwargs)
+
+    server = ThreadingHTTPServer(("0.0.0.0", 8000), Handler)
+    server.directory = "build"
+    server_thread = threading.Thread(target=server.serve_forever)
+    server_thread.daemon = True
+    server_thread.start()
+
+
 if __name__ == '__main__':
     if sys.argv[1] == 'watch':
-        import time
+        startDevServer()
 
         while True:
             doTheProcessing(verbose=False)

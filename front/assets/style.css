@@ -61,15 +61,18 @@ body {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
+a {
+    text-decoration: none;
+}
+
 #footer a {
     display: flex;
-    align-items: baseline;
-    text-decoration: none;
+    align-items: center;
 }
 
 #footer a img {
@@ -117,6 +120,26 @@ body {
     padding: 5px 10px;
 }
 
+.quote-share {
+    display: none;
+    flex-direction: row;
+    opacity: 0.8;
+    gap: 5px;
+    align-items: center;
+}
+
+.quote-share a {
+    display: flex;
+}
+
+.quote-share img {
+    cursor: pointer;
+}
+
+.quote-selected .quote-share {
+    display: flex;
+}
+
 .quote-image-preview {
     height: 50px;
     object-fit: contain;
@@ -150,8 +173,14 @@ body {
 }
 
 .quote-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-family: "Fira Sans Extra Condensed", sans-serif;
     font-style: normal;
+    flex-grow: 1;
+    gap: 10px;
+    padding-right: 10px;
 }
 
 .quote-timecode {
@@ -189,11 +218,6 @@ body {
     margin-right: 5px;
     margin-bottom: 5px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.quote-title {
-    padding: 0 10px;
-    flex-grow: 1;
 }
 
 .quote-expanded {

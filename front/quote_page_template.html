@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Domus Quietus Domus</title>
+    <link rel="stylesheet" href="../assets/normalize.css">
+    <link rel="stylesheet" href="../assets/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="content">
+    <p><a href="/">Revenir à la liste</a></p>
+    <div class="quote quote-selected">
+        <img class="quote-image-full" src="../$imagefull" alt="Screenshot" loading="lazy">
+        <div class="quote-content">
+            <div class="quote-base">
+                <div class="quote-title">
+                    <div class="quote-timecode">$timecode</div>
+                    $title
+                </div>
+                <div class="quote-share">
+                    <img src="../assets/share.svg" height="16" width="16" onclick="sh('$id')"/>
+                </div>
+            </div>
+            <div class="quote-expanded">
+                $longtext
+                $explanation
+                $tags
+            </div>
+        </div>
+    </div>
+    $footer
+</div>
+</body>
+</html>

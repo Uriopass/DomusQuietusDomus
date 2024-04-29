@@ -1,273 +1,1216 @@
-Timecode,Titre/Citation,Citation étendue (optionnel),Tags,Explication
-0:01:02,"Vous savez, moi je ne crois pas qu’il y ait de bonne ou de mauvaise situation. [...]","Vous savez, moi je ne crois pas qu’il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd’hui avec vous, je dirais que c’est d’abord des rencontres. Des gens qui m’ont tendu la main, peut-être à un moment où je ne pouvais pas, où j’étais seul chez moi. Et c’est assez curieux de se dire que les hasards, les rencontres forgent une destinée... Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l’interlocuteur en face je dirais, le miroir qui vous aide à avancer. Alors ça n’est pas mon cas, comme je disais là, puisque moi au contraire, j’ai pu ; et je dis merci à la vie, je lui dis merci, je chante la vie, je danse la vie... je ne suis qu’amour ! Et finalement, quand des gens me disent « Mais comment fais-tu pour avoir cette humanité ? », je leur réponds très simplement que c’est ce goût de l’amour, ce goût donc qui m’a poussé aujourd’hui à entreprendre une construction mécanique... mais demain qui sait ? Peut-être simplement à me mettre au service de la communauté, à faire le don, le don de soi.",Otis,
-1:35:15,Ce tombeau sera votre tombeau,,Nexusis,
-0:03:04,"Multi ligne
+ID,Timecode,Titre/Citation,Citation étendue (optionnel),Tags,Explication
+70c0be63,0:01:02,"Vous savez, moi je ne crois pas qu’il y ait de bonne ou de mauvaise situation. [...]","Vous savez, moi je ne crois pas qu’il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd’hui avec vous, je dirais que c’est d’abord des rencontres. Des gens qui m’ont tendu la main, peut-être à un moment où je ne pouvais pas, où j’étais seul chez moi. Et c’est assez curieux de se dire que les hasards, les rencontres forgent une destinée... Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l’interlocuteur en face je dirais, le miroir qui vous aide à avancer. Alors ça n’est pas mon cas, comme je disais là, puisque moi au contraire, j’ai pu ; et je dis merci à la vie, je lui dis merci, je chante la vie, je danse la vie... je ne suis qu’amour ! Et finalement, quand des gens me disent « Mais comment fais-tu pour avoir cette humanité ? », je leur réponds très simplement que c’est ce goût de l’amour, ce goût donc qui m’a poussé aujourd’hui à entreprendre une construction mécanique... mais demain qui sait ? Peut-être simplement à me mettre au service de la communauté, à faire le don, le don de soi.",Otis,
+ba2068f4,1:35:15,Ce tombeau sera votre tombeau,,Nexusis,
+7f63d158,0:03:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag3","Explication
 Très
 Longue"
-0:04:04,"Multi ligne
+e9096f45,0:04:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag4","Explication
 Très
 Longue"
-0:05:04,"Multi ligne
+31138a5c,0:05:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag5","Explication
 Très
 Longue"
-0:06:04,"Multi ligne
+23a31e65,0:06:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag6","Explication
 Très
 Longue"
-0:07:04,"Multi ligne
+c93e5075,0:07:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag7","Explication
 Très
 Longue"
-0:08:04,"Multi ligne
+9586e2d8,0:08:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag8","Explication
 Très
 Longue"
-0:09:04,"Multi ligne
+1034fd59,0:09:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag9","Explication
 Très
 Longue"
-0:10:04,"Multi ligne
+3ec36287,0:10:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag10","Explication
 Très
 Longue"
-0:11:04,"Multi ligne
+f37852c7,0:11:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag11","Explication
 Très
 Longue"
-0:12:04,"Multi ligne
+53b10b37,0:12:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag12","Explication
 Très
 Longue"
-0:13:04,"Multi ligne
+16e2773f,0:13:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag13","Explication
 Très
 Longue"
-0:14:04,"Multi ligne
+17587ddd,0:14:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag14","Explication
 Très
 Longue"
-0:15:04,"Multi ligne
+367cbe0b,0:15:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag15","Explication
 Très
 Longue"
-0:16:04,"Multi ligne
+9f7ec654,0:16:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag16","Explication
 Très
 Longue"
-0:17:04,"Multi ligne
+2f12431b,0:17:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag17","Explication
 Très
 Longue"
-0:18:04,"Multi ligne
+7445790c,0:18:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag18","Explication
 Très
 Longue"
-0:19:04,"Multi ligne
+b5941692,0:19:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag19","Explication
 Très
 Longue"
-0:20:04,"Multi ligne
+ab8b2149,0:20:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag20","Explication
 Très
 Longue"
-0:21:04,"Multi ligne
+ab6c049b,0:21:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag21","Explication
 Très
 Longue"
-0:22:04,"Multi ligne
+cc1a9fc3,0:22:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag22","Explication
 Très
 Longue"
-0:23:04,"Multi ligne
+542735d2,0:23:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag23","Explication
 Très
 Longue"
-0:24:04,"Multi ligne
+247e6178,0:24:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag24","Explication
 Très
 Longue"
-0:25:04,"Multi ligne
+b7b233a9,0:25:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag25","Explication
 Très
 Longue"
-0:26:04,"Multi ligne
+2f368ee3,0:26:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag26","Explication
 Très
 Longue"
-0:27:04,"Multi ligne
+37f40d9c,0:27:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag27","Explication
 Très
 Longue"
-0:28:04,"Multi ligne
+585f9bb0,0:28:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag28","Explication
 Très
 Longue"
-0:29:04,"Multi ligne
+d92ea958,0:29:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag29","Explication
 Très
 Longue"
-0:30:04,"Multi ligne
+e1c8d63a,0:30:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag30","Explication
 Très
 Longue"
-0:31:04,"Multi ligne
+3e667d0f,0:31:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag31","Explication
 Très
 Longue"
-0:32:04,"Multi ligne
+8050dea2,0:32:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag32","Explication
 Très
 Longue"
-0:33:04,"Multi ligne
+b6743bf7,0:33:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag33","Explication
 Très
 Longue"
-0:34:04,"Multi ligne
+8a58284a,0:34:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag34","Explication
 Très
 Longue"
-0:35:04,"Multi ligne
+7f8734d4,0:35:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag35","Explication
 Très
 Longue"
-0:36:04,"Multi ligne
+7977e9d6,0:36:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag36","Explication
 Très
 Longue"
-0:37:04,"Multi ligne
+36076bf7,0:37:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag37","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+0bae1c85,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag38","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+1532ac8a,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag39","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+501576ee,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag40","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+a3c0204d,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag41","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+5b4a7d1f,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag42","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+c18a25e1,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag43","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+9e0d11dc,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag44","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+f4f67364,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag45","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+e7c02946,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag46","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+bbd0c255,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag47","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+e45f81bf,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag48","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+73cc8e43,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag49","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+6c9d85d4,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag50","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+df26a64e,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag51","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+b559c02f,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag52","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+122796c7,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag53","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+63c27cd2,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag54","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+b2d42fca,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag55","Explication
 Très
 Longue"
-0:38:04,"Multi ligne
+bb7a83ff,0:38:04,"Multi ligne
 Test","Multi ligne
 Test","Tag1, Tag2, Tag56","Explication
 Très
 Longue"
+6529ab08,,,,,
+9e460e59,,,,,
+48173818,,,,,
+67505747,,,,,
+d23eee2d,,,,,
+f14d7185,,,,,
+b5a46b02,,,,,
+54d241eb,,,,,
+c70fa458,,,,,
+4d76c45d,,,,,
+0d4ea9bc,,,,,
+46f50030,,,,,
+ede96099,,,,,
+09b94c43,,,,,
+04867e88,,,,,
+ee7ecd29,,,,,
+30713ff0,,,,,
+a4dd47c4,,,,,
+2ca3a481,,,,,
+8f5bb9aa,,,,,
+02b1366e,,,,,
+c2ed4cc7,,,,,
+842a98f2,,,,,
+fdf495db,,,,,
+e0d26bc0,,,,,
+b6433b39,,,,,
+5e804079,,,,,
+5c4a6908,,,,,
+2216a7e9,,,,,
+7612bbc5,,,,,
+1bbd9c89,,,,,
+74d87a87,,,,,
+43e2ce54,,,,,
+7e935270,,,,,
+ee958f97,,,,,
+8f7eea7e,,,,,
+97ec6d30,,,,,
+b92bfd1b,,,,,
+fa7eb0f6,,,,,
+22f7d867,,,,,
+d0dc5648,,,,,
+354264e4,,,,,
+689331be,,,,,
+d3991efb,,,,,
+40f84f0c,,,,,
+2c8f9e86,,,,,
+add8d0cc,,,,,
+c66499a2,,,,,
+bea5ca6b,,,,,
+881c7b75,,,,,
+21e2e17a,,,,,
+6da8fe89,,,,,
+0ad7b6d0,,,,,
+dd476863,,,,,
+31005c44,,,,,
+9ab5479e,,,,,
+45b959f7,,,,,
+a475e0d4,,,,,
+e968072b,,,,,
+ce60a8b7,,,,,
+76283d40,,,,,
+3d536d1c,,,,,
+5f14a6dd,,,,,
+786919ff,,,,,
+68cf2bf0,,,,,
+2ec0334b,,,,,
+6643463b,,,,,
+13ea70a8,,,,,
+33f43c61,,,,,
+f2d118ed,,,,,
+70c5889c,,,,,
+d5700679,,,,,
+7d4bf02e,,,,,
+8983722d,,,,,
+ee9a0f3b,,,,,
+ed62f1eb,,,,,
+37635d77,,,,,
+ff064335,,,,,
+6e7cedba,,,,,
+37d6d095,,,,,
+ec736e39,,,,,
+0cbb0f8e,,,,,
+df622e66,,,,,
+90f71d5b,,,,,
+d4af2aac,,,,,
+fe503ca9,,,,,
+c00c66d7,,,,,
+eb971afe,,,,,
+e65f16a9,,,,,
+0e96ffc2,,,,,
+be315c46,,,,,
+b5a64a7c,,,,,
+c65b9e08,,,,,
+81f6e0fb,,,,,
+42deb8b0,,,,,
+0c8b75cb,,,,,
+ffb89183,,,,,
+dea0c95d,,,,,
+ae10ce1d,,,,,
+c1a84688,,,,,
+31b3b24f,,,,,
+c4e3a563,,,,,
+8fad6c7b,,,,,
+35876ffe,,,,,
+f3384fb4,,,,,
+14449484,,,,,
+0054c4a9,,,,,
+9e7765f3,,,,,
+0389f215,,,,,
+3c3caa4b,,,,,
+58ba5f0f,,,,,
+6593a657,,,,,
+ffe8197a,,,,,
+d1be3d3e,,,,,
+ea781dbd,,,,,
+e37e91c1,,,,,
+3e3d0800,,,,,
+c4e3c95c,,,,,
+098d526c,,,,,
+ec4dd401,,,,,
+9d29a076,,,,,
+dc6a5fef,,,,,
+a9fbe2bf,,,,,
+486b5b4d,,,,,
+1200501c,,,,,
+6ed9a75a,,,,,
+11357c06,,,,,
+6e6ce2a6,,,,,
+7d810ded,,,,,
+ab7b6c87,,,,,
+9f4ad98e,,,,,
+90240882,,,,,
+d8686525,,,,,
+2784c2a6,,,,,
+800f1666,,,,,
+5368f98d,,,,,
+19239337,,,,,
+ce12b4ac,,,,,
+28a11442,,,,,
+5d61a686,,,,,
+4c3bb33c,,,,,
+c3dc8471,,,,,
+e20cef5a,,,,,
+2d478f27,,,,,
+3949fa4f,,,,,
+49bd7c14,,,,,
+45f781fb,,,,,
+a1ee1872,,,,,
+968705dd,,,,,
+2b784f62,,,,,
+7e85f999,,,,,
+eb8b775e,,,,,
+3d4735b5,,,,,
+d25609b4,,,,,
+4ef37c79,,,,,
+99862740,,,,,
+09f619a4,,,,,
+a5829112,,,,,
+6686dbd1,,,,,
+ea48f49b,,,,,
+1262eed2,,,,,
+fc48b54b,,,,,
+43da5ae2,,,,,
+815f92db,,,,,
+a5702b0f,,,,,
+888fd13d,,,,,
+faa78107,,,,,
+2e5dc7ba,,,,,
+17781900,,,,,
+ca3cfa21,,,,,
+8289008d,,,,,
+7d5320eb,,,,,
+b6f886b5,,,,,
+ce59c1b4,,,,,
+d164a8ed,,,,,
+5fcd3f0c,,,,,
+65577f14,,,,,
+372284d9,,,,,
+e86f6cd7,,,,,
+5baaad64,,,,,
+37d319b7,,,,,
+4c5e4e4d,,,,,
+26fd7681,,,,,
+534048ef,,,,,
+34ee5418,,,,,
+9da24506,,,,,
+aa904bb1,,,,,
+28933a86,,,,,
+baed00d3,,,,,
+9262adf1,,,,,
+3fd501da,,,,,
+33a97fc6,,,,,
+5c30c331,,,,,
+1df37bcf,,,,,
+6c848452,,,,,
+c2330186,,,,,
+06891a70,,,,,
+afda70f7,,,,,
+6657e6f3,,,,,
+9d0d3df3,,,,,
+1ac87fd5,,,,,
+6314cd70,,,,,
+5f82cb6a,,,,,
+de6380a1,,,,,
+b2309362,,,,,
+61329200,,,,,
+6d65d5f1,,,,,
+396daafd,,,,,
+af875659,,,,,
+68694f75,,,,,
+726b3107,,,,,
+330f8cff,,,,,
+61e779fe,,,,,
+660086ea,,,,,
+e03f2349,,,,,
+b0dacd2e,,,,,
+6f9dba5f,,,,,
+20b99a73,,,,,
+dbd6b273,,,,,
+b23561f8,,,,,
+77a54c79,,,,,
+01154e65,,,,,
+48f65870,,,,,
+fda698eb,,,,,
+58955892,,,,,
+1f98d8b0,,,,,
+872ac828,,,,,
+0a8cb0c3,,,,,
+5411891f,,,,,
+e3748228,,,,,
+3665c199,,,,,
+75bd00e5,,,,,
+560fa556,,,,,
+a62dd6dc,,,,,
+2db0f737,,,,,
+ddd0b1d1,,,,,
+7f843f39,,,,,
+032f6672,,,,,
+eaa90080,,,,,
+1a200662,,,,,
+b4486df9,,,,,
+b460146f,,,,,
+24b260d8,,,,,
+5dae3328,,,,,
+544a9cca,,,,,
+1f23f928,,,,,
+db1a9ab3,,,,,
+fd87c80b,,,,,
+785c66e2,,,,,
+ff68d230,,,,,
+2997536b,,,,,
+4055a8af,,,,,
+032f8221,,,,,
+f0a00273,,,,,
+6ad589b2,,,,,
+d32693d9,,,,,
+9753bdb9,,,,,
+eec823a0,,,,,
+b50ad87f,,,,,
+3db13d10,,,,,
+0b480dc1,,,,,
+4be82578,,,,,
+88bacbf3,,,,,
+f690f539,,,,,
+44f0a828,,,,,
+009dfe94,,,,,
+9e2245c2,,,,,
+863ee14e,,,,,
+7e043005,,,,,
+b0a2eeb6,,,,,
+19faf30f,,,,,
+7dc9c5e1,,,,,
+d341f438,,,,,
+36674bb1,,,,,
+1688ce55,,,,,
+e48e5c54,,,,,
+a88338d4,,,,,
+0b27e50a,,,,,
+5a23b676,,,,,
+26723e49,,,,,
+dbf99763,,,,,
+6b1ef438,,,,,
+48af10bb,,,,,
+7a635baf,,,,,
+fb2c687f,,,,,
+a7b29abb,,,,,
+99b1801c,,,,,
+2f1e04e1,,,,,
+ac8740b7,,,,,
+b3c2f51a,,,,,
+20fea78e,,,,,
+4a7b82a4,,,,,
+488b7eea,,,,,
+9879bab7,,,,,
+0424ff93,,,,,
+6dcb3e58,,,,,
+2df6e672,,,,,
+2b3d6d38,,,,,
+0b11ba0c,,,,,
+fff87b2d,,,,,
+b4714d03,,,,,
+0faa1afa,,,,,
+569cb7ed,,,,,
+347e9db6,,,,,
+c1935775,,,,,
+cab1ad69,,,,,
+abee8bfb,,,,,
+a46e0531,,,,,
+ec584405,,,,,
+6e45cbac,,,,,
+aff290b5,,,,,
+d50373ef,,,,,
+cb4ccab6,,,,,
+2f2d48f8,,,,,
+e2470ca6,,,,,
+35940725,,,,,
+820d0571,,,,,
+08e72717,,,,,
+e35d65f2,,,,,
+d4cfc059,,,,,
+e2e36fbc,,,,,
+6dbd2565,,,,,
+95bc67cb,,,,,
+4b9c9d82,,,,,
+819af1ce,,,,,
+e367e212,,,,,
+f696973a,,,,,
+220c4109,,,,,
+e4d5fe30,,,,,
+56e68ab2,,,,,
+1e26961a,,,,,
+412e2b64,,,,,
+9b7cbbc6,,,,,
+e46c1bac,,,,,
+b4839910,,,,,
+dac081e6,,,,,
+5c1445ad,,,,,
+ca84322a,,,,,
+4bdfeb82,,,,,
+8e01695c,,,,,
+7c10f4d0,,,,,
+41d16c58,,,,,
+7d638439,,,,,
+7722eccc,,,,,
+fd75beb2,,,,,
+fd0758cc,,,,,
+5a14a90c,,,,,
+4523772d,,,,,
+29529f4e,,,,,
+2701f83d,,,,,
+bd80a532,,,,,
+680cdab1,,,,,
+2df418c3,,,,,
+cf1ccce2,,,,,
+54168b95,,,,,
+e7dbea14,,,,,
+7fd5bdc7,,,,,
+d62b7c46,,,,,
+b3660cc1,,,,,
+7a92a196,,,,,
+cca9cd89,,,,,
+98b5fed7,,,,,
+b6b45bd7,,,,,
+fe36de7e,,,,,
+2807e2f1,,,,,
+c55a60c7,,,,,
+6e99212d,,,,,
+91bfa738,,,,,
+b994ad4a,,,,,
+0876122e,,,,,
+56957ff3,,,,,
+2633056a,,,,,
+9cb4c15a,,,,,
+7878c7e6,,,,,
+2fd72ac6,,,,,
+87766dc4,,,,,
+d21c717a,,,,,
+f882ebd2,,,,,
+d49988b3,,,,,
+8a93b831,,,,,
+1bcebcc5,,,,,
+19319df8,,,,,
+93d6e816,,,,,
+4574a79b,,,,,
+5c5d4ace,,,,,
+59ba43b3,,,,,
+293bc4b6,,,,,
+f25704dc,,,,,
+9a7b7867,,,,,
+0db7a975,,,,,
+318e1b0e,,,,,
+677b4406,,,,,
+1a36737f,,,,,
+964ab2e0,,,,,
+0ffacdcb,,,,,
+d9cfc01d,,,,,
+1564683c,,,,,
+0f709b3a,,,,,
+94fb19eb,,,,,
+f79a8102,,,,,
+7d1cbd06,,,,,
+0cb0c59a,,,,,
+5bc41a89,,,,,
+466395ba,,,,,
+d64b5ffc,,,,,
+82841e73,,,,,
+bf725f3b,,,,,
+15a1faf2,,,,,
+b3b12191,,,,,
+84180abf,,,,,
+7d638da0,,,,,
+45ed1612,,,,,
+87e3238e,,,,,
+0f4ee8b2,,,,,
+9670196d,,,,,
+9ab4bbfb,,,,,
+8a1b53ad,,,,,
+bb2021e9,,,,,
+c4f705ed,,,,,
+4ac1c9b3,,,,,
+30ebf81e,,,,,
+beb9c978,,,,,
+e9edbbe2,,,,,
+0a014ce6,,,,,
+56284db1,,,,,
+7205ce2f,,,,,
+2765ee54,,,,,
+d55c3d50,,,,,
+6f94320c,,,,,
+1a74ba90,,,,,
+fb3b8dd7,,,,,
+5f9dc488,,,,,
+682ce29c,,,,,
+913004db,,,,,
+90dcce72,,,,,
+1caa1622,,,,,
+8e1cc687,,,,,
+1215f023,,,,,
+ad5e3aff,,,,,
+8e87d85c,,,,,
+b9ac4d41,,,,,
+4d20fcd7,,,,,
+0d4cda03,,,,,
+a5fe1da2,,,,,
+49c1da66,,,,,
+a61ce88a,,,,,
+c7f062fa,,,,,
+bec8ebad,,,,,
+d2c2c154,,,,,
+68cb3fc7,,,,,
+4fef80d2,,,,,
+fda654d7,,,,,
+64e75368,,,,,
+99d97cd3,,,,,
+f58829ad,,,,,
+9cbe2020,,,,,
+1f53fa5f,,,,,
+f74ab965,,,,,
+62cdff43,,,,,
+01260231,,,,,
+5d89671a,,,,,
+ad36ef74,,,,,
+66a0c779,,,,,
+4a8465a5,,,,,
+2cfdcc07,,,,,
+3e01c7cd,,,,,
+874ced89,,,,,
+6c13c320,,,,,
+e0f12ba5,,,,,
+1f6afd78,,,,,
+420818c4,,,,,
+c4888a6e,,,,,
+8aceb2cc,,,,,
+981a4b23,,,,,
+90bbd074,,,,,
+989b9ab2,,,,,
+d5ad2720,,,,,
+7b88ee7c,,,,,
+4bd02eed,,,,,
+ca3b4b1c,,,,,
+43c0628b,,,,,
+7c6ab5d3,,,,,
+41e8a87f,,,,,
+a4a50289,,,,,
+14cde016,,,,,
+eff8a3ed,,,,,
+6bc4de76,,,,,
+9be9622a,,,,,
+2cf65810,,,,,
+06bf1cc8,,,,,
+76b78377,,,,,
+6c9cfa9b,,,,,
+2b666d6d,,,,,
+b1d1a9c0,,,,,
+fc6550a9,,,,,
+1eb7984d,,,,,
+80c06857,,,,,
+a586473a,,,,,
+22be0a36,,,,,
+0ce418e4,,,,,
+bd510581,,,,,
+2d1a4670,,,,,
+0b619316,,,,,
+37c2d54f,,,,,
+7f615076,,,,,
+cce2bd82,,,,,
+6de312b6,,,,,
+dae099a8,,,,,
+62379005,,,,,
+02ea8997,,,,,
+f49c27a4,,,,,
+6f642e67,,,,,
+0e994563,,,,,
+d01fdc79,,,,,
+78022e90,,,,,
+06b46fbe,,,,,
+15e034dc,,,,,
+16735e9b,,,,,
+00af9458,,,,,
+2d98f6f5,,,,,
+90f4853b,,,,,
+428ae0b8,,,,,
+8c933c51,,,,,
+5697532b,,,,,
+94bdeadc,,,,,
+29e99a1e,,,,,
+eff7f380,,,,,
+208ed116,,,,,
+6ddde552,,,,,
+80affade,,,,,
+cf55f650,,,,,
+acd4d3e7,,,,,
+3dc50a43,,,,,
+cc550b3f,,,,,
+9b2083ff,,,,,
+9e53bd42,,,,,
+03756418,,,,,
+42fb5cc7,,,,,
+ab018319,,,,,
+496e66ee,,,,,
+5283dbc3,,,,,
+99438b0a,,,,,
+12353781,,,,,
+12aa2992,,,,,
+fb2ab7c0,,,,,
+5abe4b7d,,,,,
+8af805b4,,,,,
+f861779d,,,,,
+ae7f277a,,,,,
+0b600d80,,,,,
+e3384605,,,,,
+ca01033e,,,,,
+3a1bdf43,,,,,
+fa982d36,,,,,
+a8fe2cf7,,,,,
+9d9177d7,,,,,
+4ed2c62a,,,,,
+62edb0b6,,,,,
+713bbad3,,,,,
+aa8fc454,,,,,
+e637b120,,,,,
+2b439b04,,,,,
+f7f6c492,,,,,
+cf55f011,,,,,
+4316309e,,,,,
+6126cc10,,,,,
+84ff0530,,,,,
+ac968693,,,,,
+39246c46,,,,,
+4dc770a6,,,,,
+74a2441e,,,,,
+70ac8e6b,,,,,
+e085106b,,,,,
+d98002b6,,,,,
+801088ce,,,,,
+22c2118e,,,,,
+19ea48b3,,,,,
+cc0bdb3b,,,,,
+65625f87,,,,,
+7c0f370c,,,,,
+506bceab,,,,,
+59cf50f2,,,,,
+db732de1,,,,,
+23b3eaa4,,,,,
+b662050b,,,,,
+58d36a77,,,,,
+52019728,,,,,
+6fee154a,,,,,
+d2d8252c,,,,,
+6a571dad,,,,,
+dac7f0bf,,,,,
+a5ae65ca,,,,,
+95677a14,,,,,
+6018206e,,,,,
+bc7ec6e6,,,,,
+0dcda9ee,,,,,
+4e8dae27,,,,,
+26b54997,,,,,
+9cfb718a,,,,,
+1d64b59c,,,,,
+dad02744,,,,,
+88cc8171,,,,,
+e3dcb7f9,,,,,
+5d08dc4c,,,,,
+073e7384,,,,,
+30b640db,,,,,
+f37785b1,,,,,
+b0eefa0e,,,,,
+b625c5a2,,,,,
+6900a3fb,,,,,
+19f5aec3,,,,,
+22370a51,,,,,
+93078069,,,,,
+3e0c08be,,,,,
+a8d8c5aa,,,,,
+4fe251d0,,,,,
+3524d4ca,,,,,
+cd6b40d0,,,,,
+7552fd19,,,,,
+3c36175b,,,,,
+68316e80,,,,,
+c1e95138,,,,,
+20281f03,,,,,
+418cea63,,,,,
+f2ff2eb8,,,,,
+3556c2d2,,,,,
+e8088ff6,,,,,
+97d87dba,,,,,
+9c34f982,,,,,
+738083f9,,,,,
+75986366,,,,,
+fa560e54,,,,,
+5d62938c,,,,,
+63f25767,,,,,
+049480d1,,,,,
+ab375d65,,,,,
+ad038c64,,,,,
+b266d5ca,,,,,
+89c7d831,,,,,
+49423769,,,,,
+88433d04,,,,,
+2806fe12,,,,,
+f9c2a5fd,,,,,
+a9a88d7f,,,,,
+6d93d2c2,,,,,
+09db556d,,,,,
+a085c7ef,,,,,
+2e9b1d6d,,,,,
+c96a6cff,,,,,
+bb1098a3,,,,,
+8e94216f,,,,,
+e158aa52,,,,,
+6eb24852,,,,,
+53f1fb7b,,,,,
+7c1c1072,,,,,
+ecbbc5c2,,,,,
+94c8fcef,,,,,
+58bafaa0,,,,,
+272af197,,,,,
+f3892771,,,,,
+7d15c8e0,,,,,
+3da2bb3c,,,,,
+1e1cb4bc,,,,,
+2400956f,,,,,
+528deee0,,,,,
+efc2fad5,,,,,
+1bb98123,,,,,
+d8725d95,,,,,
+0db820e6,,,,,
+2cbc91f2,,,,,
+96b36aca,,,,,
+0adb5e12,,,,,
+2800fd65,,,,,
+0d3b81d2,,,,,
+ea7636f7,,,,,
+dfc99cf8,,,,,
+b1729cba,,,,,
+c8bc9724,,,,,
+8b7b2e9b,,,,,
+130b70f6,,,,,
+ec212b2d,,,,,
+633699ed,,,,,
+0d93063a,,,,,
+1eeb3ab6,,,,,
+e8de98ba,,,,,
+a7890d34,,,,,
+5ed7ceeb,,,,,
+8cf9ac9a,,,,,
+c10752e8,,,,,
+8bd2805d,,,,,
+7e38fe3c,,,,,
+fda8a37c,,,,,
+f17a1244,,,,,
+df106f8c,,,,,
+20d37f50,,,,,
+1a388e92,,,,,
+0b0cb7b6,,,,,
+e9aab47b,,,,,
+2d87daaa,,,,,
+d2ba6902,,,,,
+651036e4,,,,,
+7ccc8536,,,,,
+b28067d0,,,,,
+0028421c,,,,,
+beb594c8,,,,,
+c6ad074f,,,,,
+fc9993b8,,,,,
+c0d654b8,,,,,
+c465f380,,,,,
+24296e4c,,,,,
+c4de344a,,,,,
+abbeb0c8,,,,,
+3e5fae26,,,,,
+1252ad16,,,,,
+fc89ed4c,,,,,
+45697471,,,,,
+462a861a,,,,,
+54d0b603,,,,,
+9c43a4e5,,,,,
+f77392e1,,,,,
+40b4df20,,,,,
+603d4bd0,,,,,
+ff8207fd,,,,,
+29f62de3,,,,,
+832c0ca7,,,,,
+19d86151,,,,,
+c14c1e71,,,,,
+04507e4e,,,,,
+78e1ac65,,,,,
+08380b93,,,,,
+c3c7f017,,,,,
+c9164c69,,,,,
+d8d0150b,,,,,
+22d5ffd3,,,,,
+08493966,,,,,
+b724f78c,,,,,
+f98fd186,,,,,
+889ca6ef,,,,,
+41d22efe,,,,,
+d8211137,,,,,
+9ad02e2c,,,,,
+87d5bb12,,,,,
+98385336,,,,,
+2ade8190,,,,,
+8ba4d3ec,,,,,
+8c1c7a5c,,,,,
+e65f5997,,,,,
+26754405,,,,,
+6d3a769f,,,,,
+b93566b3,,,,,
+da3c1c8e,,,,,
+a904acc8,,,,,
+71c49030,,,,,
+33ed9576,,,,,
+c191a12f,,,,,
+03674357,,,,,
+5fb62d5c,,,,,
+5c639110,,,,,
+7a9a2b8e,,,,,
+f9592938,,,,,
+5197caf4,,,,,
+875bc91b,,,,,
+f40e639d,,,,,
+3bd31372,,,,,
+a30c41b5,,,,,
+1682925b,,,,,
+e43c89fe,,,,,
+199bd342,,,,,
+3bd6c210,,,,,
+29bdb88a,,,,,
+e321bafe,,,,,
+e0526e54,,,,,
+f1f3e29b,,,,,
+85ef9db0,,,,,
+dfb74529,,,,,
+ae72c740,,,,,
+0c17badb,,,,,
+b7cdea03,,,,,
+fce60ce7,,,,,
+4516d58e,,,,,
+062310bf,,,,,
+ebadcf5d,,,,,
+3ed20035,,,,,
+be766f09,,,,,
+996193af,,,,,
+6d67d590,,,,,
+156f9c09,,,,,
+ec679fc7,,,,,
+b2a32b0d,,,,,
+45b53ea0,,,,,
+bd958152,,,,,
+886192c3,,,,,
+708251e4,,,,,
+f4a8f530,,,,,
+a5fc174c,,,,,
+4cc40a60,,,,,
+7c69829e,,,,,
+db260d3b,,,,,
+81dd4335,,,,,
+8565692c,,,,,
+1129b473,,,,,
+7f75d521,,,,,
+772629ae,,,,,
+a3a94917,,,,,
+ca33e74a,,,,,
+7b5f760c,,,,,
+e26d050b,,,,,
+e8a1a65a,,,,,
+e6c7c167,,,,,
+8c6324a0,,,,,
+7f1d099a,,,,,
+45fc9554,,,,,
+04a93a19,,,,,
+f0fadfd8,,,,,
+5e8a5a08,,,,,
+2cc08d86,,,,,
+762f57e8,,,,,
+f802c47e,,,,,
+fce00b19,,,,,
+1f193f89,,,,,
+3fbdfc09,,,,,
+69aaea6d,,,,,
+ef1a3996,,,,,
+80b70037,,,,,
+78fcbf5f,,,,,
+3b94d7c3,,,,,
+197e2df9,,,,,
+4f82be09,,,,,
+465cde5e,,,,,
+d3fe7fd3,,,,,
+1a428fed,,,,,
+24a88d0a,,,,,
+dfc036b4,,,,,
+fa1cd45b,,,,,
+9859ad68,,,,,
+1c3abd01,,,,,
+21535250,,,,,
+7407e51d,,,,,
+728fccb7,,,,,
+07ef828a,,,,,
+f3ec856c,,,,,
+3cda91eb,,,,,
+5f6f923b,,,,,
+9fbb2fec,,,,,
+72821996,,,,,
+2fe7c937,,,,,
+6a9e741f,,,,,
+3948fc73,,,,,
+12898b94,,,,,
+00275a24,,,,,
+e0a3404e,,,,,
+ed945f0e,,,,,
+3d51d69d,,,,,
+553c548c,,,,,
+a648af21,,,,,
+fa24f4ec,,,,,
+b8aad16a,,,,,
+f1b6f98f,,,,,
+ad0e08fb,,,,,
+99aefa60,,,,,
+f56b9b3e,,,,,
+d8743b5d,,,,,
+3257da0a,,,,,
+861a53c2,,,,,
+daaa1738,,,,,
+813cce99,,,,,
+bb52b892,,,,,
+d43226e6,,,,,
+ecb579db,,,,,
+4f05cab0,,,,,
+4bba1663,,,,,
+df7f00cc,,,,,
+bf25e546,,,,,
+a474da28,,,,,
+29f52860,,,,,
+8b0d90f0,,,,,
+79931562,,,,,
+2589fada,,,,,
+9f3bd919,,,,,
+3223f015,,,,,
+d6c41cf1,,,,,
+ef90cee6,,,,,
+86b5ce09,,,,,
+42277a6a,,,,,
+6e6a30c0,,,,,
+d2bb7da1,,,,,
+2ac57bf9,,,,,
+9d353560,,,,,
+49b886a6,,,,,
+e30922ab,,,,,
+e3f14b34,,,,,
+932ecb54,,,,,
+bb6b3f51,,,,,
+0859cf66,,,,,
+291ccc73,,,,,
+753e118a,,,,,
+340f647e,,,,,
+8fd21c15,,,,,
+4503fd65,,,,,
+861122a0,,,,,
+539df448,,,,,
+22f0472c,,,,,
+b12a9c9d,,,,,
+4f5104e5,,,,,
+c9bbff45,,,,,
+f2f4e5da,,,,,
+2ab18ede,,,,,
+3314e53d,,,,,
+ae31d3b6,,,,,
+5981254d,,,,,
+f1c45309,,,,,
+6653dd0b,,,,,
+db6b39a2,,,,,
+a98c9b74,,,,,
+48908649,,,,,
+5f974dad,,,,,
+7d12c10e,,,,,
+6e14a550,,,,,
+32f97a02,,,,,
+2b6fc614,,,,,
+751a1d2e,,,,,
+de275ae9,,,,,
+ac79d66c,,,,,
+066e7db7,,,,,
+71c190e9,,,,,
+e02c0c96,,,,,
+05e550a4,,,,,
+12a55a96,,,,,
+8f706c66,,,,,
+908b555a,,,,,
+e0fc6df3,,,,,
+fcef8c8b,,,,,
+297097c5,,,,,
+e218bab3,,,,,
+4c04594d,,,,,
+ec84b36f,,,,,
+0cdf31e6,,,,,
+98dfdd0a,,,,,
+d3d4c7c8,,,,,
+25989849,,,,,
+99643a6b,,,,,
+92373939,,,,,
+ff0dec31,,,,,
