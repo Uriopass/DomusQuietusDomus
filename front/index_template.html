@@ -7,6 +7,7 @@
     <title>Domus Quietus Domus</title>
     <link rel="stylesheet" href="assets/normalize.css">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/autocomplete.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,21 +17,28 @@
 <div id="navbar">
     <div id="search">
         <img id="search-icon" src="assets/search.svg" alt="Recherche">
-        <input id="search-input" type="text" placeholder="Recherche">
+        <input id="search-input" type="text" placeholder="Recherche" autocomplete="false">
     </div>
+    <div id="search-filters"></div>
 </div>
 <div id="content">
     <picture>
         <source srcset="assets/palais.webp" type="image/webp">
-        <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 20px;" />
+        <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 20px;"/>
     </picture>
     $content
     $footer
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
 <script>
+    let tag_filters = [];
+
     function sh(id) {
         navigator.share({url: 'https://domusquietusdomus.com/quotes/' + id + '.html'});
+    }
+
+    function normalize(str) {
+        return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
     for (let quote of document.querySelectorAll('.quote')) {
@@ -42,6 +50,173 @@
                 open.classList.remove('quote-selected');
             }
             quote.classList.add('quote-selected');
+        });
+    }
+
+    document.getElementById('search-icon').addEventListener('click', () => {
+        document.getElementById('search-input').focus();
+    });
+
+    let tags = [{
+        name: "Astérix",
+        type: "Personnage",
+    }, {
+        name: "Obélix",
+        type: "Personnage",
+    }, {
+        name: "Numérobis",
+        type: "Personnage",
+    }];
+
+    for (let tag of tags) {
+        tag.name_norm = normalize(tag.name);
+    }
+
+    let fuse = new Fuse(tags, {
+        keys: ['name_norm'],
+        includeScore: true,
+        includeMatches: true,
+        threshold: 0.3
+    });
+
+    let inp = document.getElementById("search-input");
+
+    function renderFilters() {
+        let filters = document.getElementById("search-filters");
+        filters.innerHTML = "";
+        for (let tag of tag_filters) {
+            let tagEl = document.createElement("div");
+            tagEl.classList.add("search-filter");
+            tagEl.textContent = "× " + tag;
+            tagEl.addEventListener("click", () => {
+                tag_filters = tag_filters.filter((t) => t !== tag);
+                renderFilters();
+            });
+            filters.appendChild(tagEl);
+        }
+    }
+
+    autocomplete(inp, async (search) => {
+        if (search === "") {
+            return [[], [], []];
+        }
+        let res = fuse.search(normalize(search));
+
+        let arr = res.map((r) => r.item.name);
+        let data = res.map((r) => r.item.type);
+
+        let poses = res.map((r) => {
+            let pos = [];
+
+            for (let idx of r.matches[0].indices) {
+                for (let i = idx[0]; i <= idx[1]; i++) {
+                    pos.push(i);
+                }
+            }
+
+            return pos;
+        });
+
+        return [arr, data, poses];
+    }, (val, _) => {
+        inp.value = "";
+        tag_filters.push(val);
+        renderFilters();
+    }, () => {});
+
+    function autocomplete(inp, onInput, onSubmit, onSubmitEmpty) {
+        let currentFocus;
+        let syncId = 0;
+        inp.addEventListener("input", function () {
+            let a, b, i, val = this.value;
+            syncId += 1;
+            let syncCpy = syncId;
+            onInput(val).then((res) => {
+                if (syncCpy !== syncId) {
+                    return;
+                }
+                closeAllLists();
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                let [arr, data, poses] = res;
+                for (i = 0; i < arr.length; i++) {
+                    let val = arr[i];
+                    let d = data[i];
+                    let pos = poses[i];
+                    b = document.createElement("DIV");
+
+                    let renderedVal = "";
+                    let j2 = 0;
+                    for (let j = 0; j < val.length; j++) {
+                        while (pos[j2] < j) j2++;
+                        if (pos[j2] === j) {
+                            renderedVal += `<b>${val[j]}</b>`;
+                        } else {
+                            renderedVal += val[j];
+                        }
+                    }
+
+                    b.innerHTML = `<span>${renderedVal}</span><span class="autocomplete-data">${d}</span>`;
+                    b.style.display = "flex";
+                    b.style.justifyContent = "space-between";
+                    b.addEventListener("click", function () {
+                        onSubmit(val, d);
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }).catch(() => {
+                closeAllLists()
+            })
+        });
+
+        inp.addEventListener("keydown", function (e) {
+            let x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode === 40) { // DOWN
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode === 38) { // UP
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode === 13) { // ENTER
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                } else {
+                    onSubmitEmpty();
+                }
+            }
+        });
+
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+
+        function removeActive(x) {
+            for (let i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+
+        function closeAllLists(elmnt) {
+            currentFocus = -1;
+            let x = document.getElementsByClassName("autocomplete-items");
+            for (let i = 0; i < x.length; i++) {
+                if (elmnt !== x[i] && elmnt !== inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
         });
     }
 </script>
