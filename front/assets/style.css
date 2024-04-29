@@ -118,6 +118,7 @@ a {
     flex-grow: 1;
     justify-content: center;
     padding: 5px 10px;
+    box-sizing: border-box;
 }
 
 .quote-share {
@@ -233,15 +234,17 @@ a {
         max-width: 100%;
     }
 
+    .quote-selected .quote-content {
+        width: 100%;
+        padding: 10px 15px;
+    }
+
     .quote-selected {
         align-items: center;
+        flex-direction: column;
     }
 
     .quote-selected .quote-image-full {
         height: unset;
-    }
-
-    .quote-selected {
-        flex-direction: column;
     }
 }
