@@ -1,0 +1,223 @@
+
+html {
+    width: 100%;
+}
+body {
+    background-color: #fffbeb;
+    background-image: url("papyrus_tile.png");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: serif;
+    width: 100%;
+}
+
+#navbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 245, 233, 0.7);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
+    width: 100%;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+#search-input {
+    box-sizing: border-box;
+    background-color: rgba(239, 236, 213, 0.5);
+    width: 100%;
+    max-width: 500px;
+    padding: 15px 20px 15px 44px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.2 );
+    margin: 10px;
+}
+
+#search-input:focus-visible {
+    outline: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#search {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+#search-icon {
+    position: absolute;
+    left: 22px;
+    margin: auto 0;
+    opacity: 0.5;
+}
+
+#footer {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.8em;
+    justify-content: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+#footer a {
+    display: flex;
+    align-items: baseline;
+    text-decoration: none;
+}
+
+#footer a img {
+    margin-right: 5px;
+}
+
+#content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    width: 100%;
+    background-color: #f7eedb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.quote {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    background-color: #FFF4C6;
+    border-radius: 5px;
+    align-items: center;
+    margin: 1px 0;
+}
+
+.quote:hover {
+    background-color: #ffeea3;
+}
+
+.quote-selected {
+    align-items: start;
+    background-color: #ffeea3;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.quote-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+.quote-image-preview {
+    height: 50px;
+    object-fit: contain;
+}
+
+.quote-image-full {
+    aspect-ratio: 2.35;
+    display: none;
+    height: 200px;
+    object-fit: contain;
+}
+
+.quote-selected .quote-image-preview {
+    display: none;
+}
+
+.quote-selected .quote-image-full {
+    display: block;
+}
+
+.quote-base {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.quote-expanded {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.quote-title {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-style: normal;
+}
+
+.quote-timecode {
+    opacity: 0.3;
+    font-family: monospace;
+    font-size: 0.8em;
+}
+
+.quote-explication {
+    margin-bottom: 5px;
+}
+
+.quote-explication-title {
+    opacity: 0.5;
+}
+
+.quote-tag-title {
+    opacity: 0.5;
+    padding-right: 5px;
+}
+
+.quote-tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.quote-tag {
+    font-family: sans-serif;
+    font-size: 12px;
+    background-color: #c7ffa2;
+    border-radius: 5px;
+    padding: 2px 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.quote-title {
+    padding: 0 10px;
+    flex-grow: 1;
+}
+
+.quote-expanded {
+    display: none;
+}
+
+.quote-selected .quote-expanded {
+    display: flex;
+}
+
+@media all and (orientation: portrait) {
+    .quote-image-full {
+        max-width: 100%;
+    }
+
+    .quote-selected {
+        align-items: center;
+    }
+
+    .quote-selected .quote-image-full {
+        height: unset;
+    }
+
+    .quote-selected {
+        flex-direction: column;
+    }
+}

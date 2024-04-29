@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Domus Quietus Domus</title>
+    <link rel="stylesheet" href="assets/normalize.css">
+    <link rel="stylesheet" href="assets/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="navbar">
+    <div id="search">
+        <img id="search-icon" src="assets/search.svg" alt="Recherche">
+        <input id="search-input" type="text" placeholder="Recherche">
+    </div>
+</div>
+<div id="content">
+    $content
+    $footer
+</div>
+
+<script>
+    for (let quote of document.querySelectorAll('.quote')) {
+        quote.addEventListener('click', () => {
+            for (let open of document.getElementsByClassName('quote-selected')) {
+                if (open === quote) {
+                    continue;
+                }
+                open.classList.remove('quote-selected');
+            }
+            quote.classList.toggle('quote-selected');
+        });
+    }
+</script>
+</body>
+</html>

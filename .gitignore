@@ -1,3 +1,7 @@
 .idea
 target
 dist
+build
+*.mp4
+*.mkv
+venv
