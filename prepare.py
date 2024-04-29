@@ -119,7 +119,27 @@ def genIndex(quotes: str):
     with open('build/index.html', 'w', encoding="utf8") as index_file:
         index_file.write(index)
 
-def doTheProcessing(verbose=True):
+def compressFront(verbose=True):
+    import gzip
+
+    printv = print if verbose else lambda *a, **k: None
+
+    def listFiles():
+        for file in os.listdir('build'):
+            yield 'build/' + file
+        for file in os.listdir('build/assets'):
+            yield 'build/assets/' + file
+
+    for file in listFiles():
+        if not (file.endswith('.html') or file.endswith('.css') or file.endswith('.js')):
+            continue
+        with open(file, 'rb') as f:
+            content = f.read()
+        with gzip.open(file + '.gz', 'wb') as f:
+            f.write(content)
+        printv(f"compressed {file} to {file}.gz")
+
+def doTheProcessing(release=False, verbose=True):
     os.makedirs('build/images', exist_ok=True)
 
     printv = print if verbose else lambda *a, **k: None
@@ -136,6 +156,9 @@ def doTheProcessing(verbose=True):
     shutil.copytree('front/assets', 'build/assets', dirs_exist_ok=True)
     printv("build/assets copied from front/assets")
 
+    if release:
+        compressFront(verbose)
+
     if len(sys.argv) > 1:
         genImages(data, sys.argv[1])
         printv("images generated")
@@ -150,4 +173,4 @@ if __name__ == '__main__':
         while True:
             doTheProcessing(verbose=False)
             time.sleep(1)
-    doTheProcessing()
+    doTheProcessing(release=True)
