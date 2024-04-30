@@ -56,8 +56,8 @@ def parseData() -> [dict]:
             timecode_parsed = row[1].split(':')  # hh:mm:ss
 
             if len(timecode_parsed) == 3:
-                timecode_seconds: int = int(timecode_parsed[0]) * 3600 + int(timecode_parsed[1]) * 60 + int(
-                    timecode_parsed[2])
+                hour, minute, second = map(int, timecode_parsed)
+                timecode_seconds: int = hour * 3600 + minute * 60 + second
             else:
                 raise ValueError(f"Invalid timecode format: {row[1]} (expected hh:mm:ss or mm:ss)")
 
@@ -218,7 +218,7 @@ def startDevServer():
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == 'watch':
+    if any(map(lambda x: x == "--watch", sys.argv)):
         startDevServer()
 
         while True:
