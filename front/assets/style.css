@@ -4,7 +4,7 @@ html {
 }
 body {
     background-color: #fffbeb;
-    background-image: url("papyrus_tile.png");
+    background-image: url("papyrus_tile.jpg");
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,13 +160,14 @@ a {
 
 .quote-image-preview {
     height: 50px;
+    width: 118px;
     object-fit: contain;
 }
 
 .quote-image-full {
-    aspect-ratio: 2.35;
     display: none;
     height: 200px;
+    width: 470px;
     object-fit: contain;
 }
 

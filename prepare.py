@@ -117,7 +117,8 @@ def genQuotesPages(data: [dict]):
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
-            footer=footer
+            footer=footer,
+            style="style.css?r="+str(time.time())
         )
 
         with open(f'build/quotes/{id}.html', 'w', encoding="utf8") as quote_file:
@@ -146,6 +147,8 @@ def genIndex(quotes: str):
     index = open('front/index_template.html', 'r', encoding="utf8").read()
     index = index.replace("$content", quotes)
     index = index.replace("$footer", open('front/footer.html', 'r', encoding="utf8").read())
+    index = index.replace("$style", "style.css?r="+str(time.time()))
+
     with open('build/index.html', 'w', encoding="utf8") as index_file:
         index_file.write(index)
 
