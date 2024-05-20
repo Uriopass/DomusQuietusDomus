@@ -34,7 +34,6 @@ def genTags(tags: [str]):
         return ""
     tags_html = ''
     for tag in tags:
-        tag = tag.strip()
         tags_html += f'<span class="quote-tag">{tag}</span>\n'
     return f"""
 <div class="quote-tags">
@@ -61,7 +60,7 @@ def parseData() -> [dict]:
             else:
                 raise ValueError(f"Invalid timecode format: {row[1]} (expected hh:mm:ss or mm:ss)")
 
-            tags = row[4].split(',')
+            tags = [tag.strip() for tag in row[4].split(',') if tag.strip() != '']
 
             data.append({
                 'id': row[0],  # ''
@@ -214,7 +213,6 @@ def startDevServer():
             super().__init__(*args, directory="build", **kwargs)
 
     server = ThreadingHTTPServer(("0.0.0.0", 8000), Handler)
-    server.directory = "build"
     server_thread = threading.Thread(target=server.serve_forever)
     server_thread.daemon = True
     server_thread.start()
