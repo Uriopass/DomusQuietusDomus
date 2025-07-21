@@ -14,7 +14,7 @@ body {
 
 #navbar {
     display: flex;
-    position: sticky;
+/*    position: sticky;*/
     top: 0;
     background-color: rgba(255, 245, 233, 0.7);
     backdrop-filter: blur(10px);
@@ -23,7 +23,7 @@ body {
     justify-content: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 1;
-    padding: 10px;
+    padding: 10px 0;
 }
 
 #search-input {
@@ -109,6 +109,7 @@ a {
 }
 
 .quote {
+    position: relative;
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
@@ -166,16 +167,20 @@ a {
 
 .quote-image-full {
     display: none;
-    height: 200px;
-    width: 470px;
     object-fit: contain;
 }
 
 .quote-selected .quote-image-preview {
-    display: none;
+    height: 200px;
+    width: 470px;
 }
 
 .quote-selected .quote-image-full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 200px;
+    width: 470px;
     display: block;
 }
 
