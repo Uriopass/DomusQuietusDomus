@@ -57,23 +57,36 @@
     });
 
     let allUniqueTags = [];
+    let tagCount = new Map();
+
     quotesData.forEach(quote => {
         quote.tags.forEach(tag => {
-            if (!allUniqueTags.some(t => normalize(t) === normalize(tag))) {
+            if (!tagCount.has(tag)) {
                 allUniqueTags.push(tag);
+                tagCount.set(tag, 0);
             }
+            tagCount.set(tag, tagCount.get(tag) + 1);
         });
+    });
+
+    allUniqueTags.sort((a, b) => {
+        let countA = tagCount.get(a);
+        let countB = tagCount.get(b);
+        if (countA === countB) {
+            return a.localeCompare(b);
+        }
+        return countB - countA; // Sort by descending count
     });
 
     let tags = allUniqueTags.map(tag => ({
         name: tag,
-        type: "Tag",
+        type: ""+tagCount.get(tag),
         name_norm: normalize(tag)
     }));
 
     let fuseQuotes = new Fuse(quotesData, {
         keys: ['title', 'tags', 'searchText'],
-        threshold: 0.3,
+        threshold: 0.1,
         ignoreLocation: true,
         minMatchCharLength: 2
     });
@@ -136,7 +149,7 @@
         if (search === "") {
             return [
                 allUniqueTags,
-                allUniqueTags.map(() => "Tag"),
+                allUniqueTags.map((tag) => tagCount.get(tag)+""),
                 allUniqueTags.map(() => [])
             ];
         }
