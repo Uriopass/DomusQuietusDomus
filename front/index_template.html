@@ -24,14 +24,16 @@
 <div id="content">
     <picture>
         <source srcset="assets/palais.webp" type="image/webp">
-        <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 20px;"/>
+        <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 10px;"/>
     </picture>
+    <div id="quote-list-header">
+    </div>
     <div id="quotes-list">
         $content
     </div>
     $footer
 </div>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
+<script src="assets/fuse.basic.min.js"></script>
 <script>
     let tag_filters = [];
 
@@ -106,6 +108,10 @@
                 )
             );
         }
+
+        document.getElementById('quote-list-header').innerHTML = `
+        ${filtered.length} blagues
+        `;
 
         quotesData.forEach(quote => {
             quote.node.style.display = filtered.includes(quote) ? '' : 'none';

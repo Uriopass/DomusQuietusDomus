@@ -96,6 +96,11 @@ a {
     margin-right: 5px;
 }
 
+#quotes-list {
+    margin-top: 10px;
+    width: 100%;
+}
+
 #content {
     box-sizing: border-box;
     display: flex;
@@ -257,6 +262,10 @@ a {
         max-width: 100%;
     }
 
+    .quote-image-preview {
+        max-width: 100%;
+    }
+
     .quote-selected .quote-content {
         width: 100%;
         padding: 10px 15px;
@@ -269,5 +278,6 @@ a {
 
     .quote-selected .quote-image-full {
         height: unset;
+        top: 15px;
     }
 }
