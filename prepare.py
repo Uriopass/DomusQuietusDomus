@@ -107,10 +107,12 @@ def genQuotesPages(data: [dict]):
         id = datum['id']
         timecode_seconds = datum['timecode_seconds']
         image = f'images/{timecode_seconds}.jpg'
+        image_preview = f'images/{timecode_seconds}_preview.jpg'
 
         quote = quote_template.substitute(
             id=id,
             imagefull=image,
+            imagepreview=image_preview,
             timecode=datum['timecode'],
             title=prepare_html(datum['title']),
             longtext=genLongText(datum['long_text']),
