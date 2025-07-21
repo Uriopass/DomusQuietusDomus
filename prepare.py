@@ -219,6 +219,11 @@ def startDevServer():
 
 
 if __name__ == '__main__':
+    if any(map(lambda x: x == "--serve", sys.argv)):
+        startDevServer()
+        print("Development server started at http://localhost:8000")
+        while True:
+            time.sleep(1)
     if any(map(lambda x: x == "--watch", sys.argv)):
         startDevServer()
 

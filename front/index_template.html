@@ -26,7 +26,9 @@
         <source srcset="assets/palais.webp" type="image/webp">
         <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 20px;"/>
     </picture>
-    $content
+    <div id="quotes-list">
+        $content
+    </div>
     $footer
 </div>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
@@ -41,45 +43,63 @@
         return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    for (let quote of document.querySelectorAll('.quote')) {
-        quote.addEventListener('click', () => {
-            for (let open of document.getElementsByClassName('quote-selected')) {
-                if (open === quote) {
-                    continue;
-                }
-                open.classList.remove('quote-selected');
+    let quoteNodes = Array.from(document.querySelectorAll('.quote'));
+    let quotesData = quoteNodes.map(quote => {
+        let title = quote.querySelector('.quote-title')?.innerText || '';
+        let tags = Array.from(quote.querySelectorAll('.quote-tag')).map(t => t.innerText.trim());
+
+        return {
+            node: quote,
+            title,
+            tags,
+            searchText: normalize(title + ' ' + tags.join(' '))
+        };
+    });
+
+    let allUniqueTags = [];
+    quotesData.forEach(quote => {
+        quote.tags.forEach(tag => {
+            if (!allUniqueTags.some(t => normalize(t) === normalize(tag))) {
+                allUniqueTags.push(tag);
             }
-            quote.classList.add('quote-selected');
+        });
+    });
+
+    let tags = allUniqueTags.map(tag => ({
+        name: tag,
+        type: "Tag",
+        name_norm: normalize(tag)
+    }));
+
+    let fuseQuotes = new Fuse(quotesData, {
+        keys: ['title', 'tags', 'searchText'],
+        threshold: 0.3,
+        ignoreLocation: true,
+        minMatchCharLength: 2
+    });
+
+    function filterQuotes() {
+        let search = normalize(document.getElementById('search-input').value.trim());
+        let filtered = quotesData;
+
+        if (search.length > 0) {
+            filtered = fuseQuotes.search(search).map(result => result.item);
+        }
+
+        if (tag_filters.length > 0) {
+            filtered = filtered.filter(quote =>
+                tag_filters.every(tag =>
+                    quote.tags.some(t => normalize(t) === normalize(tag))
+                )
+            );
+        }
+
+        quotesData.forEach(quote => {
+            quote.node.style.display = filtered.includes(quote) ? '' : 'none';
         });
     }
 
-    document.getElementById('search-icon').addEventListener('click', () => {
-        document.getElementById('search-input').focus();
-    });
-
-    let tags = [{
-        name: "Astérix",
-        type: "Personnage",
-    }, {
-        name: "Obélix",
-        type: "Personnage",
-    }, {
-        name: "Numérobis",
-        type: "Personnage",
-    }];
-
-    for (let tag of tags) {
-        tag.name_norm = normalize(tag.name);
-    }
-
-    let fuse = new Fuse(tags, {
-        keys: ['name_norm'],
-        includeScore: true,
-        includeMatches: true,
-        threshold: 0.3
-    });
-
-    let inp = document.getElementById("search-input");
+    document.getElementById('search-input').addEventListener('input', filterQuotes);
 
     function renderFilters() {
         let filters = document.getElementById("search-filters");
@@ -91,15 +111,36 @@
             tagEl.addEventListener("click", () => {
                 tag_filters = tag_filters.filter((t) => t !== tag);
                 renderFilters();
+                filterQuotes();
             });
             filters.appendChild(tagEl);
         }
     }
 
+    let fuse = new Fuse(tags, {
+        keys: ['name_norm'],
+        includeScore: true,
+        includeMatches: true,
+        threshold: 0.3
+    });
+
+    let inp = document.getElementById("search-input");
+
+    inp.addEventListener("focus", function() {
+        if (inp.value.trim() === "") {
+            this.dispatchEvent(new Event('input'));
+        }
+    });
+
     autocomplete(inp, async (search) => {
         if (search === "") {
-            return [[], [], []];
+            return [
+                allUniqueTags,
+                allUniqueTags.map(() => "Tag"),
+                allUniqueTags.map(() => [])
+            ];
         }
+
         let res = fuse.search(normalize(search));
 
         let arr = res.map((r) => r.item.name);
@@ -120,8 +161,9 @@
         return [arr, data, poses];
     }, (val, _) => {
         inp.value = "";
-        tag_filters.push(val);
+        if (!tag_filters.includes(val)) tag_filters.push(val);
         renderFilters();
+        filterQuotes();
     }, () => {});
 
     function autocomplete(inp, onInput, onSubmit, onSubmitEmpty) {
@@ -148,14 +190,20 @@
                     b = document.createElement("DIV");
 
                     let renderedVal = "";
-                    let j2 = 0;
-                    for (let j = 0; j < val.length; j++) {
-                        while (pos[j2] < j) j2++;
-                        if (pos[j2] === j) {
-                            renderedVal += `<b>${val[j]}</b>`;
-                        } else {
-                            renderedVal += val[j];
+                    if (pos.length > 0) {
+                        // Highlight matched parts
+                        let j2 = 0;
+                        for (let j = 0; j < val.length; j++) {
+                            while (j2 < pos.length && pos[j2] < j) j2++;
+                            if (j2 < pos.length && pos[j2] === j) {
+                                renderedVal += `<b>${val[j]}</b>`;
+                            } else {
+                                renderedVal += val[j];
+                            }
                         }
+                    } else {
+                        // No highlighting needed for empty search
+                        renderedVal = val;
                     }
 
                     b.innerHTML = `<span>${renderedVal}</span><span class="autocomplete-data">${d}</span>`;
@@ -219,6 +267,25 @@
             closeAllLists(e.target);
         });
     }
+
+    for (let quote of document.querySelectorAll('.quote')) {
+        quote.addEventListener('click', () => {
+            for (let open of document.getElementsByClassName('quote-selected')) {
+                if (open === quote) {
+                    continue;
+                }
+                open.classList.remove('quote-selected');
+            }
+            quote.classList.add('quote-selected');
+        });
+    }
+
+    document.getElementById('search-icon').addEventListener('click', () => {
+        document.getElementById('search-input').focus();
+    });
+
+    // Initialize filtering (in case there are URL params)
+    filterQuotes();
 </script>
 </body>
 </html>
