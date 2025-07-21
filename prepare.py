@@ -69,7 +69,8 @@ def parseData() -> [dict]:
                 'title': row[2],  # 'title'
                 'long_text': row[3],  # 'long text'
                 'tags': tags,  # ['tag1', 'tag2']
-                'explanation': row[5]  # 'explanation'
+                'explanation': row[5],  # 'explanation',
+                'interesting': row[6] # 'TRUE/FALSE'
             })
 
     return data
@@ -93,6 +94,7 @@ def genQuotes(data: [dict]):
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
+            interesting=datum['interesting'],
         )
 
         quotes += quote

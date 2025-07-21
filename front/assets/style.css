@@ -125,8 +125,12 @@ a {
     margin: 1px 0;
 }
 
+.interesting-TRUE {
+    background-color: #ffe8c6;
+}
+
 .quote:hover {
-    background-color: #ffeea3;
+    background-color: #ffeda3;
 }
 
 .quote-selected {
@@ -256,6 +260,7 @@ a {
 .quote-selected .quote-expanded {
     display: flex;
 }
+
 
 @media all and (orientation: portrait) {
     .quote-image-full {
