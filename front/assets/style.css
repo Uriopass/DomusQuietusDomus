@@ -14,7 +14,6 @@ body {
 
 #density {
     display: flex;
-    padding: 10px 0;
     justify-content: center;
     flex-direction: column;
     align-items: center;

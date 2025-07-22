@@ -26,14 +26,13 @@
         <source srcset="assets/palais.webp" type="image/webp">
         <img src="assets/palais.jpg" alt="Palais" style="width: 100%; margin-bottom: 10px;"/>
     </picture>
+    <div id="density">
+        <canvas id="density-canvas" style="width: 100%; margin-bottom: 10px;"></canvas>
+    </div>
     <div id="quote-list-header">
     </div>
     <div id="quotes-list">
         $content
-    </div>
-    <div id="density">
-        <img src="assets/density.png" alt="Densité" style="width: 100%; margin-bottom: 10px;"/>
-        Densité de blagues
     </div>
     $footer
 </div>
@@ -53,11 +52,13 @@
     let quotesData = quoteNodes.map(quote => {
         let title = quote.querySelector('.quote-title')?.innerText || '';
         let tags = Array.from(quote.querySelectorAll('.quote-tag')).map(t => t.innerText.trim());
+        let timecode = quote.getAttribute('data-timecode') || '0';
 
         return {
             node: quote,
             title,
             tags,
+            timecode: parseInt(timecode),
             searchText: normalize(title + ' ' + tags.join(' '))
         };
     });
@@ -97,6 +98,46 @@
         minMatchCharLength: 2
     });
 
+    function generateDensity(quotes) {
+        const canvas = document.getElementById('density-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const movieLength = 6480;
+        const binSize = 6;
+        const height = 50;
+        const width = Math.floor(movieLength / binSize);
+
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.height = height + 'px';
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, width, height);
+
+        let bins = new Array(width).fill(0);
+
+        quotes.forEach(quote => {
+            const timecode = quote.timecode;
+            if (timecode > 0 && timecode < movieLength) {
+                const binIndex = Math.floor(timecode / binSize);
+                bins[binIndex]++;
+            }
+        });
+
+        const maxBin = Math.max(...bins);
+
+        if (maxBin > 0) {
+            for (let x = 0; x < bins.length; x++) {
+                const binVal = bins[x];
+                if (binVal === 0) continue;
+
+                const colorIntensity = Math.floor((255 * binVal) / maxBin);
+                ctx.fillStyle = `rgb(${colorIntensity}, ${Math.floor(colorIntensity * 0.8)}, 0)`;
+                ctx.fillRect(x, 0, 1, height);
+            }
+        }
+    }
+
     function filterQuotes() {
         let search = normalize(document.getElementById('search-input').value.trim());
         let filtered = quotesData;
@@ -120,6 +161,9 @@
         quotesData.forEach(quote => {
             quote.node.style.display = filtered.includes(quote) ? '' : 'none';
         });
+
+        // Update density visualization with filtered quotes
+        generateDensity(filtered);
     }
 
     document.getElementById('search-input').addEventListener('input', filterQuotes);
@@ -309,7 +353,7 @@
         document.getElementById('search-input').focus();
     });
 
-    // Initialize filtering (in case there are URL params)
+    generateDensity(quotesData);
     filterQuotes();
 </script>
 </body>

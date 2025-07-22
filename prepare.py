@@ -70,7 +70,7 @@ def parseData() -> [dict]:
                 'long_text': row[3],  # 'long text'
                 'tags': tags,  # ['tag1', 'tag2']
                 'explanation': row[5],  # 'explanation',
-                'interesting': row[6] # 'TRUE/FALSE'
+                'interesting': row[6]  # 'TRUE/FALSE'
             })
 
     return data
@@ -90,6 +90,7 @@ def genQuotes(data: [dict]):
             imagefull=image,
             imagepreview=image_preview,
             timecode=datum['timecode'],
+            timecode_seconds=timecode_seconds,
             title=prepare_html(datum['title']),
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
@@ -121,7 +122,7 @@ def genQuotesPages(data: [dict]):
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
             footer=footer,
-            style="style.css?r="+str(time.time())
+            style="style.css?r=" + str(time.time())
         )
 
         with open(f'build/quotes/{id}.html', 'w', encoding="utf8") as quote_file:
@@ -150,7 +151,7 @@ def genIndex(quotes: str):
     index = open('front/index_template.html', 'r', encoding="utf8").read()
     index = index.replace("$content", quotes)
     index = index.replace("$footer", open('front/footer.html', 'r', encoding="utf8").read())
-    index = index.replace("$style", "style.css?r="+str(time.time()))
+    index = index.replace("$style", "style.css?r=" + str(time.time()))
 
     with open('build/index.html', 'w', encoding="utf8") as index_file:
         index_file.write(index)
@@ -207,32 +208,6 @@ def doTheProcessing(release=False, verbose=True):
     else:
         printv("No video file provided, skipping image generation")
 
-def generateDensity(data):
-    from PIL import Image
-    timecodes = [datum['timecode_seconds'] for datum in data]
-
-    movie_length = 6480
-    bin = 6
-    img = Image.new('RGB', (movie_length // bin, 50), color='black')
-
-    bins = [0] * (movie_length // bin)
-
-    for v in timecodes:
-        x = int(v / bin)
-        bins[x] += 1
-
-    maxbin = max(bins)
-
-    for x in range(len(bins)):
-        binval = bins[x]
-        if binval == 0:
-            continue
-        color = (255 * binval) // maxbin
-        for y in range(50):
-            img.putpixel((x, y), (color, int(color*0.8), 0))
-
-    img.save('build/assets/density.png')
-
 def startDevServer():
     import threading
     from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
@@ -248,11 +223,6 @@ def startDevServer():
 
 
 if __name__ == '__main__':
-    if any(map(lambda x: x == "--density", sys.argv)):
-        data = parseData()
-        generateDensity(data)
-        sys.exit(0)
-
     if any(map(lambda x: x == "--serve", sys.argv)):
         startDevServer()
         print("Development server started at http://localhost:8000")
