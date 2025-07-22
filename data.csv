@@ -34,7 +34,8 @@ Le chat: ... mois?
 Cléopâtre arrête la tentative de baiser de César avec son bras en forme de cobra
 Cléopâtre (se moquant) : ""Je m'en doute""",Cléopâtre,,FALSE
 19,0:04:24,César chante la musique de fond.,,César,Brise le 4e mur,TRUE
-20,0:04:43,"On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.",,Feudartifis,,FALSE
+20,0:04:43,"On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.","- Oh non ! Mais pourquoi vous avez posé le carrelage. Il fallait faire passer les évacuations d'eau d'abord ! Il va falloir tout recasser maintenant.
+- Ah monsieur Malococsis je suis pas architecte moi je suis carreleur. On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.",Feudartifis,,FALSE
 21,0:04:49,Et c'est quoi cette porte au plafond ?,,"Malococsis, visuel",,FALSE
 22,0:04:55,"Les architectes, avec les réparateurs de char, il y a pas plus escroc et incompétent.",,"Malococsis, cliché",Cliché sur les réparateurs de voitures.,FALSE
 23,0:05:09,"Ça ? J'anticipe ! Si vous voulez faire un deuxième étage, paf ! Il y a déjà une porte pour y accéder.",,Numérobis,,FALSE
@@ -51,6 +52,7 @@ C'est pour quoi ?",,Numérobis,,FALSE
 323,0:05:54,"Non mais parce que Oran et haut-rang ça sonne pareil, c'est pour ça.",,Numérobis,"Numérobis explique sa blague aux gardes, il pense donc être enlevé pour avoir fait un trait d'humour.",FALSE
 318,0:06:18,Serge.,,Amonbofis,,FALSE
 29,0:06:20,Une grenouille se suicide,,"Amonbofis, visuel",Cruelle réalité que de n'être qu'une grenouille de plus pour les crocodiles.,TRUE
+352,0:06:28,"Il faut changer l'eau des crocodiles, c'est une infection.",,Cléopâtre,Cléopâtre parle de l'eau des crocodiles comme on parlerait de l'eau d'un bocal à poissons.,FALSE
 30,0:06:42,"Ben, euh, oui, puisqu'on a toujours fait comme ça...","Amonbofis : Pourtant j'ai installé l'évacuation des eaux usagées comme on fait tout le temps.
 Cléopâtre : C'est bien ça le problème avec vous Amonbofis, vous faites toujours comme on fait tout le temps.
 Amonbofis : Ben, euh, oui, puisqu'on a toujours fait comme ça...",Amonbofis,,FALSE
@@ -118,7 +120,7 @@ C'est pomme de reinette et pomme d'api.",,"Otis, référence","Référence à l'
 Référence à la comptine pour enfant ""Pomme de reinette et pomme d'api""",FALSE
 53,0:12:26,Un droïde.,,Numérobis,"Première d'une longue série de référence à Star Wars. Ici ""druide"" est prononcé droïde.",FALSE
 54,0:12:33,Elle donne une force mais d'une force.,,Numérobis,,FALSE
-55,0:12:44,C'est dans les papyrus dessiné pour les enfants.,"La potion magique ça existe pas hein.
+55,0:12:44,C'est dans les papyrus dessinés pour les enfants.,"La potion magique ça existe pas hein.
 C'est dans les papyrus dessinés pour les enfants, on est dans le monde réel là.",Otis,,FALSE
 56,0:12:55,"Là, on va faire une grande allée avec plein de statues.
 Qu'on appellera ""La grande allée avec plein de statues"".",,Numérobis,,FALSE
@@ -244,7 +246,7 @@ Panoramix : Il est joli.","Panoramix, cliché",Référence à la légende urbain
 - Ça fait plaisir.
 - Sinon les crocodiles.
 - Ça fait pas plaisir.",,"Cléopâtre, Numérobis",,FALSE
-106,0:26:21,"*Le sillon interfessier de Cléopâtre apparaît*
+106,0:26:21,"*La raie des fesses de Cléopâtre apparaît*
 Panoramix : Aaah... Oh.",,"Panoramix, visuel, référence","Robe inspirée de la robe que porte Mireille Darc dans ""Le grand blond avec une chaussure noire"".",TRUE
 107,0:26:38,"- Il est mignon le moustachu.
 - Il est un peu vieux quand même.
@@ -337,6 +339,7 @@ La blague repose aussi sur le fait que la réforme portait sur 35h par semaine, 
 333,0:34:26,Nous exigeons une diminution d'au moins 50%,"- Nous exigeons une diminution d'au moins 50%
 - Une augmentation vous voulez dire ?
 - Mais non ! Nous exigeons une diminution des coups de fouets.",Itinéris,"En général, on demande une augmentation du salaire.",FALSE
+353,0:34:40,Ça leur fait la tête comme un gros char,,Itinéris,Un char est assez volumineux.,FALSE
 334,0:34:44,Si on pouvait accompagner les lentilles d'un sanglier hmm? Ou deux.,,Obélix,,FALSE
 131,0:34:57,Itinéris a raison ! De ne pas se laisser faire. (se l'SFR),,"Panoramix, référence","Itineris est une ancienne marque de téléphonie mobile devenue Orange.
 Jeu de mot entre SFR, une autre marque de téléphonie mobile et ""se laisser faire"".",TRUE
@@ -454,7 +457,9 @@ Le nez du Sphinx n'a cependant pas été retrouvé.",FALSE
 173,0:50:57,Eh mon pâté !,,Nexusis,"L'enfant faisant le pâté est Max Chabat, fils du réalisateur Alain Chabat.",FALSE
 174,0:51:20,"- Tu peux me comprendre, tu as été à ma place jadis.
 - Moi c'est Numérobis",,"Itinéris, Numérobis","""Jadis"", qui signifie ""Il y a longtemps"", sonne comme un nom propre.",FALSE
-175,0:51:38,Itinéris ne capte pas,,"Itinéris, cliché",Allusion aux artéfacts audio fréquents pour les utilisateurs de la compagnie de téléphonie mobile Itineris.,FALSE
+175,0:51:38,Itinéris ne capte pas,"*Itinéris ne capte pas*
+Et- l à -- Tu - me ? cap tes ? Et - à ? Parc- que- eh.
+Ça me... Ça me le fait tout le temps en ce moment...","Itinéris, cliché",Allusion aux artéfacts audio fréquents pour les utilisateurs de la compagnie de téléphonie mobile Itineris.,FALSE
 176,0:51:52,J'ai la dalle.,"- Ça va Obé ?
 - Bah j'ai la dalle",Obélix,"Jeu de mot entre l'expression ""J'ai la dalle"" signifiant ""J'ai faim"" et de littéralement porter une dalle de pierre.",TRUE
 177,0:52:41,"- Attention les couloirs sont très étroits, il faut pas être trop gros.
@@ -600,7 +605,7 @@ On est pas en romanie ici !",,Numérobis,,FALSE
 241,1:18:08,"- Je suis très déçu par votre attitude centurion Affairedrefus.
 - Moi c'est Antivirus.",,"Caius Céplus, référence","Affairedrefus = Affaire Dreyfus.
 Caius Céplus reprend la scène de Star Wars IV : Un Nouvel Espoir où Dark Vador étrangle un général.",FALSE
-242,1:18:17,Quand on l'attaque. L'empire contre-attaque !,,"Caius Céplus, référence","Référence à Star Wars V : L'Empire contre-attaque.
+242,1:18:17,"Quand on l'attaque, l'empire contre-attaque !",,"Caius Céplus, référence","Référence à Star Wars V : L'Empire contre-attaque.
 Scène jouée sur la musique ""La Marche Impériale"" de John Williams, le thème de Dark Vador. Mission Cléopâtre est le premier film ayant eu le droit de l'utiliser.",FALSE
 317,1:18:21,Le casque de Caius Céplus ressemble à celui de Vador,,"Caius Céplus, visuel, référence",,FALSE
 243,1:18:27,"Aie il m'a fait super mal à la gorge.
@@ -746,7 +751,7 @@ Par ailleurs, ""Avoir la gaule"" est une expression signifiant avoir une érecti
 303,1:43:03,"Bonsoir, est-ce que vous pouvez me donner votre nom s'il vous plaît ?",,,Caméo de Matthieu Kassovitz qui joue le physionomiste et ne reconnaît pas César.,FALSE
 304,1:43:35,"Non, j'ai un Cétaparis, un Cénesaindenis..",,référence,"Cétaparis = C'est à Paris.
 Cénesaindenis = Seine-Saint-Denis, le département.",FALSE
-305,1:44:00,"Monsieur, écoutez là, je travail.","Monsieur, écoutez là, je travail.
+305,1:44:00,"Monsieur, écoutez là, je travaille.","Monsieur, écoutez là, je travaille.
 *Laisse passer divers convives sans vérifier leur nom*",,,FALSE
 306,1:44:16,"*(chuchotant)* Connard de merde, la prochaine fois je te grille.","- Vous êtes à la table de la reine.
 - Bah oui.
