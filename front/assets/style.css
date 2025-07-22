@@ -12,6 +12,14 @@ body {
     width: 100%;
 }
 
+#density {
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
 #navbar {
     display: flex;
 /*    position: sticky;*/

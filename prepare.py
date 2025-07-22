@@ -207,6 +207,31 @@ def doTheProcessing(release=False, verbose=True):
     else:
         printv("No video file provided, skipping image generation")
 
+def generateDensity(data):
+    from PIL import Image
+    timecodes = [datum['timecode_seconds'] for datum in data]
+
+    movie_length = 6480
+    bin = 6
+    img = Image.new('RGB', (movie_length // bin, 50), color='black')
+
+    bins = [0] * (movie_length // bin)
+
+    for v in timecodes:
+        x = int(v / bin)
+        bins[x] += 1
+
+    maxbin = max(bins)
+
+    for x in range(len(bins)):
+        binval = bins[x]
+        if binval == 0:
+            continue
+        color = (255 * binval) // maxbin
+        for y in range(50):
+            img.putpixel((x, y), (color, int(color*0.8), 0))
+
+    img.save('build/assets/density.png')
 
 def startDevServer():
     import threading
@@ -223,6 +248,11 @@ def startDevServer():
 
 
 if __name__ == '__main__':
+    if any(map(lambda x: x == "--density", sys.argv)):
+        data = parseData()
+        generateDensity(data)
+        sys.exit(0)
+
     if any(map(lambda x: x == "--serve", sys.argv)):
         startDevServer()
         print("Development server started at http://localhost:8000")

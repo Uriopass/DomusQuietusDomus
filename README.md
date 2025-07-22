@@ -4,9 +4,8 @@ A website exhaustively listing all jokes from "Asterix & Obelix: Mission Cleopat
 
 ### Features
 
-- [ ] List all jokes from the movie
-- [ ] Textual search for jokes + tags
-- [ ] Character list
+- [x] List all jokes from the movie
+- [x] Textual search for jokes + tags
 - [ ] Timecode of jokes visualizer
 
 ## Copyright
