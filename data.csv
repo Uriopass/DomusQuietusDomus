@@ -14,6 +14,7 @@ Uma Thurman traçait elle aussi un carré fictif dans le vide en arrivant au Jac
 César : Dis-donc, ""ton peuple"", ""ton peuple"", t'es quand même grecque au départ.
 Alors comme egyptienne de souche, j'ai vu mieux excuse-moi.","César, Cléopâtre, historique","Référence historique au fait que Cléopâtre soit de la dynastie lagide, issue de Grèce par Ptolémée ayant envahi l'Égypte 300 ans plus tôt.",FALSE
 9,0:03:01,Lancer de raisin raté (3),,"César, visuel",,FALSE
+322,0:03:02,Coupe de raisins sur la tête du goûteur,,visuel,"Cocasse, mais après tout pourquoi pas, c'est un goûteur.",TRUE
 10,0:03:03,Assez !,Assez ! *Cléopâtre casse un autre vase*,Cléopâtre,,FALSE
 11,0:03:15,"Ah ouais, et comment ? En dessinant des bonhommes de face ? Haha !","Cléopâtre : Je peux te prouver n'importe quand, ô César, que le peuple égyptien a gardé tout son génie.
 César : Ah ouais, et comment ? En dessinant des bonhommes de face ? Haha !","César, cliché","Référence au style stéréotypique égyptien des dessins ""de profil"".",FALSE
@@ -47,6 +48,7 @@ Cléopâtre (se moquant) : ""Je m'en doute""",Cléopâtre,,FALSE
 28,0:05:50,"- Architecte Numérobis ?
 - ?.. Non ?... Enfin ça dépend ?
 C'est pour quoi ?",,Numérobis,,FALSE
+323,0:05:54,"Non mais parce que Oran et haut-rang ça sonne pareil, c'est pour ça.",,Numérobis,"Numérobis explique sa blague aux gardes, il pense donc être enlevé pour avoir fait un trait d'humour.",FALSE
 318,0:06:18,Serge.,,Amonbofis,,FALSE
 29,0:06:20,Une grenouille se suicide,,"Amonbofis, visuel",Cruelle réalité que de n'être qu'une grenouille de plus pour les crocodiles.,TRUE
 30,0:06:42,"Ben, euh, oui, puisqu'on a toujours fait comme ça...","Amonbofis : Pourtant j'ai installé l'évacuation des eaux usagées comme on fait tout le temps.
@@ -90,6 +92,7 @@ Un boeuf est treuillé tout comme la magneau pour servir de repas aux vélocirap
 43,0:10:08,Numérobis compte ses pas et utilise un sextant en bois,,Numérobis,"En tant qu'architecte égyptien, Numérobis n'a pas accès à des outils moderne.
 Il est contraint de mesurer ses distances avec des pas et utilise ce qui semble être un sextant pour mesurer un angle dans un ciel complètement vide.",FALSE
 44,0:10:27,J'ai pensé à une sorte de machine qui permettrait de monter au sommet des pyramides,,"Otis, référence","Otis, le nom de l'inventeur, est la marque d'ascenseur la plus populaire en France",TRUE
+324,0:10:33,Numérobis compte 169... 174..,,Numérobis,Il y a d'autres nombres entre 169 et 174. Ou bien Numérobis est pentapode.,TRUE
 45,0:10:48,De là... à de là.,,Numérobis,,FALSE
 46,0:11:00,"Excuse-moi, tu veux pas juste arrêter de compter ? Parce qu'on fait exprès des métreurs pour ça.",,Otis,"Un métreur dans le bâtiment est normalement chargé, entre autres, de quantifier et mesurer les matériaux nécessaire.
 Ici, le jeu de mot rapporte à simplifier le métier de métreur comme celui qui mesure les distances.",FALSE
@@ -98,6 +101,9 @@ Ici, le jeu de mot rapporte à simplifier le métier de métreur comme celui qui
 49,0:11:24,"- J'aurais jamais le temps de mettre au point ma machine, moi.
 - Otis, t'as entendu ce que je viens de te dire ou t'as pas entendu ce que je viens de te dire ?",,"Otis, Numérobis",,FALSE
 50,0:11:33,"Excuse-moi d'en faire un sac mais je vais finir dans un crocodile, peut-être.",,"Numérobis, référence",Référence aux sacs en peau de crocodile.,TRUE
+325,0:11:54,"Mais oui exactement, c'est- c'- il nous faut des pouvoirs magiques","- Pour réussir il faudrait qu'on ait des pouvoirs magiques, qu'on soit des.. des mages, des dieux..
+- Mais oui exactement, c'est- c'- il nous faut des pouvoirs magiques.
+- C'est ça, je vois pas en quoi c'est une bonne nouvelle mais c'est ça.","Numérobis, Otis",Numérobis donne l'impression de délirer du point de vue d'Otis.,FALSE
 51,0:12:10,"Papa me racontait souvent l'histoire de ce druide.
 Pamo-panobéméix.
 Pano-sunéixme.","Papa me racontait souvent l'histoire de ce druide.
@@ -140,6 +146,7 @@ La vie n'est pas facile pour les garnisons de légionnaires romains des camps re
 68,0:14:52,Panomaméixme ? Panomaméixme ?,,"Numérobis, astérixme",,FALSE
 69,0:15:00,Il fait au moins -8000.,"Qu'est-ce que c'est que ce pays.
 Il faut au moins -8000.",Numérobis,,FALSE
+327,0:15:08,"Numérobis est étonné de voir un légionnaire tomber du ciel",,"Numérobis, visuel",Gros zoom sur son visage en réaction à l'évènement choquant,FALSE
 70,0:15:21,Obélix envoie voler un légionnaire d'une simple pichenette.,,"Obélix, légionnaire",,FALSE
 71,0:15:32,"Vous suivez les baffes, et normalement ils sont au bout.","- Bonjour, c'est par où le village des Gaulois ?
 - Alors le mieux d'ici : Vous suivez les baffes, et normalement ils sont au bout.
@@ -167,6 +174,7 @@ Numérobis, venant d'Alexandrie, est aussi un alexandrin.",TRUE
 - Non, c'est de la soupe de marron.",,"Numérobis, Panoramix",,FALSE
 79,0:17:34,"Une petite marmite ? Une gourde ? Une gourdinette ? Un bol ?
 Une bolinette ? C'est un petit bol.",,Numérobis,Gradation descendante menant à l'absurde : Une bolinette.,FALSE
+328,0:17:45,Une bolinette c'est rien,,Obélix,,FALSE
 80,0:18:23,Midifix.,"*Numérobis s'adresse à Idéfix.*
 Midifix.","Numérobis, astérixme",Midifix = Midi fixe,FALSE
 81,0:19:25,À bord du Napadélis.,,voix-off,Napadélis = N'a pas d'hélices.,FALSE
@@ -180,6 +188,9 @@ Vous voyez ce que c'est qu'une hyène ? Et bah pareil.",,Numérobis,,FALSE
 - Non il est riche.",,"Numérobis, historique","Le talent d'or est une monnaie mentionné dans les textes homérique.
 Sa valeur a fait l'objet de nombreuses controverses et recherches .",TRUE
 85,0:20:21,"En Gaule, ce ne sont pas forcément les plus talentueux qui sont les plus riche.",,Panoramix,,FALSE
+329,0:20:28,"- Il y a autre chose à craindre ?
+- Non, à priori rien.
+*Un drapeau pirate apparaît*",,visuel,,FALSE
 86,0:20:51,Dessin des pirates d'Astérix et Obélix,,visuel,"Ce dessin créé pour le film a été signé par Albert Uderzo, le dessinateur de la BD Astérix !",FALSE
 87,0:20:53,"Et leurs molosse !
 *Bruit de tigre*",,"Idéfix, visuel",,FALSE
@@ -245,6 +256,7 @@ Panoramix : Aaah... Oh.",,"Panoramix, visuel, référence","Robe inspirée de la
 109,0:27:02,Tu crois que c'est bon du crocodile ?,,Obélix,,FALSE
 110,0:27:16,Ooh ! Une grosse fourmi.,,Obélix,"Obélix ramasse une sauterelle mormone, pas une fourmi.",FALSE
 111,0:27:41,Istou !,,,"Jeu de mot avec ""hisse tout"".",FALSE
+,0:28:03,Tous les esclaves tombent en tirant une obélisque,,visuel,,FALSE
 112,0:28:25,Qu'est-ce que vous avez comme boeufs ?,,Obélix,"Jeu de mot entre ""boeufs"" et ""beuh"".
 ""Beuh"" est de l'argot pour parler de cannabis.",TRUE
 113,0:28:37,Comme moi j'étais venu chez vous... En Gaulerie.,,Numérobis,"Numérobis dit ""Gaulerie"" pour parler de la Gaule.
@@ -294,6 +306,11 @@ Ipagou oupou, Irrroutchèèn ioutchènémi aoutchép !
 Camarades ! On vous exploite ! On vous crève à la tâche ! Et... Franchement... Voilà.",Amonbofis,"Parodie d'un discours révolutionnaire.
 Référence à l'expression ""Chacun chez soi et les moutons seront bien gardés"".
 Le passage dans une langue étrangère n'a aucun sens.",FALSE
+321,0:32:57,"- Pour le bruit et les odeurs ?
+- Il y en a que ça peut gêner","- Et juste là [...] une grande cuisine aménagée.
+- Ça donne juste à côté des chambres, c'est peut-être pas l'idéal.
+- Pour le bruit et les odeurs ?
+- Il y en a que ça peut gêner.","Numérobis, Panoramix","Référence à la fameuse réplique de Chirac en 1991, désignant les désagréments causés selon Chirac par certaines personnes immigrées en France.",TRUE
 125,0:33:08,"- C'est quoi ces gros raisins là ?
 - Ce sont des dattes, Obélix.
 - C'est croquant au milieu.
@@ -724,4 +741,36 @@ Chanchan et Dom (on a fait les Nuls ensemble), Stan, Béa et Cyril (quel zen, qu
 tous les enfants du tournage, tous les enfants en général d'ailleurs, Tatine et tous les Français, Marocains, Maltais, Italiens, Anglais, Suédois, Américains, Oranais, Vietnamiens, Métèques, Vikings et Martiens
 qui ont participé au film d'une manière ou d'une autre. Peace.
 Et merci aux gens qui lisent les génériques jusqu'au bout (mais il faut rentrer maintenant, vous n'avez pas un chez vous ?) Imhotep.",,"Alain Chabat, le réalisateur du film, a des remerciements.",TRUE
-314,1:47:56,Au secours !,,Amonbofis,,
+314,1:47:56,Au secours !,,Amonbofis,,FALSE
+330,0:28:17,Salon du boeuf à lutèce,"On a un salon du boeuf une fois tous les 2 ans à Lutèce. On expose tous les nouveaux boeufs. Toutes les nouvelles races de boeufs. C'est extraordinaire. Hein ? Grosse, grosse grosse grosse manifestation.","Astérix, référence","Probablement une référence au salon de l'agriculture qui se tient tous les ans à Paris, anciennement Lutèce.",FALSE
+331,0:29:53,Otis reçoit un papyrus par flèche,,visuel,Utiliser une flèche comme moyen de transport est plutôt inhabituel.,FALSE
+332,0:31:13,"Amonbofis et Nexusis arrivent en ""Yellow cab""",,visuel,"Référence aux taxis New-Yorkais, on peut aussi voir des petits drapeaux rouge/vert pour indiquer si le taxi est occupé.",TRUE
+333,0:34:26,Nous exigeons une diminution d'au moins 50%,"- Nous exigeons une diminution d'au moins 50%
+- Une augmentation vous voulez dire ?
+- Mais non ! Nous exigeons une diminution des coups de fouets.",Itinéris,"En général, on demande une augmentation du salaire.",FALSE
+334,0:34:44,Si on pouvait accompagner les lentilles d'un sanglier hmm? Ou deux.,,Obélix,,FALSE
+335,0:35:32,Doucement je l'ai peut-être un peu chargée.,,Panoramix,Obélix parle de la potion magique comme d'un joint.,FALSE
+336,0:39:11,Je vais vous prendre un imhotep,,Nexusis,"Un peu comme les schtroumpfs, imhotep est utilisé pour de bien diverses raisons au travers du film. Ici, comme une boisson.",FALSE
+337,0:39:58,S'il y a trop tu me ramènes la monnaie,,Amonbofis,Amonbofis envoie Nexusis tuer pour gage comme un parent enverrait son gosse chercher du pain.,FALSE
+338,0:41:08,"- Veni vidi vici comme d'habitude ?
+- Veni, vidi ça va. Vici c'est un peu prématuré.",,"César, Caius Céplus, latin","Veni, vidi, vici est une célèbre expression latine employée par Jules César en -47.
+Elle peut être traduite par ""Je suis venu, j'ai vu, j'ai vaincu"". ",FALSE
+339,0:42:11,Si vis pacem para bellum,,"César, latin","Si vis pacem, para bellum est une autre célèbre expression latine mais pas attribuée à César cette fois-ci !
+Elle signifie, comme dit par César dans la phrase d'après ""Qui veut la paix prépare la guerre"".",FALSE
+340,0:43:18,"- On pourrait faire un C, comme Cléopâtre.
+- *se moquant* C'est le palais de César
+- Ça marche aussi
+- Comment ça ?",,"Panoramix, Numérobis",Ils débattent de la forme du palais. César et Cléopâtre commencent tous deux par C.,FALSE
+341,0:46:42,"- Moi aussi je pourrais faire des petits ménhirs souvenirs comme ça.
+- Sphinx ?
+- Non mais j'en fait.",,Obélix,,FALSE
+342,0:49:43,"Et là il me dit: ""Va te faire embaumer chez les Grecques""",,,,FALSE
+343,0:50:55,Le pâté pyramide est cadré pour faire croire aux véritables pyramides de Khéops,,visuel,"En fait, ça n'est que du sable. Pauvre pâté.",TRUE
+344,0:58:20,À cette allure là on sera jamais rentré en Gaulle pour le banquet avec les sangliers. Et comme les lentilles ça va bien 5 minutes.,,Obélix,,FALSE
+345,1:00:41,2e caméo des ZZ Top,,visuel,,FALSE
+346,1:06:12,Le goûteur malade est tout vert,,visuel,Comme dans la BD.,FALSE
+347,1:16:17,"Effet sonore de ""l'homme qui valait 3 milliards""",,"audio, référence","L'effet métallique est tiré de la série ""L'homme qui valait 3 milliards"" qui a popularisé ce bruitage comme représentation sonore du ralenti.",TRUE
+348,1:19:56,Deux légionnaires se font un chest bump,,légionnaire,"Pour célébrer leur attaque réussie, deux légionnaires se choquent le torse comme des fans sportifs.",FALSE
+349,1:25:07,Gling gling gling de flipper,,"Amonbofis, audio, visuel",Bruitage et effet visuel d'un flipper après avoir touché un bidule.,FALSE
+350,1:26:02,"*whoosh whoosh*
+Double esquive",,Numérobis,,FALSE
