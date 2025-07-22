@@ -288,11 +288,13 @@
     }
 
     for (let quote of document.querySelectorAll('.quote')) {
-        quote.addEventListener('click', () => {
+        quote.addEventListener('click', (event) => {
+            const isImageClick = event.target.classList.contains('quote-image-preview') || event.target.classList.contains('quote-image-full');
+            if (quote.classList.contains('quote-selected') && isImageClick) {
+                quote.classList.remove('quote-selected');
+                return;
+            }
             for (let open of document.getElementsByClassName('quote-selected')) {
-                if (open === quote) {
-                    continue;
-                }
                 open.classList.remove('quote-selected');
             }
             quote.classList.add('quote-selected');
