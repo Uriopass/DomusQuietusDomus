@@ -657,7 +657,8 @@ Pitoune = Personne avenante.",FALSE
 - D'accord.","Numérobis, Amonbofis",,FALSE
 267,1:27:07,Amonbofis et Numérobis dialoguent en chinois.,"(En mandarin) Amonbofis : ""Lao-Tseu va t'apprendre à reconnaître la force du kung-fu romain""
 (En cantonais) Numérobis : ""Pourquoi tu te mets à parler en mandarin, ne crois pas que je ne comprends pas, je ne suis pas stupide""
-(En mandarin) Amonbofis : ""Viens""","Numérobis, Amonbofis",Référence aux films de kung-fu chinois, et double blague sur le fait qu'Amonbofis se mette à parler soudainement mandarin tandis que Numérobis répond en cantonais,TRUE
+(En mandarin) Amonbofis : ""Viens""","Numérobis, Amonbofis","Référence aux films de kung-fu chinois.
+Amonbofis se met à parler soudainement mandarin tandis que Numérobis répond en cantonais.",FALSE
 268,1:27:24,Je suis Amonbofis et j'ai bouyave Numérobis,,Amonbofis,,FALSE
 269,1:28:02,"Ça va, ça va, imhotep.","- Et la famille ça va ?
 - Ça va, ça va, imhotep.
@@ -705,6 +706,8 @@ Les effets sont tirés du dessin animé sont d'ailleurs joués pendant la scène
 289,1:34:42,"Ce qu'il s'est passé c'est que tu as goûté à la meilleur des potions magiques.
 Coucouuuu.",,Panoramix,,FALSE
 290,1:35:14,"Je suis sorti du palais en courant, sans prendre le temps de me changer.",,Cléopâtre,,FALSE
+351,1:35:42,"Tu n'es pas en pays conquis ici !
+*Un chien répond en aboyant en fond*",,"Cléopâtre, audio","Cléopâtre crie si fort qu'un chien répond à son appel, comme si on se trouvait dans un quartier résidentiel et non dans le désert.",FALSE
 291,1:36:09,On lève le siège et on répare tes dégâts imbécile !,,César,"Une minute plus tôt, César se félicite d'avoir eu une si bonne idée.",FALSE
 292,1:36:18,Il faudrait quand même pas que Cléopâtre m'ait dans le nez... Qu'elle a joli d'ailleurs.,,César,,FALSE
 293,1:36:41,"C'est incroyable de penser que chacun de ces romains va laisser dans le sable une sorte de tra-
