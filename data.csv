@@ -1,6 +1,8 @@
 ID,Timecode,Titre/Citation,Citation étendue (optionnel),Tags,Explication,Intéressant
 1,0:00:55,"Un ancien poème Égyptien dit ""Nil, Nil, Nil, fleuve impétueux et tumultueux, tu es comme notre reine la source de la vie ! """,,voix-off,"Prononcé en voix-off par Pierre Tchernia, co-scénariste du dessin animé ""Astérix et Cléopâtre"" sorti en 1968",TRUE
-2,0:02:05,"Notre histoire commence [...] à Alexandrie. Ou en Alexandrie, on peut dire les deux.","Notre histoire commence il y a bien longtemps à Alexandrie. Ou en Alexandrie, on peut dire les deux.",voix-off,"Mise en place d'une blague à la fin du film où Panoramix demande ""Ma reine, on dit ""a Alexandrie"" ou ""en Alexandrie"" ?""",FALSE
+2,0:02:05,"Notre histoire commence [...] à Alexandrie. Ou en Alexandrie, on peut dire les deux.","Notre histoire commence il y a bien longtemps à Alexandrie. Ou en Alexandrie, on peut dire les deux.","voix-off, référence","Référence au débat commun sur ""à Avignon ou en Avignon"".
+Mise en place d'une blague à la fin du film où Panoramix demande ""Ma reine, on dit ""a Alexandrie"" ou ""en Alexandrie"" ?""
+",FALSE
 3,0:02:16,"- La légendaire et délicate... Cléopâtre.
 - Assez !",,Cléopâtre,,FALSE
 4,0:02:39,Lancer de raisin raté,,"César, visuel",,FALSE
