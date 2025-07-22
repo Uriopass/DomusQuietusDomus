@@ -602,9 +602,9 @@ Pitoune = Personne avenante.",FALSE
 - T'es sûr ?
 - Sûr.
 - D'accord.","Numérobis, Amonbofis",,FALSE
-267,1:27:07,Amonbofis et Numérobis dialoguent en chinois.,"(En cantonais) Amonbofis : ""Je vais te montrer que le kung fu romain est le plus puissant""
-(En mandarin) Numérobis : ""Je comprend rien à ce que tu dis, je ne parle que le mandarin""
-(En cantonais) Amonbofis : ""Allons-y""","Numérobis, Amonbofis",,TRUE
+267,1:27:07,Amonbofis et Numérobis dialoguent en chinois.,"(En mandarin) Amonbofis : ""Lao-Tseu va t'apprendre à reconnaître la force du kung-fu romain""
+(En cantonais) Numérobis : ""Pourquoi tu te mets à parler en mandarin, ne crois pas que je ne comprends pas, je ne suis pas stupide""
+(En mandarin) Amonbofis : ""Viens""","Numérobis, Amonbofis",Référence aux films de kung-fu chinois, et double blague sur le fait qu'Amonbofis se mette à parler soudainement mandarin tandis que Numérobis répond en cantonais,TRUE
 268,1:27:24,Je suis Amonbofis et j'ai bouyave Numérobis,,Amonbofis,,FALSE
 269,1:28:02,"Ça va, ça va, imhotep.","- Et la famille ça va ?
 - Ça va, ça va, imhotep.
