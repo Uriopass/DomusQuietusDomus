@@ -50,10 +50,13 @@
         navigator.share({url: 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html'});
     }
 
-    function copyLink(id) {
+    function copyLink(id, event) {
         const url = 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html';
         navigator.clipboard.writeText(url).then(() => {
-            alert('Lien copié !');
+            const img = event.target;
+            const originalSrc = img.src;
+            img.src = 'assets/check.svg';
+            setTimeout(() => { img.src = originalSrc; }, 1500);
         });
     }
 
