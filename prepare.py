@@ -118,6 +118,7 @@ def genQuotesPages(data: [dict]):
             imagepreview=image_preview,
             timecode=datum['timecode'],
             title=prepare_html(datum['title']),
+            metatitle=datum['title'].replace('\n', ' ').strip(),
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
