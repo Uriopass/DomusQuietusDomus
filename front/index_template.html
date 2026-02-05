@@ -50,6 +50,13 @@
         navigator.share({url: 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html'});
     }
 
+    function copyLink(id) {
+        const url = 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html';
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Lien copié !');
+        });
+    }
+
     function normalize(str) {
         return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
