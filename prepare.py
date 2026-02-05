@@ -84,11 +84,13 @@ def genQuotes(data: [dict]):
         timecode_seconds = datum['timecode_seconds']
         image = f'images/{timecode_seconds}.jpg'
         image_preview = f'images/{timecode_seconds}_preview.jpg'
+        image_previewxl = f'images/{timecode_seconds}_previewxl.jpg'
 
         quote = quote_template.substitute(
             id=datum['id'],
             imagefull=image,
             imagepreview=image_preview,
+            imagepreviewxl=image_previewxl,
             timecode=datum['timecode'],
             timecode_seconds=timecode_seconds,
             title=prepare_html(datum['title']),
@@ -111,11 +113,13 @@ def genQuotesPages(data: [dict]):
         timecode_seconds = datum['timecode_seconds']
         image = f'images/{timecode_seconds}.jpg'
         image_preview = f'images/{timecode_seconds}_preview.jpg'
+        image_previewxl = f'images/{timecode_seconds}_previewxl.jpg'
 
         quote = quote_template.substitute(
             id=id,
             imagefull=image,
             imagepreview=image_preview,
+            imagepreviewxl=image_previewxl,
             timecode=datum['timecode'],
             title=prepare_html(datum['title']),
             metatitle=datum['title'].replace('\n', ' ').strip(),
@@ -143,6 +147,7 @@ def genImages(data: [dict], videoFilePath: str):
         if success:
             cv2.imwrite(f'build/images/{timecode_seconds}.jpg', image)
             cv2.imwrite(f'build/images/{timecode_seconds}_preview.jpg', cv2.resize(image, (1280 // 8, 544 // 8)))
+            cv2.imwrite(f'build/images/{timecode_seconds}_previewxl.jpg', cv2.resize(image, (1280 // 2, 544 // 2)))
             print(f"build/images/{timecode_seconds}.jpg generated")
         else:
             print(f"Error while generating image for {timecode_seconds}")
