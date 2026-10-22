@@ -171,6 +171,19 @@ a {
     cursor: pointer;
 }
 
+/* Slightly bigger icons and tap areas on touch screens */
+@media (pointer: coarse) {
+    .quote-share {
+        gap: 0;
+    }
+
+    .quote-share img {
+        width: 19px;
+        height: 19px;
+        padding: 6px;
+    }
+}
+
 .quote-selected .quote-share {
     display: flex;
 }
