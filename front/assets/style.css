@@ -288,8 +288,18 @@ a {
         flex-direction: column;
     }
 
+    /* Size the preview to the frame's aspect ratio (no letterboxing),
+       and center the full image exactly on top of it. */
+    .quote-selected .quote-image-preview {
+        height: auto;
+        aspect-ratio: 1280 / 544;
+    }
+
     .quote-selected .quote-image-full {
-        height: unset;
-        top: 15px;
+        height: auto;
+        aspect-ratio: 1280 / 544;
+        top: 0;
+        right: 0;
+        margin: 0 auto;
     }
 }
