@@ -42,6 +42,9 @@ def genTags(tags: [str]):
 </div>"""
 
 
+FPS = 24  # frame rate of movie.mkv, for hh:mm:ss:ff timecodes
+
+
 def parseData() -> [dict]:
     data = []
     with open('data.csv', 'r', encoding="utf8") as file:
@@ -52,20 +55,25 @@ def parseData() -> [dict]:
         for row in reader:
             if row[1] == '':
                 continue
-            timecode_parsed = row[1].split(':')  # hh:mm:ss
+            timecode_parsed = row[1].split(':')  # hh:mm:ss, or hh:mm:ss:ff to pick a precise frame
 
-            if len(timecode_parsed) == 3:
-                hour, minute, second = map(int, timecode_parsed)
+            if len(timecode_parsed) in (3, 4):
+                hour, minute, second = map(int, timecode_parsed[:3])
+                frame = int(timecode_parsed[3]) if len(timecode_parsed) == 4 else 0
+                if frame >= FPS:
+                    raise ValueError(f"Invalid frame in timecode: {row[1]} (frames go from 0 to {FPS - 1})")
                 timecode_seconds: int = hour * 3600 + minute * 60 + second
             else:
-                raise ValueError(f"Invalid timecode format: {row[1]} (expected hh:mm:ss or mm:ss)")
+                raise ValueError(f"Invalid timecode format: {row[1]} (expected hh:mm:ss or hh:mm:ss:ff)")
 
             tags = [tag.strip() for tag in row[4].split(',') if tag.strip() != '']
 
             data.append({
                 'id': row[0],  # ''
-                'timecode': row[1],  # 'hh:mm:ss'
+                'timecode': ':'.join(timecode_parsed[:3]),  # 'hh:mm:ss', the frame is not displayed
                 'timecode_seconds': timecode_seconds,  # 1234
+                'image_name': f'{timecode_seconds}f{frame}' if frame else str(timecode_seconds),  # 1234 or 1234f12
+                'image_msec': (timecode_seconds + frame / FPS) * 1000,
                 'title': row[2],  # 'title'
                 'long_text': row[3],  # 'long text'
                 'tags': tags,  # ['tag1', 'tag2']
@@ -82,9 +90,9 @@ def genQuotes(data: [dict]):
     quotes: str = ""
     for datum in data:
         timecode_seconds = datum['timecode_seconds']
-        image = f'images/{timecode_seconds}.jpg'
-        image_preview = f'images/{timecode_seconds}_preview.jpg'
-        image_previewxl = f'images/{timecode_seconds}_previewxl.jpg'
+        image = f'images/{datum["image_name"]}.jpg'
+        image_preview = f'images/{datum["image_name"]}_preview.jpg'
+        image_previewxl = f'images/{datum["image_name"]}_previewxl.jpg'
 
         quote = quote_template.substitute(
             id=datum['id'],
@@ -110,10 +118,9 @@ def genQuotesPages(data: [dict]):
 
     for datum in data:
         id = datum['id']
-        timecode_seconds = datum['timecode_seconds']
-        image = f'images/{timecode_seconds}.jpg'
-        image_preview = f'images/{timecode_seconds}_preview.jpg'
-        image_previewxl = f'images/{timecode_seconds}_previewxl.jpg'
+        image = f'images/{datum["image_name"]}.jpg'
+        image_preview = f'images/{datum["image_name"]}_preview.jpg'
+        image_previewxl = f'images/{datum["image_name"]}_previewxl.jpg'
 
         quote = quote_template.substitute(
             id=id,
@@ -139,18 +146,18 @@ def genImages(data: [dict], videoFilePath: str):
     video_file = cv2.VideoCapture(videoFilePath)
 
     for datum in data:
-        timecode_seconds = datum['timecode_seconds']
-        if os.path.exists(f'build/images/{timecode_seconds}.jpg'):
+        name = datum['image_name']
+        if os.path.exists(f'build/images/{name}.jpg'):
             continue
-        video_file.set(cv2.CAP_PROP_POS_MSEC, timecode_seconds * 1000)
+        video_file.set(cv2.CAP_PROP_POS_MSEC, datum['image_msec'])
         success, image = video_file.read()
         if success:
-            cv2.imwrite(f'build/images/{timecode_seconds}.jpg', image)
-            cv2.imwrite(f'build/images/{timecode_seconds}_preview.jpg', cv2.resize(image, (1280 // 8, 544 // 8)))
-            cv2.imwrite(f'build/images/{timecode_seconds}_previewxl.jpg', cv2.resize(image, (1280 // 2, 544 // 2)))
-            print(f"build/images/{timecode_seconds}.jpg generated")
+            cv2.imwrite(f'build/images/{name}.jpg', image)
+            cv2.imwrite(f'build/images/{name}_preview.jpg', cv2.resize(image, (1280 // 8, 544 // 8)))
+            cv2.imwrite(f'build/images/{name}_previewxl.jpg', cv2.resize(image, (1280 // 2, 544 // 2)))
+            print(f"build/images/{name}.jpg generated")
         else:
-            print(f"Error while generating image for {timecode_seconds}")
+            print(f"Error while generating image for {name}")
 
 
 def genIndex(quotes: str):
