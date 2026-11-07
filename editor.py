@@ -345,7 +345,10 @@ PAGE = r"""<!doctype html>
   .item.draft.sel { background: #ffe2a8; }
   #main { flex: 1; overflow-y: auto; padding: 16px 24px; }
   #bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
-  #status { color: #888; font-size: 13px; margin-left: auto; }
+  #status { color: #888; font-size: 13px; margin-left: auto; display: flex; align-items: center; gap: 6px; }
+  .spinner { width: 12px; height: 12px; border: 2px solid #ccc; border-top-color: #555; border-radius: 50%;
+             animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   label { display: block; font-size: 12px; color: #666; margin: 10px 0 3px; }
   input[type=text], textarea { width: 100%; box-sizing: border-box; padding: 6px; font: inherit; font-size: 14px; }
   textarea { resize: vertical; }
@@ -431,7 +434,8 @@ PAGE = r"""<!doctype html>
 <script>
 const F = {title: "Titre/Citation", extended: "Citation étendue (optionnel)", tags: "Tags", explanation: "Explication"};
 let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
-const CS = "Début extrait", CE = "Fin extrait";  // clip bounds; "Timecode" is only the screenshot
+const CS = "Début extrait", CE = "Fin extrait";
+let saving = false, editedWhileSaving = new Set();  // clip bounds; "Timecode" is only the screenshot
 let frameToken = 0;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
@@ -479,8 +483,12 @@ function render() {
     $("list").appendChild(div);
     if (r === sel) setTimeout(() => div.scrollIntoView({block: "nearest"}));
   }
-  $("save").disabled = dirty.size === 0;
-  $("status").textContent = dirty.size ? `${dirty.size} modification(s) non enregistrée(s)` : (lastSave || "Tout est enregistré");
+  $("save").disabled = dirty.size === 0 || saving;
+  if (saving) {
+    $("status").innerHTML = '<span class="spinner"></span>Enregistrement en cours (fichier, commit, push)…';
+  } else {
+    $("status").textContent = dirty.size ? `${dirty.size} modification(s) non enregistrée(s)` : (lastSave || "Tout est enregistré");
+  }
 }
 
 function select(r) {
@@ -587,6 +595,7 @@ function edit(field, value) {
   if (!sel || sel[field] === value) return;
   sel[field] = value;
   dirty.add(sel);
+  if (saving) editedWhileSaving.add(sel);
   render();
 }
 
@@ -682,15 +691,26 @@ $("delete").onclick = () => {
   select(rows[Math.min(i, rows.length - 1)]);
 };
 async function doSave() {
-  if (!dirty.size) return;
+  if (!dirty.size || saving) return;
   // Drafts go to the drafts file, the rest to data.csv (and git).
   const strip = ({_draft, _autoClip, ...r}) => r;
   const body = {rows: rows.filter((r) => !r._draft).map(strip), drafts: rows.filter((r) => r._draft).map(strip)};
-  const res = await fetch("api/save", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
-  const out = await res.json();
-  if (!res.ok) return alert("Pas enregistré : " + out.error);
+  const sent = new Set(dirty);
+  saving = true; editedWhileSaving.clear(); render();
+  let res, out;
+  try {
+    res = await fetch("api/save", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    out = await res.json();
+  } catch (e) {
+    out = {error: "le serveur n'a pas répondu (" + e.message + ")"};
+  }
+  saving = false;
+  if (!res || !res.ok) {
+    render();
+    return alert("Pas enregistré : " + out.error);
+  }
   lastSave = "Enregistré : " + out.status;
-  dirty.clear();
+  for (const r of sent) if (!editedWhileSaving.has(r)) dirty.delete(r);  // keep edits made during the save
   select(sel);
 }
 $("save").onclick = doSave;
