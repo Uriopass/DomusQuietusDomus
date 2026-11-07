@@ -604,8 +604,6 @@ def writePage(path: str, title: str, content: str, description: str):
         content=content,
         footer=open('front/footer.html', 'r', encoding="utf8").read(),
         style="style.css?r=" + str(time.time()),
-        active_stats=' nav-link-active' if path == 'stats' else '',
-        active_personnages=' nav-link-active' if path == 'personnages' else '',
     )
     os.makedirs(f'build/{path}', exist_ok=True)
     with open(f'build/{path}/index.html', 'w', encoding="utf8") as file:

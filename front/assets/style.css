@@ -31,9 +31,6 @@ body {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 1;
     padding: 10px 0;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px 20px;
 }
 
 #search-input {
@@ -321,35 +318,25 @@ a {
 }
 
 
-/* Navigation between the jokes, /stats and /personnages */
+/* Small links to /stats and /personnages in the footer */
 
-.nav-links {
-    display: flex;
-    gap: 4px;
-    font-family: "Fira Sans Extra Condensed", sans-serif;
-    font-size: 1.15em;
+.footer-links {
+    margin-top: 5px;
 }
 
-.nav-link {
-    color: #5c4318;
-    padding: 8px 12px;
-    border-radius: 15px;
-    border: 1px solid transparent;
-}
-
-.nav-link:hover {
-    background-color: rgb(245, 238, 220);
-}
-
-.nav-link-active {
-    background-color: rgb(245, 238, 220);
-    border-color: rgba(0, 0, 0, 0.2);
+#footer .footer-links a {
+    display: inline;
 }
 
 /* /stats and /personnages */
 
 .page {
     align-items: stretch !important;
+}
+
+.page-back {
+    margin: 0 0 10px;
+    text-align: center;
 }
 
 .page-title {
