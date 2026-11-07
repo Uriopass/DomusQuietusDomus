@@ -31,6 +31,9 @@ body {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 1;
     padding: 10px 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 20px;
 }
 
 #search-input {
@@ -314,5 +317,401 @@ a {
         top: 0;
         right: 0;
         margin: 0 auto;
+    }
+}
+
+
+/* Navigation between the jokes, /stats and /personnages */
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 1.15em;
+}
+
+.nav-link {
+    color: #5c4318;
+    padding: 8px 12px;
+    border-radius: 15px;
+    border: 1px solid transparent;
+}
+
+.nav-link:hover {
+    background-color: rgb(245, 238, 220);
+}
+
+.nav-link-active {
+    background-color: rgb(245, 238, 220);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* /stats and /personnages */
+
+.page {
+    align-items: stretch !important;
+}
+
+.page-title {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-weight: normal;
+    font-size: 2.2em;
+    margin: 0 0 10px;
+    text-align: center;
+}
+
+.stats-section {
+    margin-top: 30px;
+}
+
+.stats-title {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-weight: normal;
+    font-size: 1.6em;
+    margin: 0 0 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stats-intro {
+    margin: 5px 0 15px;
+    opacity: 0.7;
+}
+
+.stats-facts {
+    margin: 15px 0 0;
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.tile {
+    background-color: #FFF4C6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 15px 10px;
+    text-align: center;
+    color: inherit;
+}
+
+a.tile:hover {
+    background-color: #ffeda3;
+}
+
+.tile-value {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 2.2em;
+}
+
+.tile-label {
+    opacity: 0.7;
+}
+
+/* Horizontal bars */
+
+.bars {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 30%) 1fr 3em;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.bar-row:hover {
+    background-color: rgba(255, 237, 163, 0.6);
+}
+
+.bar-label {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 1.1em;
+}
+
+.bar-label a {
+    color: inherit;
+}
+
+.bar-label a:hover {
+    text-decoration: underline;
+}
+
+.bar-note {
+    font-family: serif;
+    font-size: 0.8em;
+    opacity: 0.6;
+}
+
+.bar-aside {
+    display: inline-block;
+    font-size: 0.75em;
+    width: 1.3em;
+    height: 1.3em;
+    line-height: 1.3em;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    opacity: 0.6;
+}
+
+.bar-track {
+    height: 14px;
+}
+
+.bar {
+    height: 100%;
+    min-width: 2px;
+    background-color: #c8962e;
+    border-radius: 0 4px 4px 0;
+}
+
+.bar-value {
+    font-family: monospace;
+    text-align: right;
+}
+
+/* Most viewed jokes */
+
+.top-quotes {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-quote {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    margin: 1px 0;
+    color: inherit;
+    background-color: #FFF4C6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+}
+
+.top-quote:hover {
+    background-color: #ffeda3;
+}
+
+.top-rank {
+    width: 1.5em;
+    text-align: right;
+    opacity: 0.5;
+}
+
+.top-title {
+    flex-grow: 1;
+}
+
+.top-shares {
+    font-size: 0.85em;
+    opacity: 0.6;
+    white-space: nowrap;
+}
+
+.top-count {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 90px;
+    flex-shrink: 0;
+    font-family: monospace;
+}
+
+.top-bar {
+    height: 10px;
+    margin-right: 8px;
+    background-color: #c8962e;
+    border-radius: 0 4px 4px 0;
+    max-width: 55px;
+}
+
+/* Jokes along the film */
+
+.timeline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 170px;
+    padding-top: 20px;
+    background-color: black;
+    border-radius: 5px;
+    padding: 20px 8px 0;
+}
+
+.timeline-col {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.timeline-bar {
+    background-color: rgb(255, 204, 0);
+    border-radius: 4px 4px 0 0;
+    min-height: 1px;
+}
+
+.timeline-col:hover .timeline-bar {
+    background-color: #fff3b0;
+}
+
+.timeline-value {
+    color: rgb(255, 204, 0);
+    font-family: monospace;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.timeline-label {
+    position: absolute;
+    bottom: -22px;
+    left: 0;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: monospace;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.timeline + .stats-facts {
+    margin-top: 30px;
+}
+
+/* /personnages */
+
+.persos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.perso {
+    background-color: #FFF4C6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px 15px;
+    scroll-margin-top: 20px;
+}
+
+.perso:target {
+    background-color: #ffeea3;
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.perso-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 10px;
+}
+
+.perso-name {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 1.5em;
+}
+
+.perso-actor {
+    opacity: 0.6;
+    font-size: 0.9em;
+}
+
+.perso-role {
+    opacity: 0.7;
+    font-size: 0.9em;
+}
+
+.perso-pun {
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 1.2em;
+    margin-top: 6px;
+}
+
+.perso-pun::before {
+    content: "= ";
+    opacity: 0.4;
+}
+
+.perso-text {
+    margin-top: 4px;
+}
+
+.perso-links {
+    margin-top: 6px;
+    font-size: 0.9em;
+}
+
+.perso-badge {
+    font-family: sans-serif;
+    font-size: 11px;
+    vertical-align: middle;
+    background-color: #ffe0a8;
+    border-radius: 5px;
+    padding: 2px 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.perso-badge-unsure {
+    background-color: #ffc9b8;
+}
+
+@media (max-width: 700px) {
+    .tiles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .persos {
+        grid-template-columns: 1fr;
+    }
+
+    .bar-row {
+        grid-template-columns: 40% 1fr 2.5em;
+        gap: 6px;
+    }
+
+    .top-quote {
+        flex-wrap: wrap;
+        gap: 2px 8px;
+    }
+
+    .top-title {
+        flex-basis: calc(100% - 3em);
+        order: 1;
+    }
+
+    .top-rank {
+        order: 0;
+    }
+
+    .top-quote .quote-timecode {
+        order: 2;
+        margin-left: 2em;
+    }
+
+    .top-shares {
+        order: 3;
+    }
+
+    .top-count {
+        order: 4;
+        margin-left: auto;
+    }
+
+    .timeline {
+        height: 130px;
+        padding: 20px 4px 0;
+        gap: 1px;
     }
 }

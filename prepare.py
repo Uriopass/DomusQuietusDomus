@@ -1,4 +1,12 @@
+import collections
 import csv
+import glob
+import gzip
+import html
+import json
+import re
+import unicodedata
+import urllib.parse
 from string import Template
 import os
 import shutil
@@ -191,6 +199,389 @@ def compressFront(verbose=True):
         printv(f"compressed {file} to {file}.gz")
 
 
+# ---------------------------------------------------------------------------
+# /stats and /personnages pages
+# ---------------------------------------------------------------------------
+
+FILM_LENGTH_SECONDS = 6480  # same length as the density bar on the index
+
+# Tags that describe the kind of joke. Every other tag is a character.
+CATEGORY_TAGS = {
+    'référence': "Clin d'œil à un film, une chanson, une marque, une expression…",
+    'visuel': "Gag qui se voit plus qu'il ne s'entend",
+    'audio': "Gag sonore : bruitage, musique, doublage",
+    'cliché': "Joue avec un cliché ou un stéréotype",
+    'historique': "Clin d'œil à l'Histoire (ou à ses anachronismes)",
+    'astérixme': "Numérobis écorche un nom gaulois : Astérixme, Panoramixme…",
+    'latin': "Latin, vrai ou de cuisine",
+    'voix-off': "Le narrateur s'en mêle",
+}
+
+LOG_LINE = re.compile(
+    r'^(\S+) \S+ \S+ \[(\d{2})/(\w{3})/(\d{4}):[^\]]*\] "GET /quotes/(\d+)\.html[^"]*" (\d{3}) \S+ "[^"]*" "([^"]*)"')
+# Link previews from chat apps: someone pasted the joke's link in a conversation.
+SHARE_AGENTS = re.compile(r'whatsapp|discord|telegram|slack|twitterbot|facebookexternalhit|skypeuripreview|linkedinbot|signal',
+                          re.IGNORECASE)
+BOT_AGENTS = re.compile(r'bot|crawl|spider|slurp|scrap|curl|wget|python|java|go-http|okhttp|axios|fetch|headless|turnitin|'
+                        r'read-aloud|http', re.IGNORECASE)
+# Someone opening more joke pages than this in one day is a scraper, not a reader.
+MAX_QUOTES_PER_VISITOR_PER_DAY = 15
+MONTHS = {m: i + 1 for i, m in enumerate(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])}
+MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+             'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+
+
+def updateViews(path='views.json') -> dict:
+    """Count joke page views from the nginx access logs into views.json.
+
+    nginx only keeps two weeks of logs, so views.json (not in git) keeps the
+    older days: {"2026-11-07": {"124": [views, shares]}}. A view is one visitor
+    (IP) opening a joke page on a given day; bots and scrapers are skipped.
+    A share is a chat app (WhatsApp, Discord…) fetching the link preview.
+    """
+    try:
+        with open(path, 'r', encoding='utf8') as file:
+            views = json.load(file)
+    except (OSError, ValueError):
+        views = {}
+
+    hits = []
+    for log_file in sorted(glob.glob(os.environ.get('NGINX_LOGS', '/var/log/nginx/access.log*'))):
+        opener = gzip.open if log_file.endswith('.gz') else open
+        try:
+            with opener(log_file, 'rt', encoding='utf8', errors='replace') as file:
+                for line in file:
+                    if '/quotes/' not in line:
+                        continue
+                    match = LOG_LINE.match(line)
+                    if match and match.group(6) in ('200', '304') and match.group(3) in MONTHS:
+                        ip, day, month, year, quote_id, _, agent = match.groups()
+                        date = f'{year}-{MONTHS[month]:02d}-{day}'
+                        hits.append((ip, date, quote_id, agent))
+        except OSError:
+            continue
+
+    pages_per_visitor = collections.defaultdict(set)
+    for ip, date, quote_id, agent in hits:
+        if not SHARE_AGENTS.search(agent) and not BOT_AGENTS.search(agent):
+            pages_per_visitor[(ip, date)].add(quote_id)
+
+    days = {}
+    seen = set()
+    for ip, date, quote_id, agent in hits:
+        if SHARE_AGENTS.search(agent):
+            kind = 1
+        elif BOT_AGENTS.search(agent) or len(pages_per_visitor[(ip, date)]) > MAX_QUOTES_PER_VISITOR_PER_DAY:
+            continue
+        else:
+            kind = 0
+        if (ip, date, quote_id, kind) in seen:
+            continue
+        seen.add((ip, date, quote_id, kind))
+        days.setdefault(date, {}).setdefault(quote_id, [0, 0])[kind] += 1
+
+    def total(day_counts):
+        return sum(v + s for v, s in day_counts.values())
+
+    for date, day_counts in days.items():
+        # The oldest log file can start mid-day: never replace a fuller count.
+        if total(day_counts) >= total(views.get(date, {})):
+            views[date] = day_counts
+
+    if days:
+        with open(path, 'w', encoding='utf8') as file:
+            json.dump(views, file, sort_keys=True)
+    return views
+
+
+def frenchDate(iso_date: str) -> str:
+    year, month, day = map(int, iso_date.split('-'))
+    return f"{'1er' if day == 1 else day} {MONTHS_FR[month - 1]} {year}"
+
+
+def formatDuration(seconds: int) -> str:
+    minutes, seconds = divmod(seconds, 60)
+    if minutes == 0:
+        return f'{seconds} s'
+    return f'{minutes} min {seconds:02d} s' if seconds else f'{minutes} min'
+
+
+def formatTimecode(seconds: int) -> str:
+    return f'{seconds // 3600}:{seconds // 60 % 60:02d}:{seconds % 60:02d}'
+
+
+def quoteTitle(datum: dict) -> str:
+    return html.escape(datum['title'].strip().split('\n')[0])
+
+
+def tagLink(tag: str) -> str:
+    return f'/?tag={urllib.parse.quote(tag)}'
+
+
+def slugify(name: str) -> str:
+    name = unicodedata.normalize('NFD', name.lower())
+    name = ''.join(c for c in name if unicodedata.category(c) != 'Mn')
+    return re.sub(r'[^a-z0-9]+', '-', name).strip('-')
+
+
+def genBars(rows: [tuple], unit: str) -> str:
+    """Horizontal bar chart. rows = [(label_html, value, tooltip_label)]"""
+    if not rows:
+        return ''
+    top = max(value for _, value, _ in rows)
+    html_rows = ''
+    for label, value, tooltip in rows:
+        html_rows += f"""
+    <div class="bar-row" title="{html.escape(tooltip)} : {value} {unit}">
+        <div class="bar-label">{label}</div>
+        <div class="bar-track"><div class="bar" style="width: {100 * value / top:.1f}%"></div></div>
+        <div class="bar-value">{value}</div>
+    </div>"""
+    return f'<div class="bars">{html_rows}\n</div>'
+
+
+def genStatSection(title: str, intro: str, body: str) -> str:
+    intro_html = f'<p class="stats-intro">{intro}</p>' if intro else ''
+    return f"""
+<section class="stats-section">
+    <h2 class="stats-title">{title}</h2>
+    {intro_html}
+    {body}
+</section>"""
+
+
+def genTopViewed(data: [dict], views: dict) -> str:
+    title = 'Les blagues les plus vues'
+    if not views:
+        return genStatSection(title, "Pas encore de données de visite : elles sont calculées sur le serveur à partir de ses "
+                                     "journaux.", '')
+
+    totals = collections.Counter()
+    shares = collections.Counter()
+    for day_counts in views.values():
+        for quote_id, (view_count, share_count) in day_counts.items():
+            totals[quote_id] += view_count
+            shares[quote_id] += share_count
+
+    by_id = {datum['id']: datum for datum in data}
+    ranked = [quote_id for quote_id, _ in totals.most_common() if quote_id in by_id][:15]
+    top = totals[ranked[0]] if ranked else 1
+    rows = ''
+    for rank, quote_id in enumerate(ranked, 1):
+        datum = by_id[quote_id]
+        share_html = ''
+        if shares[quote_id]:
+            share_html = f'<span class="top-shares">{shares[quote_id]} partage{"s" if shares[quote_id] > 1 else ""}</span>'
+        rows += f"""
+    <a class="top-quote" href="/quotes/{quote_id}.html">
+        <span class="top-rank">{rank}</span>
+        <span class="quote-timecode">{datum['timecode']}</span>
+        <span class="top-title">{quoteTitle(datum)}</span>
+        {share_html}
+        <span class="top-count"><span class="top-bar" style="width: {100 * totals[quote_id] / top:.1f}%"></span>{totals[quote_id]}</span>
+    </a>"""
+
+    total_views = sum(totals.values())
+    total_shares = sum(shares.values())
+    intro = (f"{total_views} visites de pages de blagues et {total_shares} partages, sur {len(views)} jours de journaux "
+             f"du serveur (du {frenchDate(min(views))} au {frenchDate(max(views))}). "
+             "Une visite = une personne qui ouvre la page d'une blague dans la journée (robots exclus). "
+             "Un partage = un lien envoyé sur WhatsApp, Discord, Slack…")
+    return genStatSection(title, intro, f'<div class="top-quotes">{rows}\n</div>')
+
+
+def genStatsPage(data: [dict], views: dict, characters: [dict]):
+    count = len(data)
+    tag_count = collections.Counter(tag for datum in data for tag in datum['tags'])
+    character_tags = [(tag, n) for tag, n in tag_count.most_common() if tag not in CATEGORY_TAGS]
+    on_screen = sum(1 for c in characters if c['category'] == 'personnage') or len(character_tags)
+
+    # Headline numbers
+    tiles = [
+        (str(count), 'blagues répertoriées'),
+        (formatDuration(round(FILM_LENGTH_SECONDS / count)), "en moyenne entre deux blagues"),
+        (str(tag_count['référence']), 'références'),
+        (str(on_screen), 'personnages', '/personnages/'),
+    ]
+    tiles_html = ''
+    for tile in tiles:
+        inner = f'<div class="tile-value">{tile[0]}</div><div class="tile-label">{tile[1]}</div>'
+        tiles_html += f'<a class="tile" href="{tile[2]}">{inner}</a>' if len(tile) > 2 else f'<div class="tile">{inner}</div>'
+    content = f'<div class="tiles">{tiles_html}</div>'
+
+    content += genTopViewed(data, views)
+
+    # Characters
+    known = {c['name']: c for c in characters}
+    rows = []
+    for tag, n in character_tags:
+        label = f'<a href="{tagLink(tag)}">{html.escape(tag)}</a>'
+        if tag in known:
+            label += f' <a class="bar-aside" href="/personnages/#{slugify(tag)}" title="Origine du nom">?</a>'
+        rows.append((label, n, tag))
+    content += genStatSection('Personnages les plus cités', "Nombre de blagues où chaque personnage est concerné.",
+                              genBars(rows, 'blagues'))
+
+    # Kinds of jokes
+    rows = []
+    for tag, description in sorted(CATEGORY_TAGS.items(), key=lambda kv: -tag_count[kv[0]]):
+        if tag_count[tag]:
+            rows.append((f'<a href="{tagLink(tag)}">{tag}</a><div class="bar-note">{description}</div>',
+                         tag_count[tag], tag))
+    untagged = sum(1 for datum in data if not any(tag in CATEGORY_TAGS for tag in datum['tags']))
+    content += genStatSection('Types de blagues',
+                              f"Une blague peut avoir plusieurs types. {untagged} blagues n'en ont aucun : "
+                              "des répliques drôles tout simplement.",
+                              genBars(rows, 'blagues'))
+
+    # Jokes along the film, by 5 minutes
+    bucket = 300
+    buckets = [0] * -(-FILM_LENGTH_SECONDS // bucket)
+    for datum in data:
+        if 0 <= datum['timecode_seconds'] < FILM_LENGTH_SECONDS:
+            buckets[datum['timecode_seconds'] // bucket] += 1
+    top = max(buckets)
+    cols = ''
+    for i, n in enumerate(buckets):
+        start, end = i * bucket, min((i + 1) * bucket, FILM_LENGTH_SECONDS)
+        label = f'{i * 5}′' if i % 3 == 0 else ''
+        value = f'<div class="timeline-value">{n}</div>' if n == top else ''
+        cols += f"""
+        <div class="timeline-col" title="{formatTimecode(start)} – {formatTimecode(end)} : {n} blagues">
+            {value}<div class="timeline-bar" style="height: {100 * n / top:.1f}%"></div>
+            <div class="timeline-label">{label}</div>
+        </div>"""
+    busiest = buckets.index(top)
+    calmest = min(range(len(buckets) - 1), key=lambda i: buckets[i])  # the last bucket is shorter
+    times = sorted(datum['timecode_seconds'] for datum in data)
+    gap, gap_start = max((b - a, a) for a, b in zip(times, times[1:]))
+    densest_minute = collections.Counter(t // 60 for t in times).most_common(1)[0]
+    facts = f"""
+    <ul class="stats-facts">
+        <li>Les 5 minutes les plus chargées : de {formatTimecode(busiest * bucket)} à {formatTimecode((busiest + 1) * bucket)}, avec {top} blagues.</li>
+        <li>La minute la plus dense : {formatTimecode(densest_minute[0] * 60)}, avec {densest_minute[1]} blagues en 60 secondes.</li>
+        <li>Les 5 minutes les plus calmes : de {formatTimecode(calmest * bucket)} à {formatTimecode((calmest + 1) * bucket)}, avec {buckets[calmest]} blague{'s' if buckets[calmest] > 1 else ''}.</li>
+        <li>Le plus long moment sans blague : {formatDuration(gap)}, de {formatTimecode(gap_start)} à {formatTimecode(gap_start + gap)}.</li>
+        <li>Première blague à {formatTimecode(times[0])}, dernière à {formatTimecode(times[-1])}.</li>
+    </ul>"""
+    content += genStatSection('Au fil du film', "Nombre de blagues par tranche de 5 minutes.",
+                              f'<div class="timeline">{cols}\n    </div>{facts}')
+
+    # Duos
+    pairs = collections.Counter()
+    for datum in data:
+        names = sorted(tag for tag in datum['tags'] if tag not in CATEGORY_TAGS and tag != 'légionnaire')
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                pairs[(a, b)] += 1
+    rows = [(f'{html.escape(a)} &amp; {html.escape(b)}', n, f'{a} & {b}') for (a, b), n in pairs.most_common(8)]
+    content += genStatSection('Les duos les plus fréquents', "Personnages réunis dans une même blague.",
+                              genBars(rows, 'blagues'))
+
+    writePage('stats', 'Statistiques', content,
+              "Statistiques sur les blagues d'Astérix et Obélix : Mission Cléopâtre : les plus vues, les personnages "
+              "les plus cités, les types de blagues.")
+
+
+def parseCharacters() -> [dict]:
+    if not os.path.exists('personnages.csv'):
+        return []
+    characters = []
+    with open('personnages.csv', 'r', encoding='utf8') as file:
+        for row in csv.DictReader(file):
+            if not row['Nom'].strip():
+                continue
+            characters.append({
+                'name': row['Nom'].strip(),
+                'category': row['Catégorie'].strip(),  # 'personnage' or 'nom cité'
+                'actor': row['Acteur'].strip(),
+                'role': row['Rôle'].strip(),
+                'pun': row['Jeu de mots'].strip(),
+                'explanation': row['Explication'].strip(),
+                'certainty': row['Certitude'].strip(),  # 'sûr', 'probable' or 'incertain'
+                'source': row['Source'].strip(),
+            })
+    return characters
+
+
+def genCharactersPage(data: [dict], characters: [dict]):
+    tag_count = collections.Counter(tag for datum in data for tag in datum['tags'])
+
+    def card(c: dict) -> str:
+        name = c['name']
+        links = []
+        if tag_count[name]:
+            links.append(f'<a href="{tagLink(name)}">{tag_count[name]} blague{"s" if tag_count[name] > 1 else ""}</a>')
+        else:
+            # Names only said in dialogue: link to the jokes that mention them
+            pattern = re.compile(r'\b' + re.escape(name) + r'\b', re.IGNORECASE)
+            for datum in data:
+                if pattern.search(datum['title'] + ' ' + datum['long_text']):
+                    links.append(f'<a href="/quotes/{datum["id"]}.html">{datum["timecode"]}</a>')
+            links = links[:3]
+        if c['source']:
+            links.append(f'<a href="{html.escape(c["source"])}" rel="nofollow">source</a>')
+        badge = ''
+        if c['certainty'] == 'probable':
+            badge = '<span class="perso-badge" title="Explication courante, mais sans source officielle">probable</span>'
+        elif c['certainty'] and c['certainty'] != 'sûr':
+            badge = '<span class="perso-badge perso-badge-unsure" title="Interprétation, non vérifiée">à vérifier</span>'
+        actor = f'<span class="perso-actor">{html.escape(c["actor"])}</span>' if c['actor'] else ''
+        role = f'<div class="perso-role">{html.escape(c["role"])}</div>' if c['role'] else ''
+        pun = f'<div class="perso-pun">{html.escape(c["pun"])} {badge}</div>' if c['pun'] else ''
+        explanation = f'<div class="perso-text">{html.escape(c["explanation"])}</div>' if c['explanation'] else ''
+        return f"""
+    <div class="perso" id="{slugify(name)}">
+        <div class="perso-head"><span class="perso-name">{html.escape(name)}</span>{actor}</div>
+        {role}
+        {pun}
+        {explanation}
+        <div class="perso-links">{' · '.join(links)}</div>
+    </div>"""
+
+    on_screen = [c for c in characters if c['category'] == 'personnage']
+    cited = [c for c in characters if c['category'] != 'personnage']
+    content = """
+<p class="stats-intro">Presque tous les noms du film cachent un jeu de mots. Voici d'où ils viennent.
+Les explications marquées « probable » ou « à vérifier » n'ont pas de source officielle.</p>"""
+    content += genStatSection('Les personnages', '', f'<div class="persos">{"".join(card(c) for c in on_screen)}\n</div>')
+    if cited:
+        content += genStatSection('Les noms cités', "Des noms qu'on ne fait qu'entendre dans les dialogues.",
+                                  f'<div class="persos">{"".join(card(c) for c in cited)}\n</div>')
+
+    writePage('personnages', 'Personnages', content,
+              "Dictionnaire des noms de personnages d'Astérix et Obélix : Mission Cléopâtre et des jeux de mots "
+              "qu'ils cachent : Numérobis, Amonbofis, Otis, Itinéris, Caius Céplus…")
+
+
+def writePage(path: str, title: str, content: str, description: str):
+    page = Template(open('front/page_template.html', 'r', encoding="utf8").read()).substitute(
+        title=title,
+        description=html.escape(description),
+        path=path,
+        content=content,
+        footer=open('front/footer.html', 'r', encoding="utf8").read(),
+        style="style.css?r=" + str(time.time()),
+        active_stats=' nav-link-active' if path == 'stats' else '',
+        active_personnages=' nav-link-active' if path == 'personnages' else '',
+    )
+    os.makedirs(f'build/{path}', exist_ok=True)
+    with open(f'build/{path}/index.html', 'w', encoding="utf8") as file:
+        file.write(page)
+
+
+def genExtraPages(data: [dict], release: bool):
+    # Only read the server logs on a release build, not on every --watch tick
+    views = updateViews() if release else {}
+    if not views and os.path.exists('views.json'):
+        with open('views.json', 'r', encoding='utf8') as file:
+            views = json.load(file)
+    characters = parseCharacters()
+    genStatsPage(data, views, characters)
+    genCharactersPage(data, characters)
+
+
 def doTheProcessing(release=False, verbose=True):
     os.makedirs('build/images', exist_ok=True)
     os.makedirs('build/quotes', exist_ok=True)
@@ -208,6 +599,9 @@ def doTheProcessing(release=False, verbose=True):
 
     genQuotesPages(data)
     printv("build/quotes generated")
+
+    genExtraPages(data, release)
+    printv("build/stats and build/personnages generated")
 
     shutil.copytree('front/assets', 'build/assets', dirs_exist_ok=True)
     printv("build/assets copied from front/assets")
@@ -236,6 +630,10 @@ def startDevServer():
 
 
 if __name__ == '__main__':
+    if any(map(lambda x: x == "--stats", sys.argv)):
+        # Daily cron job on the server: add new nginx logs to views.json, then rebuild /stats and /personnages
+        genExtraPages(parseData(), release=True)
+        sys.exit(0)
     if any(map(lambda x: x == "--serve", sys.argv)):
         startDevServer()
         print("Development server started at http://localhost:8000")

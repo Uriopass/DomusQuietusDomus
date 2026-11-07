@@ -21,6 +21,11 @@
 </head>
 <body>
 <div id="navbar">
+    <nav class="nav-links">
+        <a class="nav-link nav-link-active" href="/">Blagues</a>
+        <a class="nav-link" href="/stats/">Stats</a>
+        <a class="nav-link" href="/personnages/">Personnages</a>
+    </nav>
     <div id="search">
         <img id="search-icon" src="assets/search.svg" alt="Recherche">
         <input id="search-input" type="text" placeholder="Recherche" autocomplete="false">
@@ -368,6 +373,13 @@
     document.getElementById('search-icon').addEventListener('click', () => {
         document.getElementById('search-input').focus();
     });
+
+    // /?tag=Numérobis opens the list filtered on that tag (links from /stats and /personnages)
+    const urlTag = new URLSearchParams(window.location.search).get('tag');
+    if (urlTag && allUniqueTags.includes(urlTag)) {
+        tag_filters.push(urlTag);
+        renderFilters();
+    }
 
     generateDensity(quotesData);
     filterQuotes();
