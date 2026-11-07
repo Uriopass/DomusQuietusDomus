@@ -351,6 +351,14 @@ PAGE = r"""<!doctype html>
   textarea { resize: vertical; }
   #tc { width: 110px; font-variant-numeric: tabular-nums; }
   .clipTc { width: 95px; font-variant-numeric: tabular-nums; }
+  .clipRow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .clipCtl { display: flex; flex-direction: column; gap: 3px; }
+  .clipCtl > div { display: flex; gap: 3px; align-items: center; }
+  #clipBox { flex: 1; min-width: 360px; }
+  .clipCtl button { padding: 3px 6px; }
+  .clipLabel { display: inline-block; width: 48px; }
+  #media img.clipThumb { width: 128px; min-height: 0; height: 54px; object-fit: cover; flex-shrink: 0; transition: opacity .1s; }
+  #media img.clipThumb.loading { opacity: .45; }
   #sharemsg { font-size: 13px; color: #555; }
   .row { display: flex; gap: 6px; align-items: center; }
   #transcript { max-height: 220px; overflow-y: auto; border: 1px solid #ddd; font-size: 13px; }
@@ -358,7 +366,7 @@ PAGE = r"""<!doctype html>
   .seg:hover { background: #f0f6ff; }
   .seg .tc { color: #888; margin-right: 6px; font-variant-numeric: tabular-nums; }
   .seg.at { background: #fff4e0; }
-  #media { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
+  #media { flex-wrap: wrap; display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
   #media img, #media video { width: 420px; background: #000; min-height: 100px; }
   #frame { transition: opacity .1s; }
   #frame.loading { opacity: .45; }
@@ -390,10 +398,20 @@ PAGE = r"""<!doctype html>
     </div>
     <div id="media">
       <img id="frame" alt="">
-      <div>
-        <div class="row">
-          Début <input id="cs" class="clipTc" type="text"><button data-clip="cs" data-step="-24">−1 s</button><button data-clip="cs" data-step="24">+1 s</button>
-          &nbsp;Fin <input id="ce" class="clipTc" type="text"><button data-clip="ce" data-step="-24">−1 s</button><button data-clip="ce" data-step="24">+1 s</button>
+      <div id="clipBox">
+        <div class="clipRow">
+          <div class="clipCtl">
+            <div><span class="clipLabel">Début</span><input id="cs" class="clipTc" type="text"></div>
+            <div><button data-clip="cs" data-step="-24">−1 s</button><button data-clip="cs" data-step="-5">−5 img</button><button data-clip="cs" data-step="5">+5 img</button><button data-clip="cs" data-step="24">+1 s</button></div>
+          </div>
+          <img id="csImg" class="clipThumb" alt="">
+        </div>
+        <div class="clipRow">
+          <div class="clipCtl">
+            <div><span class="clipLabel">Fin</span><input id="ce" class="clipTc" type="text"></div>
+            <div><button data-clip="ce" data-step="-24">−1 s</button><button data-clip="ce" data-step="-5">−5 img</button><button data-clip="ce" data-step="5">+5 img</button><button data-clip="ce" data-step="24">+1 s</button></div>
+          </div>
+          <img id="ceImg" class="clipThumb" alt="">
         </div>
         <div class="row" style="margin:6px 0">
           <button id="play">▶ Extrait</button><button id="share">Partager le clip</button><span id="sharemsg"></span>
@@ -476,6 +494,7 @@ function select(r) {
     defaultClip(r);
   }
   $("cs").value = r[CS]; $("ce").value = r[CE];
+  showClipThumbs();
   $("id").textContent = "#" + r.ID + (r._draft ? " (brouillon)" : "");
   $("draft").checked = !!r._draft;
   $("tc").value = r.Timecode;
@@ -503,8 +522,8 @@ function showTranscript() {
     };
     $("transcript").appendChild(div);
   }
-  const at = $("transcript").querySelector(".at");
-  if (at) at.scrollIntoView({block: "center"});
+  const box = $("transcript"), at = box.querySelector(".at");
+  if (at) box.scrollTop = at.offsetTop - box.offsetTop - box.clientHeight / 2;  // scroll the box, not the page
 }
 
 // Preload the frames the step buttons lead to, so clicking them shows the image almost instantly.
@@ -546,6 +565,7 @@ function showFrame() {
   if (sel && sel._autoClip) {
     defaultClip(sel);
     $("cs").value = sel[CS]; $("ce").value = sel[CE];
+    showClipThumbs();
   }
   prepareClip();
 }
@@ -586,10 +606,29 @@ document.querySelectorAll("[data-step]:not([data-clip])").forEach((b) => b.oncli
   $("tc").value = fmtFrames(Math.max(0, frames($("tc").value) + Number(b.dataset.step)));
   edit("Timecode", $("tc").value); sortRows(); render(); showFrame();
 });
+// Small images of the clip's first and last frames, next to their fields.
+let thumbTimer = null;
+function showClipThumbs() {
+  clearTimeout(thumbTimer);
+  thumbTimer = setTimeout(() => {
+    for (const id of ["cs", "ce"]) {
+      const tc = $(id).value, img = $(id + "Img");
+      if (!validTc(tc)) continue;
+      const url = "frame?t=" + secs(tc), next = new Image();
+      img.classList.add("loading");
+      next.onload = () => { if ($(id).value === tc) { img.src = url; img.classList.remove("loading"); } };
+      next.src = url;
+      const f = frames(tc);  // preload where the buttons lead
+      for (const d of [-24, -5, 5, 24]) if (f + d >= 0) new Image().src = "frame?t=" + (f + d) / FPS;
+    }
+  }, 150);
+}
+
 function editClip(id) {
   if (!validTc($(id).value)) return;
   sel._autoClip = false;
   edit(id === "cs" ? CS : CE, $(id).value);
+  showClipThumbs();
   prepareClip();
 }
 for (const id of ["cs", "ce"]) $(id).oninput = () => editClip(id);
