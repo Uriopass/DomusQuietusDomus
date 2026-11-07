@@ -384,32 +384,9 @@ a {
     line-height: 1.6;
 }
 
-.tiles {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.tile {
-    background-color: #FFF4C6;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 15px 10px;
+.stats-summary {
+    margin: 0;
     text-align: center;
-    color: inherit;
-}
-
-a.tile:hover {
-    background-color: #ffeda3;
-}
-
-.tile-value {
-    font-family: "Fira Sans Extra Condensed", sans-serif;
-    font-size: 2.2em;
-}
-
-.tile-label {
-    opacity: 0.7;
 }
 
 /* Horizontal bars */
@@ -697,10 +674,6 @@ a.tile:hover {
 }
 
 @media (max-width: 700px) {
-    .tiles {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .persos {
         grid-template-columns: 1fr;
     }

@@ -392,18 +392,10 @@ def genStatsPage(data: [dict], views: dict, characters: [dict]):
     character_tags = [(tag, n) for tag, n in tag_count.most_common() if tag not in CATEGORY_TAGS]
     on_screen = sum(1 for c in characters if c['category'] == 'personnage') or len(character_tags)
 
-    # Headline numbers
-    tiles = [
-        (str(count), 'blagues répertoriées'),
-        (formatDuration(round(FILM_LENGTH_SECONDS / count)), "en moyenne entre deux blagues"),
-        (str(tag_count['référence']), 'références'),
-        (str(on_screen), 'personnages', '/personnages/'),
-    ]
-    tiles_html = ''
-    for tile in tiles:
-        inner = f'<div class="tile-value">{tile[0]}</div><div class="tile-label">{tile[1]}</div>'
-        tiles_html += f'<a class="tile" href="{tile[2]}">{inner}</a>' if len(tile) > 2 else f'<div class="tile">{inner}</div>'
-    content = f'<div class="tiles">{tiles_html}</div>'
+    hours, minutes = divmod(FILM_LENGTH_SECONDS // 60, 60)
+    content = (f'<p class="stats-summary">{count} blagues en {hours} h {minutes:02d} de film, soit une toutes les '
+               f'{round(FILM_LENGTH_SECONDS / count)} secondes. On y croise {tag_count["référence"]} références et '
+               f'<a href="/personnages/">{on_screen} personnages</a>.</p>')
 
     content += genTopViewed(data, views)
 
