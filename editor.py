@@ -11,6 +11,8 @@ Needs ffmpeg where the movie is. Nothing is written until you click "Enregistrer
 With --git, each save is committed and pushed, and --rebuild runs a command afterwards
 (on the server: --rebuild "venv/bin/python prepare.py movie.mkv" to update the site).
 All URLs are relative, so it also works behind a reverse proxy under a sub-path like /editeur/.
+Jokes ticked "Brouillon" are kept in the --drafts JSON file instead of data.csv: they stay off the
+site and out of git until unticked and saved.
 """
 import argparse
 import csv
@@ -87,6 +89,20 @@ def save(fields, rows):
     os.replace(DATA + ".tmp", DATA)
 
 
+def read_drafts(path):
+    if not path or not os.path.exists(path):
+        return []
+    with open(path, encoding="utf8") as f:
+        return json.load(f)
+
+
+def write_drafts(path, fields, drafts):
+    with open(path + ".tmp", "w", encoding="utf8") as f:
+        json.dump([{k: d.get(k, "") for k in fields} for d in drafts], f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    os.replace(path + ".tmp", path)
+
+
 def describe_changes(old, new):
     """Commit message listing added, edited and deleted jokes, e.g. "ajout #355, modif #12"."""
     old_by_id = {r["ID"]: r for r in old}
@@ -127,7 +143,7 @@ def commit_and_push(message):
 
 class Handler(http.server.BaseHTTPRequestHandler):
     movie = None
-    drafts = []
+    drafts_path = None
     transcript = []
     use_git = False
     rebuild = None
@@ -170,7 +186,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             elif url.path == "/api/jokes":
                 fields, rows = load()
                 ids = {r["ID"] for r in rows}
-                drafts = [d for d in self.drafts if d.get("ID") not in ids]  # already saved ones are in data.csv
+                drafts = [d for d in read_drafts(self.drafts_path) if d.get("ID") not in ids]
                 self.send(json.dumps({"fields": fields, "rows": rows, "drafts": drafts,
                                       "transcript": self.transcript}), "application/json")
             elif url.path == "/frame":
@@ -188,14 +204,30 @@ class Handler(http.server.BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         with self.lock:
             fields, old = load()
+            if "drafts" in body:
+                published, drafts = body["rows"], body["drafts"]
+            else:
+                # Page opened before drafts could be saved: it sends drafts mixed with the other jokes.
+                # Keep the ones from the drafts file as drafts rather than publishing them.
+                old_ids = {r["ID"] for r in old}
+                draft_ids = {d["ID"] for d in read_drafts(self.drafts_path)} - old_ids
+                published = [r for r in body["rows"] if r["ID"] not in draft_ids]
+                drafts = [r for r in body["rows"] if r["ID"] in draft_ids]
+            if drafts and not self.drafts_path:
+                return self.send(json.dumps({"error": "brouillons impossibles sans --drafts"}), "application/json", 400)
+            if {r["ID"] for r in published} & {d["ID"] for d in drafts}:
+                return self.send(json.dumps({"error": "un ID est à la fois publié et brouillon"}), "application/json", 400)
             try:
-                save(fields, body["rows"])
+                save(fields, published)
             except ValueError as e:
                 return self.send(json.dumps({"error": str(e)}), "application/json", 400)
+            if self.drafts_path:
+                write_drafts(self.drafts_path, fields, drafts)
             status = "data.csv enregistré"
             if self.use_git:
-                status = commit_and_push(describe_changes(old, body["rows"]))
-            if self.rebuild and status != "rien à commiter":
+                status = commit_and_push(describe_changes(old, published))
+            status += " (%d brouillon%s)" % (len(drafts), "s" if len(drafts) > 1 else "")
+            if self.rebuild and not status.startswith("rien à commiter"):
                 subprocess.Popen(self.rebuild, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 status += ", site en reconstruction"
         self.send(json.dumps({"ok": True, "status": status}), "application/json")
@@ -262,6 +294,7 @@ PAGE = r"""<!doctype html>
       <button data-step="-120">−5 s</button><button data-step="-24">−1 s</button><button data-step="-1" title="Image précédente">−1 img</button>
       <input id="tc" type="text" title="H:MM:SS ou H:MM:SS:II (II = image de 0 à 23)">
       <button data-step="1" title="Image suivante">+1 img</button><button data-step="24">+1 s</button><button data-step="120">+5 s</button>
+      <label style="margin:0 0 0 12px"><input id="draft" type="checkbox"> Brouillon</label>
       <label style="margin:0 0 0 12px"><input id="interesting" type="checkbox"> Intéressant</label>
     </div>
     <div id="media">
@@ -302,7 +335,6 @@ async function load() {
     }
     row._draft = true;
     rows.push(row);
-    dirty.add(row);
   }
   sortRows();
   render();
@@ -331,7 +363,8 @@ function select(r) {
   sel = r;
   $("form").hidden = !r; $("empty").hidden = !!r;
   if (!r) return render();
-  $("id").textContent = "#" + r.ID + (r._draft ? " (nouvelle)" : "");
+  $("id").textContent = "#" + r.ID + (r._draft ? " (brouillon)" : "");
+  $("draft").checked = !!r._draft;
   $("tc").value = r.Timecode;
   $("interesting").checked = r["Intéressant"] === "TRUE";
   for (const [k, f] of Object.entries(F)) $(k).value = r[f];
@@ -382,6 +415,13 @@ function edit(field, value) {
 
 for (const [k, f] of Object.entries(F)) $(k).oninput = () => edit(f, $(k).value);
 $("interesting").onchange = () => edit("Intéressant", $("interesting").checked ? "TRUE" : "FALSE");
+$("draft").onchange = () => {
+  if (!sel) return;
+  sel._draft = $("draft").checked;
+  $("id").textContent = "#" + sel.ID + (sel._draft ? " (brouillon)" : "");
+  dirty.add(sel);
+  render();
+};
 $("tc").oninput = () => { if (validTc($("tc").value)) { edit("Timecode", $("tc").value); showFrame(); } };
 $("tc").onchange = () => { sortRows(); render(); };
 document.querySelectorAll("[data-step]").forEach((b) => b.onclick = () => {
@@ -408,12 +448,13 @@ $("delete").onclick = () => {
 };
 async function doSave() {
   if (!dirty.size) return;
-  const clean = rows.map(({_draft, ...r}) => r);
-  const res = await fetch("api/save", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({rows: clean})});
+  // Drafts go to the drafts file, the rest to data.csv (and git).
+  const strip = ({_draft, ...r}) => r;
+  const body = {rows: rows.filter((r) => !r._draft).map(strip), drafts: rows.filter((r) => r._draft).map(strip)};
+  const res = await fetch("api/save", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
   const out = await res.json();
   if (!res.ok) return alert("Pas enregistré : " + out.error);
   lastSave = "Enregistré : " + out.status;
-  rows.forEach((r) => delete r._draft);
   dirty.clear();
   select(sel);
 }
@@ -432,7 +473,7 @@ def main():
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--movie", help="path to the movie file")
     source.add_argument("--ssh", help="host:path of the movie on a server with ffmpeg")
-    parser.add_argument("--drafts", help="JSON list of new jokes to review, loaded as unsaved rows")
+    parser.add_argument("--drafts", help="JSON file holding the draft jokes (created on first draft save)")
     parser.add_argument("--transcript", help="Whisper segments JSON ([{start, end, text}]); default: transcript.json if present")
     parser.add_argument("--git", action="store_true", help="commit and push data.csv after each save")
     parser.add_argument("--rebuild", help="shell command run in the background after each save")
@@ -441,9 +482,7 @@ def main():
 
     Handler.use_git, Handler.rebuild = args.git, args.rebuild
     Handler.movie = Movie(local=args.movie and os.path.abspath(args.movie), ssh=args.ssh)
-    if args.drafts:
-        with open(args.drafts, encoding="utf8") as f:
-            Handler.drafts = json.load(f)
+    Handler.drafts_path = args.drafts and os.path.abspath(args.drafts)
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # data.csv sits next to this script
     transcript = args.transcript or ("transcript.json" if os.path.exists("transcript.json") else None)
     if transcript:
