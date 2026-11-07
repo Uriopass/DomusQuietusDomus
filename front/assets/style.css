@@ -599,11 +599,40 @@ a.tile:hover {
 }
 
 .perso {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
     background-color: #FFF4C6;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 10px 15px 10px 10px;
     scroll-margin-top: 20px;
+}
+
+.perso-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.perso-photo {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+    background-color: #f0e2b8;
+}
+
+.perso-photo-empty {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Fira Sans Extra Condensed", sans-serif;
+    font-size: 2.2em;
+    color: rgba(0, 0, 0, 0.25);
 }
 
 .perso:target {
@@ -674,6 +703,11 @@ a.tile:hover {
 
     .persos {
         grid-template-columns: 1fr;
+    }
+
+    .perso-photo {
+        width: 64px;
+        height: 64px;
     }
 
     .bar-row {

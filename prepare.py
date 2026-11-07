@@ -1,5 +1,6 @@
 import collections
 import csv
+import hashlib
 import glob
 import gzip
 import html
@@ -382,13 +383,7 @@ def genTopViewed(data: [dict], views: dict) -> str:
         <span class="top-count"><span class="top-bar" style="width: {100 * totals[quote_id] / top:.1f}%"></span>{totals[quote_id]}</span>
     </a>"""
 
-    total_views = sum(totals.values())
-    total_shares = sum(shares.values())
-    intro = (f"{total_views} visites de pages de blagues et {total_shares} partages, sur {len(views)} jours de journaux "
-             f"du serveur (du {frenchDate(min(views))} au {frenchDate(max(views))}). "
-             "Une visite = une personne qui ouvre la page d'une blague dans la journée (robots exclus). "
-             "Un partage = un lien envoyé sur WhatsApp, Discord, Slack…")
-    return genStatSection(title, intro, f'<div class="top-quotes">{rows}\n</div>')
+    return genStatSection(title, '', f'<div class="top-quotes">{rows}\n</div>')
 
 
 def genStatsPage(data: [dict], views: dict, characters: [dict]):
@@ -484,6 +479,16 @@ def genStatsPage(data: [dict], views: dict, characters: [dict]):
               "les plus cités, les types de blagues.")
 
 
+def parseTimecodeMsec(timecode: str) -> float:
+    """'hh:mm:ss', or 'hh:mm:ss:ff' to pick a precise frame like in data.csv, to milliseconds"""
+    parts = [int(part) for part in timecode.split(':')]
+    if len(parts) not in (3, 4) or (len(parts) == 4 and parts[3] >= FPS):
+        raise ValueError(f"Invalid timecode: {timecode} (expected hh:mm:ss or hh:mm:ss:ff, frames from 0 to {FPS - 1})")
+    hour, minute, second = parts[:3]
+    frame = parts[3] if len(parts) == 4 else 0
+    return (hour * 3600 + minute * 60 + second + frame / FPS) * 1000
+
+
 def parseCharacters() -> [dict]:
     if not os.path.exists('personnages.csv'):
         return []
@@ -503,7 +508,43 @@ def parseCharacters() -> [dict]:
                 'certainty': row['Certitude'].strip(),  # 'sûr', 'probable' or 'incertain'
                 'source': row['Source'].strip(),
             })
+            # Photo: a frame of the film ('Image', a timecode) cropped to a square ('Cadrage': x,y,size in
+            # pixels of the 1280x544 frame). The file name changes with them, so a new choice is regenerated.
+            image = (row.get('Image') or '').strip()
+            crop = (row.get('Cadrage') or '').strip()
+            characters[-1]['photo'] = ''
+            if image:
+                key = hashlib.md5(f'{image}|{crop}'.encode()).hexdigest()[:6]
+                characters[-1].update({
+                    'photo': f'perso_{slugify(characters[-1]["name"])}_{key}',
+                    'photo_msec': parseTimecodeMsec(image),
+                    'photo_crop': [int(v) for v in crop.split(',')] if crop else None,
+                })
     return characters
+
+
+def genCharacterImages(characters: [dict], videoFilePath: str):
+    import cv2
+    video_file = cv2.VideoCapture(videoFilePath)
+
+    for c in characters:
+        name = c['photo']
+        if not name or os.path.exists(f'build/images/{name}.jpg'):
+            continue
+        video_file.set(cv2.CAP_PROP_POS_MSEC, c['photo_msec'])
+        success, image = video_file.read()
+        if not success:
+            print(f"Error while generating the photo of {c['name']}")
+            continue
+        height, width = image.shape[:2]
+        if c['photo_crop']:
+            x, y, size = c['photo_crop']
+        else:
+            size = height
+            x, y = (width - size) // 2, 0
+        square = image[max(y, 0):y + size, max(x, 0):x + size]
+        cv2.imwrite(f'build/images/{name}.jpg', cv2.resize(square, (160, 160), interpolation=cv2.INTER_AREA))
+        print(f"build/images/{name}.jpg generated")
 
 
 def genCharactersPage(data: [dict], characters: [dict]):
@@ -532,13 +573,20 @@ def genCharactersPage(data: [dict], characters: [dict]):
         role = f'<div class="perso-role">{html.escape(c["role"])}</div>' if c['role'] else ''
         pun = f'<div class="perso-pun">{html.escape(c["pun"])} {badge}</div>' if c['pun'] else ''
         explanation = f'<div class="perso-text">{html.escape(c["explanation"])}</div>' if c['explanation'] else ''
+        if c['photo']:
+            photo = f'<img class="perso-photo" src="/images/{c["photo"]}.jpg" alt="{html.escape(name)}" loading="lazy">'
+        else:
+            photo = f'<div class="perso-photo perso-photo-empty" aria-hidden="true">{html.escape(name[0])}</div>'
         return f"""
     <div class="perso" id="{slugify(name)}">
-        <div class="perso-head"><span class="perso-name">{html.escape(name)}</span>{actor}</div>
-        {role}
-        {pun}
-        {explanation}
-        <div class="perso-links">{' · '.join(links)}</div>
+        {photo}
+        <div class="perso-body">
+            <div class="perso-head"><span class="perso-name">{html.escape(name)}</span>{actor}</div>
+            {role}
+            {pun}
+            {explanation}
+            <div class="perso-links">{' · '.join(links)}</div>
+        </div>
     </div>"""
 
     on_screen = [c for c in characters if c['category'] == 'personnage']
@@ -613,6 +661,8 @@ def doTheProcessing(release=False, verbose=True):
     if len(sys.argv) > 1:
         genImages(data, sys.argv[1])
         printv("images generated")
+        genCharacterImages(parseCharacters(), sys.argv[1])
+        printv("character photos generated")
     else:
         printv("No video file provided, skipping image generation")
 
