@@ -351,14 +351,38 @@
         });
     }
 
+    // Plays the joke's clip over its screenshot (the play button only shows on an open joke).
+    function playClip(button, event) {
+        event.stopPropagation();
+        const media = button.parentElement;
+        const video = document.createElement('video');
+        video.className = 'quote-clip';
+        video.src = button.dataset.clip;
+        video.controls = true;
+        video.playsInline = true;
+        video.addEventListener('click', (e) => e.stopPropagation());
+        media.appendChild(video);
+        media.classList.add('playing');
+        video.play();
+    }
+    
+    function stopClips(container) {
+        for (const media of container.querySelectorAll('.quote-media.playing')) {
+            media.querySelector('.quote-clip').remove();
+            media.classList.remove('playing');
+        }
+    }
+
     for (let quote of document.querySelectorAll('.quote')) {
         quote.addEventListener('click', (event) => {
             const isImageClick = event.target.classList.contains('quote-image-preview') || event.target.classList.contains('quote-image-full');
             if (quote.classList.contains('quote-selected') && isImageClick) {
+                stopClips(quote);
                 quote.classList.remove('quote-selected');
                 return;
             }
             for (let open of document.getElementsByClassName('quote-selected')) {
+                if (open !== quote) stopClips(open);
                 open.classList.remove('quote-selected');
             }
             quote.classList.add('quote-selected');

@@ -12,6 +12,7 @@ from string import Template
 import os
 import shutil
 import sys
+import subprocess
 import time
 
 
@@ -54,6 +55,12 @@ def genTags(tags: [str]):
 FPS = 24  # frame rate of movie.mkv, for hh:mm:ss:ff timecodes
 
 
+def parseTimecode(timecode: str) -> float:
+    """'hh:mm:ss' or 'hh:mm:ss:ff' to seconds."""
+    parts = [int(x) for x in timecode.split(':')]
+    return parts[0] * 3600 + parts[1] * 60 + parts[2] + (parts[3] / FPS if len(parts) == 4 else 0)
+
+
 def parseData() -> [dict]:
     data = []
     with open('data.csv', 'r', encoding="utf8") as file:
@@ -77,6 +84,10 @@ def parseData() -> [dict]:
 
             tags = [tag.strip() for tag in row[4].split(',') if tag.strip() != '']
 
+            # Optional "Début extrait" / "Fin extrait" columns: the joke's video clip
+            clip_start = parseTimecode(row[7]) if len(row) > 8 and row[7] and row[8] else None
+            clip_end = parseTimecode(row[8]) if clip_start is not None else None
+
             data.append({
                 'id': row[0],  # ''
                 'timecode': ':'.join(timecode_parsed[:3]),  # 'hh:mm:ss', the frame is not displayed
@@ -87,10 +98,30 @@ def parseData() -> [dict]:
                 'long_text': row[3],  # 'long text'
                 'tags': tags,  # ['tag1', 'tag2']
                 'explanation': row[5],  # 'explanation',
-                'interesting': row[6]  # 'TRUE/FALSE'
+                'interesting': row[6],  # 'TRUE/FALSE'
+                'clip_start': clip_start,  # seconds, or None when the joke has no clip
+                'clip_end': clip_end,
+                # The name changes with the bounds, so an edited clip is encoded again
+                'clip_name': f'{row[0]}_{round(clip_start * FPS)}-{round(clip_end * FPS)}' if clip_start is not None else None,
             })
 
     return data
+
+
+PLAY_ICON = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">'
+             '<path d="M8 5v14l11-7z" fill="#fff"/></svg>')
+
+
+def genClipHtml(datum: dict, prefix: str):
+    """The clap icon next to the share buttons, and the play button over the screenshot."""
+    if not datum['clip_name']:
+        return '', ''
+    url = f"{prefix}extraits/{datum['clip_name']}.mp4"
+    link = (f'<a href="{url}" target="_blank"><img src="{prefix}assets/clip.svg" height="16" width="16" '
+            f'alt="Extrait vidéo" title="Extrait vidéo"/></a>')
+    play = (f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
+            f'title="Lancer l\'extrait" aria-label="Lancer l\'extrait">{PLAY_ICON}</button>')
+    return link, play
 
 
 def genQuotes(data: [dict]):
@@ -115,6 +146,8 @@ def genQuotes(data: [dict]):
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
             interesting=datum['interesting'],
+            cliplink=genClipHtml(datum, '')[0],
+            clipplay=genClipHtml(datum, '')[1],
         )
 
         quotes += quote
@@ -142,12 +175,42 @@ def genQuotesPages(data: [dict]):
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
+            cliplink=genClipHtml(datum, '../')[0],
+            clipplay=genClipHtml(datum, '../')[1],
             footer=footer,
             style="style.css?r=" + str(time.time())
         )
 
         with open(f'build/quotes/{id}.html', 'w', encoding="utf8") as quote_file:
             quote_file.write(quote)
+
+
+def genClips(data: [dict], videoFilePath: str):
+    """Encodes each joke's clip into build/extraits (once), and removes clips whose bounds changed."""
+    os.makedirs('build/extraits', exist_ok=True)
+    wanted = {f"{datum['clip_name']}.mp4" for datum in data if datum['clip_name']}
+    for name in os.listdir('build/extraits'):
+        if name.endswith('.mp4') and name not in wanted:
+            os.remove(f'build/extraits/{name}')
+    for datum in data:
+        if not datum['clip_name']:
+            continue
+        path = f"build/extraits/{datum['clip_name']}.mp4"
+        if os.path.exists(path):
+            continue
+        part = f'{path}.{os.getpid()}.part'  # another build may run at the same time (editor saves)
+        result = subprocess.run(
+            ['ffmpeg', '-v', 'error', '-y', '-ss', '%.3f' % datum['clip_start'],
+             '-t', '%.3f' % (datum['clip_end'] - datum['clip_start']), '-i', videoFilePath,
+             '-vf', 'scale=640:-2', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '28',
+             '-c:a', 'aac', '-ac', '2', '-movflags', '+faststart', '-f', 'mp4', part])
+        if result.returncode == 0:
+            os.replace(part, path)
+            print(f"{path} generated")
+        else:
+            print(f"Error while generating clip {path}")
+            if os.path.exists(part):
+                os.remove(part)
 
 
 def genImages(data: [dict], videoFilePath: str):
@@ -653,6 +716,8 @@ def doTheProcessing(release=False, verbose=True):
         printv("images generated")
         genCharacterImages(parseCharacters(), sys.argv[1])
         printv("character photos generated")
+        genClips(data, sys.argv[1])
+        printv("clips generated")
     else:
         printv("No video file provided, skipping image generation")
 

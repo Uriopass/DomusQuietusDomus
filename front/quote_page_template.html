@@ -30,8 +30,11 @@
 <div id="content">
     <p><a href="/">Revenir à la liste</a></p>
     <div class="quote quote-selected">
-        <img class="quote-image-preview" src="../$imagepreview" alt="Screenshot preview" loading="lazy">
-        <img class="quote-image-full" src="../$imagefull" alt="Screenshot" loading="lazy">
+        <div class="quote-media">
+            <img class="quote-image-preview" src="../$imagepreview" alt="Screenshot preview" loading="lazy">
+            <img class="quote-image-full" src="../$imagefull" alt="Screenshot" loading="lazy">
+            $clipplay
+        </div>
         <div class="quote-content">
             <div class="quote-base">
                 <div class="quote-title">
@@ -41,6 +44,7 @@
                 <div class="quote-share">
                     <img src="../assets/share.svg" height="16" width="16" onclick="sh('$id')" alt="Partager la citation" title="Partager la citation"/>
                     <img src="../assets/copy.svg" height="16" width="16" onclick="copyLink('$id', event)" alt="Copier le lien" title="Copier le lien" style="cursor:pointer"/>
+                    $cliplink
                 </div>
             </div>
             <div class="quote-expanded">
@@ -56,6 +60,28 @@
 <script>
 function sh(id) {
     navigator.share({url: 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html'});
+}
+
+// Plays the joke's clip over its screenshot (the play button only shows on an open joke).
+function playClip(button, event) {
+    event.stopPropagation();
+    const media = button.parentElement;
+    const video = document.createElement('video');
+    video.className = 'quote-clip';
+    video.src = button.dataset.clip;
+    video.controls = true;
+    video.playsInline = true;
+    video.addEventListener('click', (e) => e.stopPropagation());
+    media.appendChild(video);
+    media.classList.add('playing');
+    video.play();
+}
+
+function stopClips(container) {
+    for (const media of container.querySelectorAll('.quote-media.playing')) {
+        media.querySelector('.quote-clip').remove();
+        media.classList.remove('playing');
+    }
 }
 
 function copyLink(id, event) {
