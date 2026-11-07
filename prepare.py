@@ -413,12 +413,12 @@ def genStatsPage(data: [dict], views: dict, characters: [dict]):
     content += genTopViewed(data, views)
 
     # Characters
-    known = {c['name']: c for c in characters}
+    known = {c['tag']: c for c in characters}
     rows = []
     for tag, n in character_tags:
         label = f'<a href="{tagLink(tag)}">{html.escape(tag)}</a>'
         if tag in known:
-            label += f' <a class="bar-aside" href="/personnages/#{slugify(tag)}" title="Origine du nom">?</a>'
+            label += f' <a class="bar-aside" href="/personnages/#{slugify(known[tag]["name"])}" title="Origine du nom">?</a>'
         rows.append((label, n, tag))
     content += genStatSection('Personnages les plus cités', "Nombre de blagues où chaque personnage est concerné.",
                               genBars(rows, 'blagues'))
@@ -494,6 +494,7 @@ def parseCharacters() -> [dict]:
                 continue
             characters.append({
                 'name': row['Nom'].strip(),
+                'tag': (row.get('Tag') or row['Nom']).strip(),  # its tag in data.csv, when it differs from the name
                 'category': row['Catégorie'].strip(),  # 'personnage' or 'nom cité'
                 'actor': row['Acteur'].strip(),
                 'role': row['Rôle'].strip(),
@@ -509,10 +510,10 @@ def genCharactersPage(data: [dict], characters: [dict]):
     tag_count = collections.Counter(tag for datum in data for tag in datum['tags'])
 
     def card(c: dict) -> str:
-        name = c['name']
+        name, tag = c['name'], c['tag']
         links = []
-        if tag_count[name]:
-            links.append(f'<a href="{tagLink(name)}">{tag_count[name]} blague{"s" if tag_count[name] > 1 else ""}</a>')
+        if tag_count[tag]:
+            links.append(f'<a href="{tagLink(tag)}">{tag_count[tag]} blague{"s" if tag_count[tag] > 1 else ""}</a>')
         else:
             # Names only said in dialogue: link to the jokes that mention them
             pattern = re.compile(r'\b' + re.escape(name) + r'\b', re.IGNORECASE)
