@@ -40,12 +40,13 @@ class Movie:
         self.host, self.path = ssh.split(":", 1) if ssh else (None, None)
         self.frames = {}
 
-    def ffmpeg(self, args):
+    def command(self, args):
         path = self.local or self.path
         cmd = ["ffmpeg", "-v", "error"] + [path if a == "{movie}" else a for a in args]
-        if self.host:
-            cmd = ["ssh", self.host, shlex.join(cmd)]
-        return subprocess.run(cmd, capture_output=True, check=True).stdout
+        return ["ssh", self.host, shlex.join(cmd)] if self.host else cmd
+
+    def ffmpeg(self, args):
+        return subprocess.run(self.command(args), capture_output=True, check=True).stdout
 
     def frame(self, t):
         # Same frame the site shows: the image at the joke's timecode.
@@ -55,10 +56,14 @@ class Movie:
         return self.frames[t]
 
     def clip(self, t):
+        """Starts encoding 4 s before to 15 s after t. Read stdout as it comes: fragmented mp4 with a
+        keyframe every half second, so the browser can start playing after the first fragment."""
         start = max(0, t - 4)
-        return self.ffmpeg(["-ss", "%.3f" % start, "-t", "12", "-i", "{movie}", "-vf", "scale=640:-2",
-                            "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2",
-                            "-movflags", "frag_keyframe+empty_moov", "-f", "mp4", "pipe:1"])
+        return subprocess.Popen(self.command(
+            ["-ss", "%.3f" % start, "-t", "19", "-i", "{movie}", "-vf", "scale=640:-2",
+             "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-g", "12", "-c:a", "aac", "-ac", "2",
+             "-movflags", "frag_keyframe+empty_moov+default_base_moof", "-f", "mp4", "pipe:1"]),
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
 
 def load():
@@ -139,6 +144,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def stream(self, process):
+        # No Content-Length: the HTTP/1.0 response ends when ffmpeg is done and the connection closes.
+        self.send_response(200)
+        self.send_header("Content-Type", "video/mp4")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Accel-Buffering", "no")  # tells nginx to pass chunks through right away
+        self.end_headers()
+        try:
+            while chunk := process.stdout.read1(65536):
+                self.wfile.write(chunk)
+                self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # the user started another clip or closed the page
+        finally:
+            process.kill()
+            process.wait()
+
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
         query = urllib.parse.parse_qs(url.query)
@@ -154,7 +176,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             elif url.path == "/frame":
                 self.send(self.movie.frame(float(query["t"][0])), "image/jpeg", cache=True)
             elif url.path == "/clip":
-                self.send(self.movie.clip(float(query["t"][0])), "video/mp4")
+                self.stream(self.movie.clip(float(query["t"][0])))
             else:
                 self.send("not found", "text/plain", 404)
         except subprocess.CalledProcessError as e:
@@ -244,7 +266,7 @@ PAGE = r"""<!doctype html>
     </div>
     <div id="media">
       <img id="frame" alt="">
-      <div><button id="play">▶ Extrait (−4 s / +8 s)</button><br><video id="clip" controls hidden></video></div>
+      <div><button id="play">▶ Extrait (−4 s / +15 s)</button><br><video id="clip" controls hidden></video></div>
     </div>
     <label>Titre/Citation</label><textarea id="title" rows="3"></textarea>
     <label>Citation étendue (optionnel)</label><textarea id="extended" rows="4"></textarea>
