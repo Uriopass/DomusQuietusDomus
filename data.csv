@@ -1,294 +1,294 @@
-ID,Timecode,Titre/Citation,Citation étendue (optionnel),Tags,Explication,Intéressant
+ID,Timecode,Titre/Citation,Citation étendue (optionnel),Tags,Explication,Intéressant,Début extrait,Fin extrait
 1,0:00:55,"Un ancien poème Égyptien dit ""Nil, Nil, Nil, fleuve impétueux et tumultueux, tu es comme notre reine la source de la vie ! """,,voix-off,"Prononcé en voix-off par Pierre Tchernia, co-scénariste du dessin animé ""Astérix et Cléopâtre"" sorti en 1968.
-Ça n'a pas l'air d'être une référence à quoi que ce soit, si ce n'est au Nil évidemment, l'immense fleuve d'Égypte qui alimente le pays.",TRUE
-2,0:02:05,"Notre histoire commence [...] à Alexandrie. Ou en Alexandrie, on peut dire les deux.","Notre histoire commence il y a bien longtemps à Alexandrie. Ou en Alexandrie, on peut dire les deux.","voix-off, référence","Référence au débat commun sur ""à Avignon ou en Avignon"".",FALSE
+Ça n'a pas l'air d'être une référence à quoi que ce soit, si ce n'est au Nil évidemment, l'immense fleuve d'Égypte qui alimente le pays.",TRUE,0:00:54:14,0:01:02:05
+2,0:02:05,"Notre histoire commence [...] à Alexandrie. Ou en Alexandrie, on peut dire les deux.","Notre histoire commence il y a bien longtemps à Alexandrie. Ou en Alexandrie, on peut dire les deux.","voix-off, référence","Référence au débat commun sur ""à Avignon ou en Avignon"".",FALSE,0:02:03,0:02:12
 3,0:02:16,"- La légendaire et délicate... Cléopâtre.
-- Assez !",,Cléopâtre,,FALSE
-4,0:02:39,Lancer de raisin raté,,"César, visuel",,FALSE
+- Assez !",,Cléopâtre,,FALSE,0:02:14,0:02:23
+4,0:02:39,Lancer de raisin raté,,"César, visuel",,FALSE,0:02:36:21,0:02:44:08
 5,0:02:46,Les trucs pointus là ?,"Cléopâtre : Ô césar, ce ne sont pas les romains qui ont construit les pyramides.
 César : Les trucs pointus là ?","César, Cléopâtre, référence","Référence à Pulp Fiction de Quentin Tarantino sorti 8 ans auparavant.
-Uma Thurman traçait elle aussi un carré fictif dans le vide en arrivant au Jack Rabbit Slim's avec John Travolta.",FALSE
-6,0:02:49,Lancer de raisin raté (2),,"César, visuel",,FALSE
-7,0:02:50,"Et le Sphinx, et la Tour de Pharos, c'est quoi ? De la gnognotte ?",,Cléopâtre,La Tour de Pharos est l'autre nom du phare d'Alexandrie.,FALSE
+Uma Thurman traçait elle aussi un carré fictif dans le vide en arrivant au Jack Rabbit Slim's avec John Travolta.",FALSE,0:02:40:02,0:02:48:11
+6,0:02:49,Lancer de raisin raté (2),,"César, visuel",,FALSE,0:02:48:11,0:02:54:08
+7,0:02:50,"Et le Sphinx, et la Tour de Pharos, c'est quoi ? De la gnognotte ?",,Cléopâtre,La Tour de Pharos est l'autre nom du phare d'Alexandrie.,FALSE,0:02:47,0:02:52:14
 8,0:02:59,"Dis-donc ""ton peuple"", t'es quand même grecque au départ.","Cléopâtre : Mon peuple est le plus grand de tous les peuple !
 César : Dis-donc, ""ton peuple"", ""ton peuple"", t'es quand même grecque au départ.
-Alors comme egyptienne de souche, j'ai vu mieux excuse-moi.","César, Cléopâtre, historique","Référence historique au fait que Cléopâtre soit de la dynastie lagide, issue de Grèce par Ptolémée ayant envahi l'Égypte 300 ans plus tôt.",FALSE
-9,0:03:01,Lancer de raisin raté (3),,"César, visuel",,FALSE
-322,0:03:03,Coupe de raisins sur la tête du goûteur,,visuel,"Cocasse, mais après tout pourquoi pas, c'est un goûteur.",TRUE
-10,0:03:03,Assez !,Assez ! *Cléopâtre casse un autre vase*,Cléopâtre,,FALSE
+Alors comme egyptienne de souche, j'ai vu mieux excuse-moi.","César, Cléopâtre, historique","Référence historique au fait que Cléopâtre soit de la dynastie lagide, issue de Grèce par Ptolémée ayant envahi l'Égypte 300 ans plus tôt.",FALSE,0:02:57,0:03:04:03
+9,0:03:01,Lancer de raisin raté (3),,"César, visuel",,FALSE,0:02:57:02,0:03:04:03
+322,0:03:03,Coupe de raisins sur la tête du goûteur,,visuel,"Cocasse, mais après tout pourquoi pas, c'est un goûteur.",TRUE,0:03:02:23,0:03:06
+10,0:03:03,Assez !,Assez ! *Cléopâtre casse un autre vase*,Cléopâtre,,FALSE,0:03:02:23,0:03:06
 11,0:03:15,"Ah ouais, et comment ? En dessinant des bonhommes de face ? Haha !","Cléopâtre : Je peux te prouver n'importe quand, ô César, que le peuple égyptien a gardé tout son génie.
-César : Ah ouais, et comment ? En dessinant des bonhommes de face ? Haha !","César, cliché","Référence au style stéréotypique égyptien des dessins ""de profil"".",FALSE
+César : Ah ouais, et comment ? En dessinant des bonhommes de face ? Haha !","César, cliché","Référence au style stéréotypique égyptien des dessins ""de profil"".",FALSE,0:03:12:12,0:03:17:05
 12,0:03:27,"Comme ça quand tu viendras en province, tu sauras où dormir.","César : Franchement c'est bon, en palais j'ai tout ce qu'il faut à Rome.
-Cléopâtre : Eh bien, tu en auras un autre ici, à Alexandrie. Comme ça quand tu viendras en province, tu sauras où dormir.",Cléopâtre,,FALSE
-13,0:03:37,Plus vaste et plus somptueux que le César Palace ?,,"César, référence","Référence à l'immense ""Caesars Palace"", un hotel-casino américain situé à Las Vegas et souvent représenté au cinéma.",FALSE
-14,0:03:43,Rome s'est pas construite en un jour.,,César,"Référence au proverbe ""Rome ne s'est pas faite en un jour""",FALSE
+Cléopâtre : Eh bien, tu en auras un autre ici, à Alexandrie. Comme ça quand tu viendras en province, tu sauras où dormir.",Cléopâtre,,FALSE,0:03:19,0:03:28:17
+13,0:03:37,Plus vaste et plus somptueux que le César Palace ?,,"César, référence","Référence à l'immense ""Caesars Palace"", un hotel-casino américain situé à Las Vegas et souvent représenté au cinéma.",FALSE,0:03:35:19,0:03:39:05
+14,0:03:43,Rome s'est pas construite en un jour.,,César,"Référence au proverbe ""Rome ne s'est pas faite en un jour""",FALSE,0:03:41,0:03:46:03
 15,0:03:48,Dans 3 mois.,"César : Je la verrais quand cette merveille ? Dans trois siècles ?
 Cléopâtre : Dans trois mois
 César : trois mois ?
 Le goûteur : trois...
 Le chat: ... mois?
-",Cléopâtre,,FALSE
-16,0:03:49,Lancer de raisin réussi.,,,,FALSE
-17,0:04:00,J'ai jamais vu des travaux qui finissent à l'heure.,,"César, cliché",Cliché sur les retards dans l'immobilier.,FALSE
+",Cléopâtre,,FALSE,0:03:43:22,0:03:54:17
+16,0:03:49,Lancer de raisin réussi.,,,,FALSE,0:03:48:23,0:03:52:02
+17,0:04:00,J'ai jamais vu des travaux qui finissent à l'heure.,,"César, cliché",Cliché sur les retards dans l'immobilier.,FALSE,0:03:57:17,0:04:01
 18,0:04:15,Gn gn doute,"César : Mais j'en doute
 Cléopâtre arrête la tentative de baiser de César avec son bras en forme de cobra
-Cléopâtre (se moquant) : ""Je m'en doute""",Cléopâtre,,FALSE
-19,0:04:24,César chante la musique de fond.,,César,Brise le 4e mur,TRUE
+Cléopâtre (se moquant) : ""Je m'en doute""",Cléopâtre,,FALSE,0:04:13,0:04:20:13
+19,0:04:24,César chante la musique de fond.,,César,Brise le 4e mur,TRUE,0:04:23:07,0:04:27:09
 20,0:04:43,"On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.","- Oh non ! Mais pourquoi vous avez posé le carrelage. Il fallait faire passer les évacuations d'eau d'abord ! Il va falloir tout recasser maintenant.
-- Ah monsieur Malococsis je suis pas architecte moi je suis carreleur. On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.",Feudartifis,,FALSE
-21,0:04:49,Et c'est quoi cette porte au plafond ?,,"Malococsis, visuel",,FALSE
-22,0:04:55,"Les architectes, avec les réparateurs de char, il y a pas plus escroc et incompétent.",,"Malococsis, cliché",Cliché sur les réparateurs de voitures.,FALSE
-23,0:05:09,"Ça ? J'anticipe ! Si vous voulez faire un deuxième étage, paf ! Il y a déjà une porte pour y accéder.",,Numérobis,,FALSE
+- Ah monsieur Malococsis je suis pas architecte moi je suis carreleur. On me dit de carreler, je carrèle. On me dit de pas carreler, je carrèle pas.",Feudartifis,,FALSE,0:04:36,0:04:45:05
+21,0:04:49,Et c'est quoi cette porte au plafond ?,,"Malococsis, visuel",,FALSE,0:04:47,0:04:50
+22,0:04:55,"Les architectes, avec les réparateurs de char, il y a pas plus escroc et incompétent.",,"Malococsis, cliché",Cliché sur les réparateurs de voitures.,FALSE,0:04:54:02,0:04:59:03
+23,0:05:09,"Ça ? J'anticipe ! Si vous voulez faire un deuxième étage, paf ! Il y a déjà une porte pour y accéder.",,Numérobis,,FALSE,0:05:07:14,0:05:15:19
 24,0:05:21,"- Il est magnifique ce carrelage ou il est pas magnifique ?
 - Magnifique !
-- Magnifique.",,"Feudartifis, Numérobis",Blague récurrente dans le film où un mot est répété pour justifier l'absurde.,FALSE
-25,0:05:26,"Le son des pas des gardes est synchronisé mais visuellement, ce n'est pas le cas.",,"visuel, audio",,TRUE
-26,0:05:30,"Malococsis, faites-moi confiance, je suis pas charagiste.",,"Numérobis, cliché",Jeu de mot entre charagiste et garagiste. Allusion aux marmonnements de Malococsis une minute avant à propos des réparateurs de chars.,FALSE
+- Magnifique.",,"Feudartifis, Numérobis",Blague récurrente dans le film où un mot est répété pour justifier l'absurde.,FALSE,0:05:20:14,0:05:23:14
+25,0:05:26,"Le son des pas des gardes est synchronisé mais visuellement, ce n'est pas le cas.",,"visuel, audio",,TRUE,0:05:22:05,0:05:30:03
+26,0:05:30,"Malococsis, faites-moi confiance, je suis pas charagiste.",,"Numérobis, cliché",Jeu de mot entre charagiste et garagiste. Allusion aux marmonnements de Malococsis une minute avant à propos des réparateurs de chars.,FALSE,0:05:27:06,0:05:31
 27,0:05:43,"- J'ai des relations, des gens très hauts placés, qui peuvent vous faire de très graves ennuis, des gens de haut rang !
-- Ça serait mieux s'ils étaient d'Alexandrie ! Hahaha",,"Malococsis, Numérobis",Jeu de mot entre haut-rang et la ville de Oran en Algérie.,FALSE
+- Ça serait mieux s'ils étaient d'Alexandrie ! Hahaha",,"Malococsis, Numérobis",Jeu de mot entre haut-rang et la ville de Oran en Algérie.,FALSE,0:05:35:22,0:05:44
 28,0:05:50,"- Architecte Numérobis ?
 - ?.. Non ?... Enfin ça dépend ?
-C'est pour quoi ?",,Numérobis,,FALSE
-323,0:05:54,"Non mais parce que Oran et haut-rang ça sonne pareil, c'est pour ça.",,Numérobis,"Numérobis explique sa blague aux gardes, il pense donc être enlevé pour avoir fait un trait d'humour.",FALSE
-318,0:06:18,Serge.,,Amonbofis,,FALSE
-29,0:06:20,Une grenouille se suicide,,"Amonbofis, visuel",Cruelle réalité que de n'être qu'une grenouille de plus pour les crocodiles.,TRUE
-352,0:06:28,"Il faut changer l'eau des crocodiles, c'est une infection.",,Cléopâtre,Cléopâtre parle de l'eau des crocodiles comme on parlerait de l'eau d'un bocal à poissons.,FALSE
+C'est pour quoi ?",,Numérobis,,FALSE,0:05:48,0:05:57
+323,0:05:54,"Non mais parce que Oran et haut-rang ça sonne pareil, c'est pour ça.",,Numérobis,"Numérobis explique sa blague aux gardes, il pense donc être enlevé pour avoir fait un trait d'humour.",FALSE,0:05:52:10,0:05:57
+318,0:06:18,Serge.,,Amonbofis,,FALSE,0:06:17:05,0:06:20:05
+29,0:06:20,Une grenouille se suicide,,"Amonbofis, visuel",Cruelle réalité que de n'être qu'une grenouille de plus pour les crocodiles.,TRUE,0:06:17:07,0:06:25:13
+352,0:06:28,"Il faut changer l'eau des crocodiles, c'est une infection.",,Cléopâtre,Cléopâtre parle de l'eau des crocodiles comme on parlerait de l'eau d'un bocal à poissons.,FALSE,0:06:25:05,0:06:29:10
 30,0:06:42,"Ben, euh, oui, puisqu'on a toujours fait comme ça...","Amonbofis : Pourtant j'ai installé l'évacuation des eaux usagées comme on fait tout le temps.
 Cléopâtre : C'est bien ça le problème avec vous Amonbofis, vous faites toujours comme on fait tout le temps.
-Amonbofis : Ben, euh, oui, puisqu'on a toujours fait comme ça...",Amonbofis,,FALSE
-31,0:06:45,Il est bizarre ce sol. Il est pas palpable.,,Numérobis,,FALSE
+Amonbofis : Ben, euh, oui, puisqu'on a toujours fait comme ça...",Amonbofis,,FALSE,0:06:37:14,0:06:43
+31,0:06:45,Il est bizarre ce sol. Il est pas palpable.,,Numérobis,,FALSE,0:06:42:11,0:06:46:22
 32,0:06:50,C'est par où ?,"Numérobis : C'est par où ?
-Numérobis est lancé au sol et glisse longuement jusqu'à Cléopâtre",Numérobis,,FALSE
+Numérobis est lancé au sol et glisse longuement jusqu'à Cléopâtre",Numérobis,,FALSE,0:06:49:01,0:06:54:23
 33,0:06:53,Bonjour,"Numérobis croise Amonbofis pendant sa glissade
-Numérobis : Bonjour",Numérobis,,FALSE
+Numérobis : Bonjour",Numérobis,,FALSE,0:06:51:16,0:06:56:14
 34,0:07:06,"Bien sûr je connais pas non plus tout le monde dans le monde mais à mon avis, non.","Cléopâtre : L'égypte est-il le plus puissant empire du monde ?
 Numérobis : Oui, exactement madame. Il n'y a pas d'empire plus puissant dans le monde.
-Bien sûr je connais pas non plus tout le monde dans le monde mais à mon avis, non.",Numérobis,,FALSE
+Bien sûr je connais pas non plus tout le monde dans le monde mais à mon avis, non.",Numérobis,,FALSE,0:06:59:01,0:07:07:05
 35,0:07:22,D'accord. [...] D'accord. [...] D'accord.,"Cléopâtre : Le monde romain, en la personne de César, en doute.
 Je vais donc lui montrer de quoi l'Égypte est capable.
 Numérobis : D'accord.
 Cléopâtre : Je vais lui construire le plus magnifique des palais.
 Numérobis : D'accord.
 Cléopâtre : Et c'est toi Numérobis qui en sera l'architecte.
-Numérobis : D'accord.","Numérobis, audio","La même piste audio est réutilisé pour les trois ""D'accord."".",FALSE
+Numérobis : D'accord.","Numérobis, audio","La même piste audio est réutilisé pour les trois ""D'accord."".",FALSE,0:07:20:04,0:07:26:17
 36,0:07:28,C'est moi qui vais architecter tout le... ?,"Numérobis : C'est moi qui vais architecter tout le ... ?
-Toute la cour de Cléopâtre, en choeur, acquiesce.",Numérobis,Le verbe architecter n'existe pas.,FALSE
+Toute la cour de Cléopâtre, en choeur, acquiesce.",Numérobis,Le verbe architecter n'existe pas.,FALSE,0:07:26:14,0:07:30:21
 37,0:07:36,"- Tous mes architectes sont occupés.
 - Ah non, moi je suis pa-pas occupé.
 - Il est pas occupé, lui.
-- Tu es le seul disponible",,"Cléopâtre, Amonbofis, Numérobis",,FALSE
+- Tu es le seul disponible",,"Cléopâtre, Amonbofis, Numérobis",,FALSE,0:07:28:11,0:07:37:07
 38,0:07:49,C'est à dire que je suis un peu charette en ce moment.,,"Numérobis, référence","Charrette est un terme d'argot du monde de l'architecture signifiant être débordé de travail.
 Les ateliers d'étudiants en architecture étant souvent loin de l'école et les projets trop grands pour être portés, les étudiants réservaient une charrette chez un commerçant local pour transporter leurs œuvres.
-Le passage de la charrette sonnait donc l'heure du rendu des projets.",TRUE
+Le passage de la charrette sonnait donc l'heure du rendu des projets.",TRUE,0:07:43:10,0:07:50
 39,0:08:25,"Trois mois, mai-mais. Trois mois, à parti- euh, euh. avec combien de temps de retard ?","Trois mois, mai-mais. Trois mois, à parti- euh, euh. avec combien de temps de retard ?
 Parce que trois mois. En trois mois, maximum, on peut avoir les plans. Ça c'est bon, j'en fais mon affaire.
 Les fondations, faut compter deux-trois mois. Trois fois quatre... neuf.
-Trois mois, ça sera... Ça ne me semble pas très faisable madame.",Numérobis,,FALSE
-40,0:08:44,"Tu as trois mois, jour pour jour, top Chronos.",,"Cléopâtre, historique",Chronos est la personnification du temps dans les traditions orphiques.,FALSE
+Trois mois, ça sera... Ça ne me semble pas très faisable madame.",Numérobis,,FALSE,0:08:18:05,0:08:38:14
+40,0:08:44,"Tu as trois mois, jour pour jour, top Chronos.",,"Cléopâtre, historique",Chronos est la personnification du temps dans les traditions orphiques.,FALSE,0:08:38:02,0:08:45
 41,0:08:49,Sablier géant censé durer trois mois.,,visuel,"Le sablier le plus long du monde ""La Roue du temps"", situé à Budapest, s'écoule en une année entière.
-Surprenant à première vue, un sablier de trois mois n'est donc pas impossible.",FALSE
+Surprenant à première vue, un sablier de trois mois n'est donc pas impossible.",FALSE,0:08:47,0:08:52:13
 42,0:09:30,Il est où le magneau ?,"Il est où le magneau ?
 Ils ont mangé le magneau ?
 Un crocodile rote et crache un bout de cuir qui tenait le magneau.","Numérobis, référence","Référence à Jurassic Park de Steven Spielberg.
-Un boeuf est treuillé tout comme la magneau pour servir de repas aux vélociraptors",FALSE
+Un boeuf est treuillé tout comme la magneau pour servir de repas aux vélociraptors",FALSE,0:09:29:02,0:09:38:05
 355,0:09:47,Amonbofis menace Numérobis de devenir sa 11e plaie d'Égypte,"- Alors ce ne sera ni Cléopâtre, ni la pluie, ni la grêle, ni les sauterelles.
-- Mais moi *rugissement*, maintenant, ton pire cauchemar ici, en Egypte.","Amonbofis, Numérobis, référence","Référence aux dix plaies d'Égypte de l'Ancien Testament, dont la grêle et les sauterelles. Amonbofis se place au-dessus.",FALSE
+- Mais moi *rugissement*, maintenant, ton pire cauchemar ici, en Egypte.","Amonbofis, Numérobis, référence","Référence aux dix plaies d'Égypte de l'Ancien Testament, dont la grêle et les sauterelles. Amonbofis se place au-dessus.",FALSE,0:09:45:07,0:09:55:17
 43,0:10:08,Numérobis compte ses pas et utilise un sextant en bois,,Numérobis,"En tant qu'architecte égyptien, Numérobis n'a pas accès à des outils moderne.
-Il est contraint de mesurer ses distances avec des pas et utilise ce qui semble être un sextant pour mesurer un angle dans un ciel complètement vide.",FALSE
-44,0:10:27,J'ai pensé à une sorte de machine qui permettrait de monter au sommet des pyramides,,"Otis, référence","Otis, le nom de l'inventeur, est la marque d'ascenseur la plus populaire en France",TRUE
-324,0:10:33,Numérobis compte 169... 174..,,Numérobis,Il y a d'autres nombres entre 169 et 174. Ou bien Numérobis est pentapode.,TRUE
-45,0:10:48,De là... à de là.,,Numérobis,,FALSE
+Il est contraint de mesurer ses distances avec des pas et utilise ce qui semble être un sextant pour mesurer un angle dans un ciel complètement vide.",FALSE,0:10:05:01,0:10:15
+44,0:10:27,J'ai pensé à une sorte de machine qui permettrait de monter au sommet des pyramides,,"Otis, référence","Otis, le nom de l'inventeur, est la marque d'ascenseur la plus populaire en France",TRUE,0:10:22:12,0:10:29:17
+324,0:10:33,Numérobis compte 169... 174..,,Numérobis,Il y a d'autres nombres entre 169 et 174. Ou bien Numérobis est pentapode.,TRUE,0:10:31,0:10:40
+45,0:10:48,De là... à de là.,,Numérobis,,FALSE,0:10:46,0:10:55:02
 46,0:11:00,"Excuse-moi, tu veux pas juste arrêter de compter ? Parce qu'on fait exprès des métreurs pour ça.",,Otis,"Un métreur dans le bâtiment est normalement chargé, entre autres, de quantifier et mesurer les matériaux nécessaire.
-Ici, le jeu de mot rapporte à simplifier le métier de métreur comme celui qui mesure les distances.",FALSE
-47,0:11:04,"D'accord, on peut prendre combien de mois de retard à trois semaines près ?",,Otis,,FALSE
-48,0:11:22,C'est d'une vivesse un crocodile,,Numérobis,Mélange syntaxique entre vitesse et vivacité.,TRUE
+Ici, le jeu de mot rapporte à simplifier le métier de métreur comme celui qui mesure les distances.",FALSE,0:10:54:12,0:11:01:07
+47,0:11:04,"D'accord, on peut prendre combien de mois de retard à trois semaines près ?",,Otis,,FALSE,0:11:02:12,0:11:05:22
+48,0:11:22,C'est d'une vivesse un crocodile,,Numérobis,Mélange syntaxique entre vitesse et vivacité.,TRUE,0:11:20,0:11:29:14
 49,0:11:24,"- J'aurais jamais le temps de mettre au point ma machine, moi.
-- Otis, t'as entendu ce que je viens de te dire ou t'as pas entendu ce que je viens de te dire ?",,"Otis, Numérobis",,FALSE
-50,0:11:33,"Excuse-moi d'en faire un sac mais je vais finir dans un crocodile, peut-être.",,"Numérobis, référence",Référence aux sacs en peau de crocodile.,TRUE
+- Otis, t'as entendu ce que je viens de te dire ou t'as pas entendu ce que je viens de te dire ?",,"Otis, Numérobis",,FALSE,0:11:21:22,0:11:31:12
+50,0:11:33,"Excuse-moi d'en faire un sac mais je vais finir dans un crocodile, peut-être.",,"Numérobis, référence",Référence aux sacs en peau de crocodile.,TRUE,0:11:29:14,0:11:35:14
 325,0:11:54,"Mais oui exactement, c'est- c'- il nous faut des pouvoirs magiques","- Pour réussir il faudrait qu'on ait des pouvoirs magiques, qu'on soit des.. des mages, des dieux..
 - Mais oui exactement, c'est- c'- il nous faut des pouvoirs magiques.
-- C'est ça, je vois pas en quoi c'est une bonne nouvelle mais c'est ça.","Numérobis, Otis",Numérobis donne l'impression de délirer du point de vue d'Otis.,FALSE
+- C'est ça, je vois pas en quoi c'est une bonne nouvelle mais c'est ça.","Numérobis, Otis",Numérobis donne l'impression de délirer du point de vue d'Otis.,FALSE,0:11:51:22,0:11:59:02
 51,0:12:10,"Papa me racontait souvent l'histoire de ce druide.
 Pamo-panobéméix.
 Pano-sunéixme.","Papa me racontait souvent l'histoire de ce druide.
 Pamo-panobéméix.
 Pano-sunéixme.
 [...]
-Ça commence par panob. Et ça fini par énénékixme.","Numérobis, astérixme",Première d'un long comique de répétition de numérobis n'arrivant pas à prononcer les noms gaulois.,FALSE
+Ça commence par panob. Et ça fini par énénékixme.","Numérobis, astérixme",Première d'un long comique de répétition de numérobis n'arrivant pas à prononcer les noms gaulois.,FALSE,0:12:05:12,0:12:11
 52,0:12:20,"Un truc en -ix ?
 mathieukassovix ?
 [...]
 C'est pomme de reinette et pomme d'api.",,"Otis, référence","Référence à l'acteur Mathieu Kassovitz, particulièrement populaire à la sortie du film. Il joue aussi le physionomiste en fin de film.
-Référence à la comptine pour enfant ""Pomme de reinette et pomme d'api""",FALSE
-53,0:12:26,Un droïde.,,Numérobis,"Première d'une longue série de référence à Star Wars. Ici ""druide"" est prononcé droïde.",FALSE
-54,0:12:33,Elle donne une force mais d'une force.,,Numérobis,,FALSE
+Référence à la comptine pour enfant ""Pomme de reinette et pomme d'api""",FALSE,0:12:19:06,0:12:26:10
+53,0:12:26,Un droïde.,,Numérobis,"Première d'une longue série de référence à Star Wars. Ici ""druide"" est prononcé droïde.",FALSE,0:12:25:12,0:12:28:12
+54,0:12:33,Elle donne une force mais d'une force.,,Numérobis,,FALSE,0:12:30:12,0:12:34
 55,0:12:44,C'est dans les papyrus dessinés pour les enfants.,"La potion magique ça existe pas hein.
-C'est dans les papyrus dessinés pour les enfants, on est dans le monde réel là.",Otis,,FALSE
+C'est dans les papyrus dessinés pour les enfants, on est dans le monde réel là.",Otis,,FALSE,0:12:41:07,0:12:49:07
 56,0:12:55,"Là, on va faire une grande allée avec plein de statues.
-Qu'on appellera ""La grande allée avec plein de statues"".",,Numérobis,,FALSE
+Qu'on appellera ""La grande allée avec plein de statues"".",,Numérobis,,FALSE,0:12:52,0:12:58:05
 57,0:12:59,"Et là bas, les jardins. Avec des oliviers, des orangeandes, des saules pleureurs, des soles meunières.",,Numérobis,"Jeu d'homonyme/zeugma en mélangeant plats et plantes.
 Une orangeade est un mélange de jus d'orange et de sucre.
-Une sole meunière est un plat de poisson constitué d'une sole entière enrobée de farine et frite au beurre.",FALSE
+Une sole meunière est un plat de poisson constitué d'une sole entière enrobée de farine et frite au beurre.",FALSE,0:12:57,0:13:00
 58,0:13:07,Avec une grande cour où il y aura pleins de danseuses qui pourront danser !,"Le palais : luxuriant, magnifique, chamarré.
-Avec une grande cour où il y aura plein de danseuses qui pourront danser.",Numérobis,"Chamarré : ""Garni d'ornements aux couleurs éclatantes"".",FALSE
-59,0:13:10,"Et juste là, un petit géranium.",,Numérobis,,FALSE
-60,0:13:12,"Ouais, ça va être bien. Ça va être très bien même.",,Numérobis,,FALSE
-61,0:13:16,Bon bien sûr il faut imaginer !,,Numérobis,,FALSE
+Avec une grande cour où il y aura plein de danseuses qui pourront danser.",Numérobis,"Chamarré : ""Garni d'ornements aux couleurs éclatantes"".",FALSE,0:13:01,0:13:08:05
+59,0:13:10,"Et juste là, un petit géranium.",,Numérobis,,FALSE,0:13:06:12,0:13:11:05
+60,0:13:12,"Ouais, ça va être bien. Ça va être très bien même.",,Numérobis,,FALSE,0:13:10,0:13:13
+61,0:13:16,Bon bien sûr il faut imaginer !,,Numérobis,,FALSE,0:13:15,0:13:18:05
 62,0:13:28,"Hue Cannabis ! Hue Cannabis !
-Tu n'avances pas du tout... Cannabis.",,Numérobis,,FALSE
-63,0:13:40,"Mais il habite où, l'amix ?",,Otis,"Suffixé en -ix du nom ""ami"" car l'ami est gaulois.",FALSE
+Tu n'avances pas du tout... Cannabis.",,Numérobis,,FALSE,0:13:25,0:13:30:05
+63,0:13:40,"Mais il habite où, l'amix ?",,Otis,"Suffixé en -ix du nom ""ami"" car l'ami est gaulois.",FALSE,0:13:37:18,0:13:47
 64,0:13:45,"Galope Cannabis, galope, galope. Getondown Getondown.",Cannabis ne galope manifestement pas.,"Numérobis, référence","Référence à ""Get Up"" de James Brown par homophone de
-""Get Up, Get Up, Get On Up"" et ""Galope Galope Getondown""",TRUE
+""Get Up, Get Up, Get On Up"" et ""Galope Galope Getondown""",TRUE,0:13:43,0:13:52
 65,0:14:07,Un village peuplé d'irréductibles Gaulois résiste encore et toujours à l'envahisseur.,"Nous sommes en 50 avant Jésus Christ.
 Toute la Gaule est occupée par les Romains. Toute ? Non !
 Un village peuplé d'irréductibles Gaulois résiste encore et toujours à l'envahisseur
-La vie n'est pas facile pour les garnisons de légionnaires romains des camps retranchés de Babaorum, Aquarium, Laudanum, et Petibonum.",voix-off,Monologue d'introduction au début de toutes les bandes dessinées d'Astérix.,FALSE
+La vie n'est pas facile pour les garnisons de légionnaires romains des camps retranchés de Babaorum, Aquarium, Laudanum, et Petibonum.",voix-off,Monologue d'introduction au début de toutes les bandes dessinées d'Astérix.,FALSE,0:14:01:12,0:14:12:22
 66,0:14:32,"- Vous êtes nouveaux ici ?
-- (avec l'accent du Sud) Oui en fait on vient d'être muté dans le coin.",,"Astérix, légionnaire, cliché",,FALSE
+- (avec l'accent du Sud) Oui en fait on vient d'être muté dans le coin.",,"Astérix, légionnaire, cliché",,FALSE,0:14:26:17,0:14:33
 67,0:14:45,"Voyez plutôt.
-*Astérix envoie voler le légionnaire d'un coup de poing.*",,"Astérix, légionnaire, visuel",,FALSE
-68,0:14:52,Panomaméixme ? Panomaméixme ?,,"Numérobis, astérixme",,FALSE
+*Astérix envoie voler le légionnaire d'un coup de poing.*",,"Astérix, légionnaire, visuel",,FALSE,0:14:44:14,0:15:04:14
+68,0:14:52,Panomaméixme ? Panomaméixme ?,,"Numérobis, astérixme",,FALSE,0:14:49:07,0:14:59
 69,0:15:00,Il fait au moins -8000.,"Qu'est-ce que c'est que ce pays.
-Il faut au moins -8000.",Numérobis,,FALSE
-327,0:15:08,Numérobis est étonné de voir un légionnaire tomber du ciel,,"Numérobis, visuel",Gros zoom sur son visage en réaction à l'évènement choquant,FALSE
-70,0:15:21,Obélix envoie voler un légionnaire d'une simple pichenette.,,"Obélix, légionnaire",,FALSE
+Il faut au moins -8000.",Numérobis,,FALSE,0:14:57:07,0:15:01:17
+327,0:15:08,Numérobis est étonné de voir un légionnaire tomber du ciel,,"Numérobis, visuel",Gros zoom sur son visage en réaction à l'évènement choquant,FALSE,0:15:07:02,0:15:15
+70,0:15:21,Obélix envoie voler un légionnaire d'une simple pichenette.,,"Obélix, légionnaire",,FALSE,0:15:19:19,0:15:26:09
 71,0:15:32,"Vous suivez les baffes, et normalement ils sont au bout.","- Bonjour, c'est par où le village des Gaulois ?
 - Alors le mieux d'ici : Vous suivez les baffes, et normalement ils sont au bout.
 Je vous accompagne pas, vous m'en voulez pas ?
-Je vais rester ici et réfléchir un peu.",légionnaire,,FALSE
+Je vais rester ici et réfléchir un peu.",légionnaire,,FALSE,0:15:28:12,0:15:41:07
 72,0:15:46,"Ils sont bien ces romains, ils volent mieux que les autres j'ai l'impression.
 Ça doit être leurs nouveau casque, ça donne une meilleure pénétration dans l'air.","Obélix : Ils sont bien ces romains, ils volent mieux que les autres j'ai l'impression.
 Ça doit être leurs nouveau casque, ça donne une meilleure pénétration dans l'air.
 Un légionnaire tombe au loin.
-Astérix : C'est toujours l'atterrissage qui est un peu lourd.",,,FALSE
+Astérix : C'est toujours l'atterrissage qui est un peu lourd.",,,FALSE,0:15:40:02,0:15:56:17
 73,0:16:00,S'il vous plaît ? Vous êtes Astériixme ?,"Numérobis : S'il vous plaît ? Vous êtes Astériixme ?
 Astérix : -RIX ! Astérix. Et lui c'est Obélix.
-Obélix : Et le petit chien là c'est Idéfix.","Numérobis, astérixme",,FALSE
+Obélix : Et le petit chien là c'est Idéfix.","Numérobis, astérixme",,FALSE,0:15:55:12,0:16:06:17
 74,0:16:09,"Vous connaissez Panopaméix ?
-C'est un droïde.",,"Numérobis, astérixme, référence","Première d'une longue série de références à Star Wars. Ici ""druide"" est prononcé droïde.",FALSE
+C'est un droïde.",,"Numérobis, astérixme, référence","Première d'une longue série de références à Star Wars. Ici ""druide"" est prononcé droïde.",FALSE,0:16:08:14,0:16:11:23
 75,0:16:30,"- C'est moi
 - ... ?
-- Eh ben manifestement il vous connaît pas.",,"Numérobis, Astérix",,FALSE
-76,0:16:32,"Je suis Numérobis, le fils de votre vieil ami Thoumeuhéris.",,Numérobis,Thoumeuhéris = Tout me hérisse,FALSE
+- Eh ben manifestement il vous connaît pas.",,"Numérobis, Astérix",,FALSE,0:16:29:14,0:16:32:14
+76,0:16:32,"Je suis Numérobis, le fils de votre vieil ami Thoumeuhéris.",,Numérobis,Thoumeuhéris = Tout me hérisse,FALSE,0:16:31:10,0:16:36:17
 77,0:16:45,"- Je suis mon cher ami, très heureux de te voir.
 - C'est un alexandrin.",,"Numérobis, Panoramix","Je. Suis. Mon. Cher. A-mi. (césure) Très Heu-Reux De Te Voir.
 12 syllabes avec césure, la phrase de Numérobis est bien un alexandrin, la métrique en poésie.
-Numérobis, venant d'Alexandrie, est aussi un alexandrin.",TRUE
+Numérobis, venant d'Alexandrie, est aussi un alexandrin.",TRUE,0:16:43:19,0:16:48:08
 78,0:16:54,"- C'est de la potion magique ?
-- Non, c'est de la soupe de marron.",,"Numérobis, Panoramix",,FALSE
+- Non, c'est de la soupe de marron.",,"Numérobis, Panoramix",,FALSE,0:16:52:02,0:16:55:02
 79,0:17:34,"Une petite marmite ? Une gourde ? Une gourdinette ? Un bol ?
-Une bolinette ? C'est un petit bol.",,Numérobis,Gradation descendante menant à l'absurde : Une bolinette.,FALSE
-328,0:17:45,Une bolinette c'est rien,,Obélix,,FALSE
+Une bolinette ? C'est un petit bol.",,Numérobis,Gradation descendante menant à l'absurde : Une bolinette.,FALSE,0:17:29:12,0:17:35
+328,0:17:45,Une bolinette c'est rien,,Obélix,,FALSE,0:17:43:17,0:17:46:17
 80,0:18:23,Midifix.,"*Numérobis s'adresse à Idéfix.*
-Midifix.","Numérobis, astérixme",Midifix = Midi fixe,FALSE
+Midifix.","Numérobis, astérixme",Midifix = Midi fixe,FALSE,0:18:21,0:18:31:22
 356,0:19:00,Il est trop petit pour faire un voyage pareil,"- Et pourquoi pas ?
 - Parce qu'il est trop petit pour faire un voyage pareil.
 - Et puis l'Egypte c'est le pays des chats.
-- Allez, va faire tes bagages et n'en parlons plus.","Obélix, Astérix, Idéfix","Les chats étaient sacrés dans l'Égypte antique, associés à la déesse Bastet. Pas idéal pour un petit chien.",FALSE
-81,0:19:25,À bord du Napadélis.,,voix-off,Napadélis = N'a pas d'hélices.,FALSE
+- Allez, va faire tes bagages et n'en parlons plus.","Obélix, Astérix, Idéfix","Les chats étaient sacrés dans l'Égypte antique, associés à la déesse Bastet. Pas idéal pour un petit chien.",FALSE,0:18:58:07,0:19:06:12
+81,0:19:25,À bord du Napadélis.,,voix-off,Napadélis = N'a pas d'hélices.,FALSE,0:19:21:09,0:19:32
 82,0:19:57,"Il y a rien dans le sac.
 (En choeur) Oooooh
-Qu'il est intelligent ce chien, il voulait pas me quitter.",,"Obélix, Astérix",,FALSE
+Qu'il est intelligent ce chien, il voulait pas me quitter.",,"Obélix, Astérix",,FALSE,0:19:54,0:19:58
 83,0:20:13,"Amonbofis est une vraie hyène.
-Vous voyez ce que c'est qu'une hyène ? Et bah pareil.",,Numérobis,,FALSE
+Vous voyez ce que c'est qu'une hyène ? Et bah pareil.",,Numérobis,,FALSE,0:20:12:09,0:20:20
 84,0:20:18,"- Il m'en veut à mort et il est bourré de talent.
 - Ah oui il est doué quoi.
 - Non il est riche.",,"Numérobis, historique","Le talent d'or est une monnaie mentionné dans les textes homérique.
-Sa valeur a fait l'objet de nombreuses controverses et recherches .",TRUE
-85,0:20:21,"En Gaule, ce ne sont pas forcément les plus talentueux qui sont les plus riche.",,Panoramix,,FALSE
+Sa valeur a fait l'objet de nombreuses controverses et recherches .",TRUE,0:20:15:13,0:20:19
+85,0:20:21,"En Gaule, ce ne sont pas forcément les plus talentueux qui sont les plus riche.",,Panoramix,,FALSE,0:20:19:19,0:20:23:19
 329,0:20:28,"- Il y a autre chose à craindre ?
 - Non, à priori rien.
-*Un drapeau pirate apparaît*",,visuel,,FALSE
-86,0:20:51,Dessin des pirates d'Astérix et Obélix,,visuel,"Ce dessin créé pour le film a été signé par Albert Uderzo, le dessinateur de la BD Astérix !",FALSE
+*Un drapeau pirate apparaît*",,visuel,,FALSE,0:20:23,0:20:29
+86,0:20:51,Dessin des pirates d'Astérix et Obélix,,visuel,"Ce dessin créé pour le film a été signé par Albert Uderzo, le dessinateur de la BD Astérix !",FALSE,0:20:50:10,0:20:54:02
 87,0:20:53,"Et leurs molosse !
-*Bruit de tigre*",,"Idéfix, visuel",,FALSE
-88,0:20:57,"Submergé par leur nombre de deux, nous n'avons rien pu faire.",,Barbe Rouge,,FALSE
+*Bruit de tigre*",,"Idéfix, visuel",,FALSE,0:20:52:19,0:20:59:04
+88,0:20:57,"Submergé par leur nombre de deux, nous n'avons rien pu faire.",,Barbe Rouge,,FALSE,0:20:52:19,0:20:59:04
 89,0:21:06,Nous avons quitté le navire un peu précipitamment.,"- Et nous avons dû...
 - ...Fuir
 - Non, pas vraiment. Nous avons quitté le navire un peu précipitamment.
 - À la nage, et elle était glacée.
 - Non elle était bonne.
 - Elle était glacée !
-- BON !","Barbe Rouge, Triple-Patte",,FALSE
+- BON !","Barbe Rouge, Triple-Patte",,FALSE,0:21:00:08,0:21:11:06
 90,0:21:34,Paré à l'abordage Papa. Souquez les artimuses.,"- Paré à l'abordage Papa. Souquez les artimuses.
-- Du calme ma fille, en plus ça veut rien dire ""Souquez les artimuses"" ?",,"""Souquez les artimuses"" n'est pas une vraie expression.",FALSE
+- Du calme ma fille, en plus ça veut rien dire ""Souquez les artimuses"" ?",,"""Souquez les artimuses"" n'est pas une vraie expression.",FALSE,0:21:29:10,0:21:40:14
 91,0:22:00,Ipso facto et manu militari,,Triple-Patte,"Souvent utilisé dans le langage juridique ""ipso facto et manu militari"" signifie ""Par le fait et avec les moyens nécessaires"" pour indiquer un recours à la force publique.
-Un recours à la force, quoi.",FALSE
+Un recours à la force, quoi.",FALSE,0:21:56:19,0:22:01:03
 92,0:22:04,"Bosco, Doublerum, drissez les escapêches !
-Cranedur, Tetedemort, mirsouflez les artibans !",,Triple-Patte,"Après s'être moqué de la fille de Barbe Rouge, Triple-Patte utilise des expressions tout aussi inconnues au bataillon.",FALSE
-93,0:22:26,Je suis le roi du moooonde !,,"Barbe Rouge, référence",Référence à Titanic quand Jack exulte son bonheur sur la proue.,FALSE
-94,0:22:50,Ou-ouh ! C'est nous ! 👋,,Obélix,,FALSE
+Cranedur, Tetedemort, mirsouflez les artibans !",,Triple-Patte,"Après s'être moqué de la fille de Barbe Rouge, Triple-Patte utilise des expressions tout aussi inconnues au bataillon.",FALSE,0:22:01:03,0:22:10:01
+93,0:22:26,Je suis le roi du moooonde !,,"Barbe Rouge, référence",Référence à Titanic quand Jack exulte son bonheur sur la proue.,FALSE,0:22:23:07,0:22:28:07
+94,0:22:50,Ou-ouh ! C'est nous ! 👋,,Obélix,,FALSE,0:22:49:13,0:22:57:13
 95,0:23:16,Barbe Rouge coule son propre bateau à la hache.,"- Y'a pas une hache là ? Poussez vous, pardon.
 - Mais qu'est-ce qu'ils font ?
 - *Barbe Rouge nargue les gaulois*
 - Tricheurs ! Mauvais joueurs !
 - C'est pas correct.
-- C'est ça coulez vous vous-même ! Ça vaut mieux !","Barbe Rouge, visuel",,FALSE
+- C'est ça coulez vous vous-même ! Ça vaut mieux !","Barbe Rouge, visuel",,FALSE,0:23:15:07,0:23:37:02
 96,0:23:41,"Oui-oui, ce sont de vieilles connaissances.
-Nous allons souvent à la mer ensemble.",,Panoramix,"Jeu de mot entre ""aller à la mer"" = se rendre à la mer et aller dans l'eau/couler.",FALSE
+Nous allons souvent à la mer ensemble.",,Panoramix,"Jeu de mot entre ""aller à la mer"" = se rendre à la mer et aller dans l'eau/couler.",FALSE,0:23:37:22,0:23:43:18
 97,0:23:51,"L'abîme appelle l'abîme.
 *Abyssus abyssum invocat*","- L'abîme appelle l'abîme.
 *Abyssus abyssum invocat*
-- Les expressions latines, ça va aller là c'est bon, hein.","Triple-Patte, latin","Expression figurée de la Bible, qui signifie qu’un malheur en appelle un autre.",FALSE
-98,0:24:01,Prophétie sur la vigie,,visuel,On peut voir une prophétie inscrit sur la vigie représentant le nombre de bateaux qui seront coulés durant le film.,TRUE
+- Les expressions latines, ça va aller là c'est bon, hein.","Triple-Patte, latin","Expression figurée de la Bible, qui signifie qu’un malheur en appelle un autre.",FALSE,0:23:50:14,0:23:56:02
+98,0:24:01,Prophétie sur la vigie,,visuel,On peut voir une prophétie inscrit sur la vigie représentant le nombre de bateaux qui seront coulés durant le film.,TRUE,0:23:57:19,0:24:08
 99,0:24:10,"- Les lumières du port d'Alexandrie...
 - ...Font naufrager les papillons de ma jeunesse.","- C'est quoi cette lueur à l'horizon, Numérobis ?
 - Les lumières du port d'Alexandrie...
-- ...Font naufrager les papillons de ma jeunesse.","Numérobis, Astérix, référence","Référence à la chanson de Claude François ""Alexandrie Alexandra""",FALSE
+- ...Font naufrager les papillons de ma jeunesse.","Numérobis, Astérix, référence","Référence à la chanson de Claude François ""Alexandrie Alexandra""",FALSE,0:24:07:14,0:24:12:22
 100,0:24:33,"- En tout cas j'ai plus d'appétit qu'un Barracuda
-- Ba-ra-cu-daaaaa",,"Obélix, Astérix, référence","Deuxième référence à la même chanson de Claude François ""Alexandrie Alexandra""",FALSE
+- Ba-ra-cu-daaaaa",,"Obélix, Astérix, référence","Deuxième référence à la même chanson de Claude François ""Alexandrie Alexandra""",FALSE,0:24:31:14,0:24:34:14
 101,0:25:24,"Je viens donc vous demander votre accordance, c'est à dire de m'accordifier toute l'aidance.
 Mais l'aidance du verbe aider, pas les danses tien-tien-tien-on-va-danser.",,Numérobis,"Re-suffixé de mots communs ""accord"", ""accorder"", ""aider"".
-Jeu de mot entre ""les danses"" et ""l'aidance"".",FALSE
+Jeu de mot entre ""les danses"" et ""l'aidance"".",FALSE,0:25:23:14,0:25:31:01
 102,0:25:34,Bruit de succion quand Cléopâtre enlève sa tête du trône.,,"Cléopâtre, visuel, audio","Pendant que Cléopâtre écoute Numérobis, on remarque sa tête dans un casque coloré.
-Lorsqu'elle se déplace, un bruit de succion ""tonk"" est entendu, comme si sa tête était parfaitement bien logé dans le casque et que le retirer effectuait un appel d'air.",TRUE
+Lorsqu'elle se déplace, un bruit de succion ""tonk"" est entendu, comme si sa tête était parfaitement bien logé dans le casque et que le retirer effectuait un appel d'air.",TRUE,0:25:32:22,0:25:37:18
 103,0:25:43,Il est joli.,"*Cléopâtre fait les 100 pas, marchant de profil*
-Panoramix : Il est joli.","Panoramix, cliché",Référence à la légende urbaine sur le nez de Cléopâtre.,FALSE
+Panoramix : Il est joli.","Panoramix, cliché",Référence à la légende urbaine sur le nez de Cléopâtre.,FALSE,0:25:41:15,0:25:46:10
 104,0:25:59,Apparition de Guimieukis,"*Apparition de Guimieukis au ralenti*
 *La musique ""Ti Amo"" d'Umberto Tozzi joue en fond*
 *Astérix a les cheveux au vent*
-*Des confettis dorés se mettent à tomber*","Guimieukis, Astérix",,FALSE
+*Des confettis dorés se mettent à tomber*","Guimieukis, Astérix",,FALSE,0:25:57:03,0:26:04:08
 105,0:26:15,"- Si vous finissez à temps, il y aura de l'or pour tout le monde.
 - Ça fait plaisir.
 - Sinon les crocodiles.
-- Ça fait pas plaisir.",,"Cléopâtre, Numérobis",,FALSE
+- Ça fait pas plaisir.",,"Cléopâtre, Numérobis",,FALSE,0:26:14:12,0:26:19:10
 106,0:26:21,"*La raie des fesses de Cléopâtre apparaît*
-Panoramix : Aaah... Oh.",,"Panoramix, visuel, référence","Robe inspirée de la robe que porte Mireille Darc dans ""Le grand blond avec une chaussure noire"".",TRUE
+Panoramix : Aaah... Oh.",,"Panoramix, visuel, référence","Robe inspirée de la robe que porte Mireille Darc dans ""Le grand blond avec une chaussure noire"".",TRUE,0:26:19:10,0:26:24:08
 107,0:26:38,"- Il est mignon le moustachu.
 - Il est un peu vieux quand même.
 - Mais non, l'autre !
 - Ah non un peu gros
-- Tu fais exprès ou quoi ?",,"Guimieukis, Sucettalanis",Sucettalanis pense que Guimieukis parle d'abord de Panoramix puis d'Obélix.,FALSE
+- Tu fais exprès ou quoi ?",,"Guimieukis, Sucettalanis",Sucettalanis pense que Guimieukis parle d'abord de Panoramix puis d'Obélix.,FALSE,0:26:34:10,0:26:40:10
 108,0:26:54,"- Elle a l'air d'avoir un sale caractère, mais elle a un joli nez.
-- Très joli... Un peu retroussé, avec sa petite tresse comme ça sur le côté.",,"Panoramix, Astérix","Dialogue de sourd entre deux admirateurs, Panoramix parle de Cléopâtre là où Astérix parle de Guimieukis.",FALSE
-109,0:27:02,Tu crois que c'est bon du crocodile ?,,Obélix,,FALSE
-110,0:27:16,Ooh ! Une grosse fourmi.,,Obélix,"Obélix ramasse une sauterelle mormone, pas une fourmi.",FALSE
-111,0:27:41,Istou !,,,"Jeu de mot avec ""hisse tout"".",FALSE
-326,0:28:03,Tous les esclaves tombent en tirant une obélisque,,visuel,,FALSE
-330,0:28:17,Salon du boeuf à lutèce,"On a un salon du boeuf une fois tous les 2 ans à Lutèce. On expose tous les nouveaux boeufs. Toutes les nouvelles races de boeufs. C'est extraordinaire. Hein ? Grosse, grosse grosse grosse manifestation.","Astérix, référence","Probablement une référence au salon de l'agriculture qui se tient tous les ans à Paris, anciennement Lutèce.",FALSE
+- Très joli... Un peu retroussé, avec sa petite tresse comme ça sur le côté.",,"Panoramix, Astérix","Dialogue de sourd entre deux admirateurs, Panoramix parle de Cléopâtre là où Astérix parle de Guimieukis.",FALSE,0:26:53:14,0:27:00:05
+109,0:27:02,Tu crois que c'est bon du crocodile ?,,Obélix,,FALSE,0:27:01:14,0:27:07
+110,0:27:16,Ooh ! Une grosse fourmi.,,Obélix,"Obélix ramasse une sauterelle mormone, pas une fourmi.",FALSE,0:27:12:19,0:27:17
+111,0:27:41,Istou !,,,"Jeu de mot avec ""hisse tout"".",FALSE,0:27:40:17,0:27:44:05
+326,0:28:03,Tous les esclaves tombent en tirant une obélisque,,visuel,,FALSE,0:28:02:14,0:28:06:21
+330,0:28:17,Salon du boeuf à lutèce,"On a un salon du boeuf une fois tous les 2 ans à Lutèce. On expose tous les nouveaux boeufs. Toutes les nouvelles races de boeufs. C'est extraordinaire. Hein ? Grosse, grosse grosse grosse manifestation.","Astérix, référence","Probablement une référence au salon de l'agriculture qui se tient tous les ans à Paris, anciennement Lutèce.",FALSE,0:28:14:07,0:28:24:05
 112,0:28:25,Qu'est-ce que vous avez comme boeufs ?,,Obélix,"Jeu de mot entre ""boeufs"" et ""beuh"".
-""Beuh"" est de l'argot pour parler de cannabis.",TRUE
+""Beuh"" est de l'argot pour parler de cannabis.",TRUE,0:28:23:07,0:28:26:12
 113,0:28:37,Comme moi j'étais venu chez vous... En Gaulerie.,,Numérobis,"Numérobis dit ""Gaulerie"" pour parler de la Gaule.
-Mais Gaulerie est aussi le verlan de ""rigole"".",FALSE
+Mais Gaulerie est aussi le verlan de ""rigole"".",FALSE,0:28:35,0:28:44
 114,0:28:50,"- Et tout le sable, là, vous le trouvez où ?
-- C'était là avant, Obélix",,"Obélix, Astérix",,FALSE
-115,0:28:53,"Toutes les pierres là c'est de la Niloise, ça vient du Nil.",,Numérobis,,FALSE
+- C'était là avant, Obélix",,"Obélix, Astérix",,FALSE,0:28:46:14,0:28:51
+115,0:28:53,"Toutes les pierres là c'est de la Niloise, ça vient du Nil.",,Numérobis,,FALSE,0:28:50:14,0:28:57:02
 116,0:29:05,"- Et les fouets, c'est pour faire joli ?
 - Non, enfin euh oui ? Enfin je sais pas personne s'est jamais plaint pour l'instant.","- Je trouve que c'est très violent de fouetter les esclaves.
 - Mais non, ce ne sont pas des esclaves, ce sont des ouvriers qualifiés qui exercent leurs travail de leurs plein gré, et avec de la rémunération en plus.
 - Et les fouets, c'est pour faire joli ?
-- Non, enfin euh oui ? Enfin je sais pas personne s'est jamais plaint pour l'instant.","Panoramix, Numérobis",,FALSE
+- Non, enfin euh oui ? Enfin je sais pas personne s'est jamais plaint pour l'instant.","Panoramix, Numérobis",,FALSE,0:29:03:02,0:29:06:02
 117,0:29:28,Ils sont liés par les liens capillaires.,"Vous voyez, la tradition veut qu'ils s'échangent leurs cheveux.
 Le fouetteur devient tireur et le tireur fouetteur.
-Ils sont liés par les liens capillaires.",Numérobis,,FALSE
+Ils sont liés par les liens capillaires.",Numérobis,,FALSE,0:29:21:07,0:29:29:19
 118,0:29:30,C'est une autre culture.,"Astérix : C'est une autre culture
 Obélix : Tu te souviens Astérix quand j'avais envoyé un menhir sur Caius Bonus, ça devient bien peser à peu près le poids du traîneau de pierre là bas.
 Astérix : Faudrait lui demander, c'est lui qui est le mieux placé pour répondre.
 *Astérix et Obélix explosent de rire*
-Numérobis : C'est une autre culture","Astérix, Obélix",,FALSE
-331,0:29:53,Otis reçoit un papyrus par flèche,,visuel,Utiliser une flèche comme moyen de transport est plutôt inhabituel.,FALSE
-119,0:30:00,"Encore une facture, j'en plus plus de cette papyrasse administrative.",,Otis,"Jeu de mot rapport à la ""paperasse administrative"".",FALSE
-120,0:30:01,"Otis, mon scribe, c'est lui qui scribe tout.",,Numérobis,,FALSE
+Numérobis : C'est une autre culture","Astérix, Obélix",,FALSE,0:29:28:23,0:29:52
+331,0:29:53,Otis reçoit un papyrus par flèche,,visuel,Utiliser une flèche comme moyen de transport est plutôt inhabituel.,FALSE,0:29:52,0:30:01:07
+119,0:30:00,"Encore une facture, j'en plus plus de cette papyrasse administrative.",,Otis,"Jeu de mot rapport à la ""paperasse administrative"".",FALSE,0:29:56:17,0:30:01:07
+120,0:30:01,"Otis, mon scribe, c'est lui qui scribe tout.",,Numérobis,,FALSE,0:30:00:05,0:30:05:05
 121,0:30:10,"Vous savez, je ne crois pas qu'il y ait de bonne ou de mauvaises situations. [...]","Vous savez, moi je ne crois pas qu’il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd'hui avec vous, je dirais que c’est d’abord des rencontres.
 Des gens qui m'ont tendu la main, peut-être à un moment où je ne pouvais pas, où j'étais seul chez moi. Et c'est assez curieux de se dire que les hasards, les rencontres forgent une destinée...
 Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face je dirais, le miroir qui vous aide à avancer.
@@ -297,8 +297,8 @@ Et finalement, quand beaucoup de gens aujourd'hui me disent « Mais comment fais
 Peut-être simplement à me mettre au service de la communauté. À faire le don, le don de soi.",Otis,"Texte improvisé au tournage d'après Édouard Baer :
 ""C'était une impro, et au début les producteurs l'ont prié de couper cette scène. Incompréhensible et trop longue selon eux.
 Et après plusieurs années, c'est le moment dont on me parle le plus.
-Il m'arrive de croiser des jeunes qui l'ont littéralement apprise par coeur.""",FALSE
-332,0:31:13,"Amonbofis et Nexusis arrivent en ""Yellow cab""",,visuel,"Référence aux taxis New-Yorkais, on peut aussi voir des petits drapeaux rouge/vert pour indiquer si le taxi est occupé.",TRUE
+Il m'arrive de croiser des jeunes qui l'ont littéralement apprise par coeur.""",FALSE,0:30:05,0:31:08:12
+332,0:31:13,"Amonbofis et Nexusis arrivent en ""Yellow cab""",,visuel,"Référence aux taxis New-Yorkais, on peut aussi voir des petits drapeaux rouge/vert pour indiquer si le taxi est occupé.",TRUE,0:31:11,0:31:20
 122,0:31:26,Panneau d'annonce des travaux,"HIC MOX
 CAESARIS PALATIUM
 ARCHITECTUS NUMEROBIS
@@ -308,116 +308,116 @@ MOLESTIIS NOS EXCUSENT",latin,"Ici s'élèvera bientôt le
 Palais de César
 Architecte : Numérobis
 Fin des travaux : Cinquante-huit jours
-Veuillez nous excusez pour la gêne occasionné",TRUE
+Veuillez nous excusez pour la gêne occasionné",TRUE,0:31:24,0:31:33
 123,0:31:32,J'ai perdu ma lentille.,,Itinéris,"Un peu plus tôt, on apprend que le repas du midi sera des lentilles.
-Jeu de mot, donc, entre les lentilles alimentaires et les lentilles oculaires.",TRUE
+Jeu de mot, donc, entre les lentilles alimentaires et les lentilles oculaires.",TRUE,0:31:31:14,0:31:36
 124,0:32:16,Monologue d'Amonbofis,"Ouvrières, ouvriers, camarades, sommes nous revenus au temps des pharaons, à trimer sous les coups de fouets ? Et pour qui ? Pour César !
 Naaaan. Qu'il aille se le faire construire à ROME son palais ! Chacun chez soi et les hippopotames seront bien gardés !
 Ipagou oupou, Irrroutchèèn ioutchènémi aoutchép !
 Camarades ! On vous exploite ! On vous crève à la tâche ! Et... Franchement... Voilà.",Amonbofis,"Parodie d'un discours révolutionnaire.
 Référence à l'expression ""Chacun chez soi et les moutons seront bien gardés"".
-Le passage dans une langue étrangère n'a aucun sens.",FALSE
+Le passage dans une langue étrangère n'a aucun sens.",FALSE,0:32:07:22,0:32:17
 321,0:32:57,"- Pour le bruit et les odeurs ?
 - Il y en a que ça peut gêner","- Et juste là [...] une grande cuisine aménagée.
 - Ça donne juste à côté des chambres, c'est peut-être pas l'idéal.
 - Pour le bruit et les odeurs ?
-- Il y en a que ça peut gêner.","Numérobis, Panoramix","Référence à la fameuse réplique de Chirac en 1991, désignant les désagréments causés selon Chirac par certaines personnes immigrées en France.",TRUE
+- Il y en a que ça peut gêner.","Numérobis, Panoramix","Référence à la fameuse réplique de Chirac en 1991, désignant les désagréments causés selon Chirac par certaines personnes immigrées en France.",TRUE,0:32:49:19,0:33:01:12
 125,0:33:08,"- C'est quoi ces gros raisins là ?
 - Ce sont des dattes, Obélix.
 - C'est croquant au milieu.
-- C'est le noyau.",,"Obélix, Astérix","Référence à Obélix parlant d'une ""grosse fourmi"" antérieurement.",FALSE
-126,0:33:30,J'ai rien dit.. J'ai juste dit que c'était la fin de la pause.,,,,FALSE
+- C'est le noyau.",,"Obélix, Astérix","Référence à Obélix parlant d'une ""grosse fourmi"" antérieurement.",FALSE,0:33:03:15,0:33:09
+126,0:33:30,J'ai rien dit.. J'ai juste dit que c'était la fin de la pause.,,,,FALSE,0:33:22:10,0:33:31
 127,0:33:37,Pas content ! Pas content !,"Pas content ! Pas content !
 - S'il vous plaît
 - Oui ?
-- Pas content ! Pas content !",Itinéris,,FALSE
+- Pas content ! Pas content !",Itinéris,,FALSE,0:33:31:07,0:33:46:09
 128,0:33:58,"- Pas content !
 - Oh, ohh...","La foule chante ""Pas content""
 Itinéris fait signe d'arrêter (de profil)
 Un des travailleur continue seul dans une voix ridicule.
-Itinéris l'arrête : ""Oh ohhh""",Itinéris,,FALSE
-129,0:34:10,Vous avez *deux* nouveaux messages.,,Itinéris,Imitation d'une boîte vocale automatisée.,FALSE
+Itinéris l'arrête : ""Oh ohhh""",Itinéris,,FALSE,0:33:56,0:34:01:22
+129,0:34:10,Vous avez *deux* nouveaux messages.,,Itinéris,Imitation d'une boîte vocale automatisée.,FALSE,0:34:08:10,0:34:13:11
 130,0:34:15,"D'abord, vous travaillons plus de 18h par jour ce qui fait 36h en deux jours.
 Nous exigeons de passer à 35h.","- D'abord, vous travaillons plus de 18h par jour ce qui fait 36h en deux jours.
 Nous exigeons de passer à 35h.
 - 35h ça marchera jamais ça va entraîner un tas de complications...","Itinéris, référence","Référence à la réforme des 35h en 2000, 2 ans avant la sortie du film.
-La blague repose aussi sur le fait que la réforme portait sur 35h par semaine, alors qu'Itinéris exige 35h sur 2 jours.",FALSE
+La blague repose aussi sur le fait que la réforme portait sur 35h par semaine, alors qu'Itinéris exige 35h sur 2 jours.",FALSE,0:34:13:05,0:34:24:02
 333,0:34:26,Nous exigeons une diminution d'au moins 50%,"- Nous exigeons une diminution d'au moins 50%
 - Une augmentation vous voulez dire ?
-- Mais non ! Nous exigeons une diminution des coups de fouets.",Itinéris,"En général, on demande une augmentation du salaire.",FALSE
-353,0:34:40,Ça leur fait la tête comme un gros char,,Itinéris,Un char est assez volumineux.,FALSE
-334,0:34:44,Si on pouvait accompagner les lentilles d'un sanglier hmm? Ou deux.,,Obélix,,FALSE
+- Mais non ! Nous exigeons une diminution des coups de fouets.",Itinéris,"En général, on demande une augmentation du salaire.",FALSE,0:34:22:22,0:34:34:02
+353,0:34:40,Ça leur fait la tête comme un gros char,,Itinéris,Un char est assez volumineux.,FALSE,0:34:39:06,0:34:47
+334,0:34:44,Si on pouvait accompagner les lentilles d'un sanglier hmm? Ou deux.,,Obélix,,FALSE,0:34:40:12,0:34:50:03
 131,0:34:57,Itinéris a raison ! De ne pas se laisser faire. (se l'SFR),,"Panoramix, référence","Itineris est une ancienne marque de téléphonie mobile devenue Orange.
-Jeu de mot entre SFR, une autre marque de téléphonie mobile et ""se laisser faire"".",TRUE
-132,0:35:03,Itinéris tire la langue à Numérobis,,"Itinéris, visuel",,FALSE
+Jeu de mot entre SFR, une autre marque de téléphonie mobile et ""se laisser faire"".",TRUE,0:34:54:12,0:34:58:07
+132,0:35:03,Itinéris tire la langue à Numérobis,,"Itinéris, visuel",,FALSE,0:34:59:22,0:35:07:15
 357,0:35:23,Tu es tombé dedans quand tu étais petit,"- C'est prêt.
 - Non Obélix pas toi tu es tombé dedans quand tu étais petit.
-- Bon","Panoramix, Obélix, référence",Running gag de la BD : Obélix est tombé dans la marmite de potion magique quand il était bébé et les effets sont permanents. Panoramix lui refuse donc systématiquement l'accès.,FALSE
-335,0:35:32,Doucement je l'ai peut-être un peu chargée.,,Panoramix,Obélix parle de la potion magique comme d'un joint.,FALSE
+- Bon","Panoramix, Obélix, référence",Running gag de la BD : Obélix est tombé dans la marmite de potion magique quand il était bébé et les effets sont permanents. Panoramix lui refuse donc systématiquement l'accès.,FALSE,0:35:15:22,0:35:25:17
+335,0:35:32,Doucement je l'ai peut-être un peu chargée.,,Panoramix,Obélix parle de la potion magique comme d'un joint.,FALSE,0:35:31:14,0:35:34:22
 133,0:36:04,"Allez Idéfix, fais le beau.","Obélix : Allez Idéfix, fais le beau.
 *Idéfix se lève sur ses pattes arrières.*
 Astérix, en parallèle, soulève un gros rocher. La foule s'exclame.
-Obélix, satisfait : Merci.","Obélix, Idéfix",,FALSE
-134,0:36:25,Idéfix est propulsé en l'air quand la pierre tombe au sol,,"Idéfix, visuel",,TRUE
-135,0:37:35,Le trompettiste malmené réapparaît,,visuel,,FALSE
-136,0:37:43,Pom-pom girls,,visuel,,FALSE
-137,0:37:50,Obélix se déguise en ouvrier pour goûter à la potion magique,,Obélix,,FALSE
-138,0:37:58,"Astérix, Numérobis, Panoramix et Obélix prennent la pose comme pour une couverture d'Album vinyle",,"Astérix, Numérobis, Panoramix, Obélix",,FALSE
+Obélix, satisfait : Merci.","Obélix, Idéfix",,FALSE,0:36:03:21,0:36:08:13
+134,0:36:25,Idéfix est propulsé en l'air quand la pierre tombe au sol,,"Idéfix, visuel",,TRUE,0:36:24:18,0:36:32:03
+135,0:37:35,Le trompettiste malmené réapparaît,,visuel,,FALSE,0:37:34:10,0:37:41:08
+136,0:37:43,Pom-pom girls,,visuel,,FALSE,0:37:42:17,0:37:46:13
+137,0:37:50,Obélix se déguise en ouvrier pour goûter à la potion magique,,Obélix,,FALSE,0:37:49:05,0:37:53:15
+138,0:37:58,"Astérix, Numérobis, Panoramix et Obélix prennent la pose comme pour une couverture d'Album vinyle",,"Astérix, Numérobis, Panoramix, Obélix",,FALSE,0:37:56:04,0:38:01:07
 139,0:38:06,"Ouhécharlis apparaît dans les ""jumelles"" d'Amonbofis",,"visuel, référence","Référence aux fameuses BD ""Où est Charlie ?"" où l'objectif est de retrouver Charlie dans une foule, habillé toujours de la même façon.
-Joué par Louis Leterrier, réalisateur du Transporteur et deuxième assistant réalisateur du film.",FALSE
-140,0:38:07,"Amonbofis met ses mains en forme de jumelles, qui forme le filtre ""jumelle"" qu'on voyait auparavant",,visuel,,FALSE
+Joué par Louis Leterrier, réalisateur du Transporteur et deuxième assistant réalisateur du film.",FALSE,0:38:04:09,0:38:10:09
+140,0:38:07,"Amonbofis met ses mains en forme de jumelles, qui forme le filtre ""jumelle"" qu'on voyait auparavant",,visuel,,FALSE,0:38:06:13,0:38:10:09
 141,0:38:36,"- Oïs, c'est comme ça qu'il s'appelle.
 - Moïs ?
 - Non, Oïs, comme Oïs la saucisse.",,"Numérobis, historique","Référence à l'expression courante ""oh hisse""
-Obélix fait référence au prophète Moïse qui conduit le peuple hébreux hors d'Égypte.",FALSE
-142,0:38:42,ZZ Top s'invite sur le chantier.,,"visuel, référence",Trois barbus étrangement ressemblant au groupe ZZ Top semble faire tourner trois pierres sur leurs parties intime.,FALSE
-336,0:39:11,Je vais vous prendre un imhotep,,Nexusis,"Un peu comme les schtroumpfs, imhotep est utilisé pour de bien diverses raisons au travers du film. Ici, comme une boisson.",FALSE
+Obélix fait référence au prophète Moïse qui conduit le peuple hébreux hors d'Égypte.",FALSE,0:38:34,0:38:39:14
+142,0:38:42,ZZ Top s'invite sur le chantier.,,"visuel, référence",Trois barbus étrangement ressemblant au groupe ZZ Top semble faire tourner trois pierres sur leurs parties intime.,FALSE,0:38:41:13,0:38:45:08
+336,0:39:11,Je vais vous prendre un imhotep,,Nexusis,"Un peu comme les schtroumpfs, imhotep est utilisé pour de bien diverses raisons au travers du film. Ici, comme une boisson.",FALSE,0:39:07:11,0:39:15:21
 143,0:39:47,"Pas de pierres, pas de construction.
 Pas de construction, pas de palais.
-Pas de palais... pas de palais.",,Amonbofis,,FALSE
-337,0:39:58,S'il y a trop tu me ramènes la monnaie,,Amonbofis,Amonbofis envoie Nexusis tuer pour gage comme un parent enverrait son gosse chercher du pain.,FALSE
-144,0:40:12,Sympa ta robe !,,Nexusis,,FALSE
-320,0:40:29,Bruitage de TIE fighter,,"Caius Céplus, référence, audio","Caius Céplus, analogie de Dark Vador, fait le bruit d'un TIE fighter (vaisseau de combat de l'Empire dans Star Wars) lorsqu'il apparaît pour la première fois du film.",TRUE
-145,0:40:42,La machine à écrire sur pierre,"Une dactylographe semble taper un texte prononcé par César sur une tablette, on peut entendre le carillon du retour chariot.",,,FALSE
-146,0:40:44,"J'ai venu, j'ai vu, j'ai vaincu. *Veni, vedi, vici*.",,"César, historique, latin","Faute grammaticale intentionnelle ""j'ai venu"" (je suis venu).",FALSE
+Pas de palais... pas de palais.",,Amonbofis,,FALSE,0:39:39:10,0:39:51:15
+337,0:39:58,S'il y a trop tu me ramènes la monnaie,,Amonbofis,Amonbofis envoie Nexusis tuer pour gage comme un parent enverrait son gosse chercher du pain.,FALSE,0:39:56:22,0:40:01:07
+144,0:40:12,Sympa ta robe !,,Nexusis,,FALSE,0:40:10,0:40:19:14
+320,0:40:29,Bruitage de TIE fighter,,"Caius Céplus, référence, audio","Caius Céplus, analogie de Dark Vador, fait le bruit d'un TIE fighter (vaisseau de combat de l'Empire dans Star Wars) lorsqu'il apparaît pour la première fois du film.",TRUE,0:40:27,0:40:36:04
+145,0:40:42,La machine à écrire sur pierre,"Une dactylographe semble taper un texte prononcé par César sur une tablette, on peut entendre le carillon du retour chariot.",,,FALSE,0:40:40,0:40:45:19
+146,0:40:44,"J'ai venu, j'ai vu, j'ai vaincu. *Veni, vedi, vici*.",,"César, historique, latin","Faute grammaticale intentionnelle ""j'ai venu"" (je suis venu).",FALSE,0:40:35:17,0:40:45
 147,0:40:46,*Caesar* ou César ?,"César : Vous gravez les formules d'usage et vous signez... (avec un accent anglais) *Caeser*.
-La secrétaire : *Caeser* ou César ?",,La secrétaire donne l'impression que l'accent anglais puisse être transmis sur la tablette.,FALSE
-148,0:41:00,"Avé César, respect et robustesse.",,"Caius Céplus, référence","Parodie de Gladiator, où le salut donné est ""Force et honneur""",FALSE
+La secrétaire : *Caeser* ou César ?",,La secrétaire donne l'impression que l'accent anglais puisse être transmis sur la tablette.,FALSE,0:40:40:14,0:40:47
+148,0:41:00,"Avé César, respect et robustesse.",,"Caius Céplus, référence","Parodie de Gladiator, où le salut donné est ""Force et honneur""",FALSE,0:40:58:05,0:41:02:22
 338,0:41:08,"- Veni vidi vici comme d'habitude ?
 - Veni, vidi ça va. Vici c'est un peu prématuré.",,"César, Caius Céplus, latin","Veni, vidi, vici est une célèbre expression latine employée par Jules César en -47.
-Elle peut être traduite par ""Je suis venu, j'ai vu, j'ai vaincu"". ",FALSE
-149,0:41:19,Mafia sur la carte,,visuel,"On peut voir que la carte romaine de l'Europe nomme la Sicile ""Mafia"".",TRUE
+Elle peut être traduite par ""Je suis venu, j'ai vu, j'ai vaincu"". ",FALSE,0:41:07:10,0:41:10:14
+149,0:41:19,Mafia sur la carte,,visuel,"On peut voir que la carte romaine de l'Europe nomme la Sicile ""Mafia"".",TRUE,0:41:17,0:41:26:03
 150,0:41:24,"- Un village peuplé d'irréductible gaulois résiste...
-- ...Encore et toujours à l'envahisseur. Oui, je sais, j'ai déjà entendu ça quelque part.",,"Caius Céplus, César",Référence au monologue d'introduction au début de toutes les bandes dessinées d'Astérix.,FALSE
+- ...Encore et toujours à l'envahisseur. Oui, je sais, j'ai déjà entendu ça quelque part.",,"Caius Céplus, César",Référence au monologue d'introduction au début de toutes les bandes dessinées d'Astérix.,FALSE,0:41:20,0:41:28:17
 151,0:41:38,"*Caius Céplus tripote le nez du buste de César*
 Ah tiens c'est superbe ça... Ils ont même mis les ... à l'intérieur.","""*Caius Céplus tripote le nez du buste de César*
 Ah tiens c'est superbe ça... Ils ont même mis les ... à l'intérieur.""
 César : Non !
 - Pardon
-- Me touchez pas le ...",Caius Céplus,,FALSE
-152,0:41:50,Apparemment impossible n'est pas Gaulois.,,"Caius Céplus, référence","Référence à la citation ""Impossible n'est pas Français"" issue de Napoléon Iᵉʳ",FALSE
+- Me touchez pas le ...",Caius Céplus,,FALSE,0:41:34:07,0:41:46
+152,0:41:50,Apparemment impossible n'est pas Gaulois.,,"Caius Céplus, référence","Référence à la citation ""Impossible n'est pas Français"" issue de Napoléon Iᵉʳ",FALSE,0:41:46,0:41:51:09
 153,0:41:56,"- Dont un druide qui se nomme THX.
 - Panoramix ?
-- Panoramix, oui c'est ça. Je savais que ça sonnait large.",,"Caius Céplus, référence","Le son qui accompagne le logo THX en début de film est connu pour être particulièrement fort, d'où ""ça sonnait large"".",FALSE
+- Panoramix, oui c'est ça. Je savais que ça sonnait large.",,"Caius Céplus, référence","Le son qui accompagne le logo THX en début de film est connu pour être particulièrement fort, d'où ""ça sonnait large"".",FALSE,0:41:55,0:41:58:02
 154,0:42:00,"Et avec lui, un petit rusé et un gros monstrueux.
 Aïkix et Journalduïx. Ou Malcomix ?",,"Caius Céplus, référence","Aïkix = High kicks (coup de pied du haut).
 Journalduïx = Journal du X (revue pornographique inexistante, potentiellement une référence au ""Journal du Hard"" sur canal+).
-Malcomix = Malcolm X (politicien américain, icône de la défense des droits de l'homme afro-américain).",FALSE
+Malcomix = Malcolm X (politicien américain, icône de la défense des droits de l'homme afro-américain).",FALSE,0:41:58,0:42:04:17
 339,0:42:11,Si vis pacem para bellum,,"César, latin","Si vis pacem, para bellum est une autre célèbre expression latine mais pas attribuée à César cette fois-ci !
-Elle signifie, comme dit par César dans la phrase d'après ""Qui veut la paix prépare la guerre"".",FALSE
+Elle signifie, comme dit par César dans la phrase d'après ""Qui veut la paix prépare la guerre"".",FALSE,0:42:07:03,0:42:20:16
 155,0:42:15,Le petit Gaulois a un nom de héros du genre... Jomanix,,"Caius Céplus, référence","Jo Manix est le nom de scène d'une dessinatrice française, notamment connue pour ""Le jour­nal de Jo Manix"".
 Ou bien une référence à Joe Mannix de la série Mannix, par les créateurs de Colombo.
 Si j'avais le scénario original on pourrait différencier car l'orthographe n'est pas la même.
-Alain Chabat si tu lis ça envoie le par mail je t'en supplie !",FALSE
+Alain Chabat si tu lis ça envoie le par mail je t'en supplie !",FALSE,0:42:14:14,0:42:20:16
 340,0:43:18,"- On pourrait faire un C, comme Cléopâtre.
 - *se moquant* C'est le palais de César
 - Ça marche aussi
-- Comment ça ?",,"Panoramix, Numérobis",Ils débattent de la forme du palais. César et Cléopâtre commencent tous deux par C.,FALSE
+- Comment ça ?",,"Panoramix, Numérobis",Ils débattent de la forme du palais. César et Cléopâtre commencent tous deux par C.,FALSE,0:43:17:14,0:43:21:18
 157,0:43:39,"- Il dit qu'il n'a pas pu apporter plus de pierres, les carrières sont épuisés.
 - Il dit qu'il aimerait bien être payé.
 - Je crois qu'il ment.
-- Non non il est très clair, il aimerait bien être payé.",,"Otis, Astérix",Quiproquo sur le sujet de l'accusation d'Astérix,FALSE
-156,0:43:55,Djobi Djoba,,référence,"Le livreur de pierres corrompu et Numérobis qui parlent en égyptien reprennent les paroles de ""Djobi Djoba"" des Gipsy Kings",TRUE
+- Non non il est très clair, il aimerait bien être payé.",,"Otis, Astérix",Quiproquo sur le sujet de l'accusation d'Astérix,FALSE,0:43:37:17,0:43:43:02
+156,0:43:55,Djobi Djoba,,référence,"Le livreur de pierres corrompu et Numérobis qui parlent en égyptien reprennent les paroles de ""Djobi Djoba"" des Gipsy Kings",TRUE,0:43:53:07,0:44:02
 158,0:44:20,"Ketebecé c'est s'ils sont au moins huit. Keteb ouvert, keteb généreux.","- Comment dit-on ""parle"".
 - Si c'est ""parle"" dans le sens ""je parle pas très bien égyptien"" c'est ""medou ene ere comete"".
 - Alors que si c'est ""parle plus lentement"", là c'est ""medou ere keteb"".
@@ -426,62 +426,62 @@ Alain Chabat si tu lis ça envoie le par mail je t'en supplie !",FALSE
 Non, ne dites pas ""ketebece"". Personne ne comprendra. C'est moi qui ai raison.
 ""Keteb"" ouvert, ""Keteb"" généreux.
 - Dites !
-- ""Outchébé""","Otis, Numérobis","Päraodie de débat sur l'utilisation de la langue, très pratiqué dans la culture Française.",FALSE
-159,0:44:50,Obélix enchaîne les baffes sans relâche,,Obélix,,FALSE
-160,0:45:04,"Numérobis traduit : ""Aïe, A-Aïe, Aïe. Il dit Aïe parce qu'il a mal. Aïe, j'aim-j-aim-j'ai mal, j'aim-j'ai mal, p-pas la moustache, il dit pas la moustache"".",,Numérobis,,FALSE
+- ""Outchébé""","Otis, Numérobis","Päraodie de débat sur l'utilisation de la langue, très pratiqué dans la culture Française.",FALSE,0:44:15:03,0:44:23:22
+159,0:44:50,Obélix enchaîne les baffes sans relâche,,Obélix,,FALSE,0:44:48,0:44:57
+160,0:45:04,"Numérobis traduit : ""Aïe, A-Aïe, Aïe. Il dit Aïe parce qu'il a mal. Aïe, j'aim-j-aim-j'ai mal, j'aim-j'ai mal, p-pas la moustache, il dit pas la moustache"".",,Numérobis,,FALSE,0:45:02,0:45:11
 316,0:45:10,"- ""éfinih""
-- Il a fini",,Obélix,,FALSE
+- Il a fini",,Obélix,,FALSE,0:45:09:07,0:45:13:12
 161,0:45:20,"- Otis va vous accompagner pour...
 *Otis fait coucou de la main*
-- Oui pour...",,"Numérobis, Otis",Le silence exprime une gêne : À quoi sert Otis ?,FALSE
-162,0:45:28,"Tiens, ce sont des amulettes.","Tiens, ce sont des amulettes. Des porte-bonheurs qui vous protègeront du mauvais sort.",Numérobis,"Numérobis semble exhiber une boîte d'allumettes, paronyme d'amulettes.",FALSE
-163,0:45:35,Amstérixme,,"Numérobis, astérixme",,FALSE
+- Oui pour...",,"Numérobis, Otis",Le silence exprime une gêne : À quoi sert Otis ?,FALSE,0:45:19:18,0:45:26:17
+162,0:45:28,"Tiens, ce sont des amulettes.","Tiens, ce sont des amulettes. Des porte-bonheurs qui vous protègeront du mauvais sort.",Numérobis,"Numérobis semble exhiber une boîte d'allumettes, paronyme d'amulettes.",FALSE,0:45:25:05,0:45:30:02
+163,0:45:35,Amstérixme,,"Numérobis, astérixme",,FALSE,0:45:33,0:45:42
 164,0:46:22,"- Oh dis donc Obélix qu'est-ce qu'il fait de bruit ton dromadaire !
-- C'est pas mon dromadaire, c'est mon estomac.",,Obélix,,FALSE
+- C'est pas mon dromadaire, c'est mon estomac.",,Obélix,,FALSE,0:46:14:02,0:46:23
 341,0:46:42,"- Moi aussi je pourrais faire des petits ménhirs souvenirs comme ça.
 - Sphinx ?
-- Non mais j'en fait.",,Obélix,,FALSE
+- Non mais j'en fait.",,Obélix,,FALSE,0:46:35:14,0:46:43:06
 165,0:46:48,"Des touristes japonais visitent le Sphinx.
 - Kore te watte. Kawaii desho ka.",,,"On peut traduire ça par :
 ""Regarde ça, n'est-ce pas mignon ?""
-Par ailleurs, le vendeur de Sphinx est interpreté par Momo Debbouze, le frère de Jamel Debbouze qui joue Numérobis.",TRUE
-166,0:47:07,Panoramix se fait sculpter le portrait,,Panoramix,,FALSE
+Par ailleurs, le vendeur de Sphinx est interpreté par Momo Debbouze, le frère de Jamel Debbouze qui joue Numérobis.",TRUE,0:46:46:02,0:46:52:08
+166,0:47:07,Panoramix se fait sculpter le portrait,,Panoramix,,FALSE,0:47:06:09,0:47:13:20
 167,0:47:43,"- Ne me sculptez pas trop court.
 - Non, non, non non. Alors comme ça vous êtes Gaulois ?
 - Oui
 - Qu'est-ce que ça s'est réchauffé ces derniers temps.
-- Ah",,Panoramix,Allusion aux discussions vides de sens tels que l'on peut avoir chez le coiffeur.,FALSE
-168,0:48:25,Descend de ce Se-phinx !,,Astérix,"Virelangue ""Descend de ce Sphinx"" ",FALSE
+- Ah",,Panoramix,Allusion aux discussions vides de sens tels que l'on peut avoir chez le coiffeur.,FALSE,0:47:39:05,0:47:44:10
+168,0:48:25,Descend de ce Se-phinx !,,Astérix,"Virelangue ""Descend de ce Sphinx"" ",FALSE,0:48:23:10,0:48:30:23
 169,0:48:49,"Obélix casse le nez du Sphinx.
-""Oups.""",,"Obélix, historique",Le nez du Sphinx est connu pour être manquant.,FALSE
-170,0:49:24,"C'est un roc, c'est un cap. Que dis-je, c'est un cap. C'est une péninsule.",,"Obélix, référence","Référence au monologue de Cyrano de Bergerac. Gérard Depardieu, l'acteur d'Obélix l'ayant interprété quelques années plus tôt dans le film éponyme.",FALSE
-342,0:49:43,"Et là il me dit: ""Va te faire embaumer chez les Grecques""",,,,FALSE
+""Oups.""",,"Obélix, historique",Le nez du Sphinx est connu pour être manquant.,FALSE,0:48:48:10,0:48:55:17
+170,0:49:24,"C'est un roc, c'est un cap. Que dis-je, c'est un cap. C'est une péninsule.",,"Obélix, référence","Référence au monologue de Cyrano de Bergerac. Gérard Depardieu, l'acteur d'Obélix l'ayant interprété quelques années plus tôt dans le film éponyme.",FALSE,0:49:22:19,0:49:30:05
+342,0:49:43,"Et là il me dit: ""Va te faire embaumer chez les Grecques""",,,,FALSE,0:49:39:22,0:49:44
 171,0:50:29,"T'as pas vu un éclair ?
 [...]
 Je t'avais dit que j'avais vu un éclair, je suis pas fou.",,,"A cause de la vitesse du son bien plus faible que celle de la lumière, la foudre arrive souvent bien avant le tonnerre.
-Le flash causé par la potion d'Astérix est donc vu comme la foudre, et le bruit du Sphinx qui tombe comme le tonnerre.",FALSE
+Le flash causé par la potion d'Astérix est donc vu comme la foudre, et le bruit du Sphinx qui tombe comme le tonnerre.",FALSE,0:50:25:16,0:50:30:06
 172,0:50:40,"Voilà, personne n'aura l'idée de venir faire des fouilles ici.",,"Obélix, historique","L'Égypte est le berceau d'innombrables fouilles archéologiques.
-Le nez du Sphinx n'a cependant pas été retrouvé.",FALSE
-343,0:50:55,Le pâté pyramide est cadré pour faire croire aux véritables pyramides de Khéops,,visuel,"En fait, ça n'est que du sable. Pauvre pâté.",TRUE
-173,0:50:57,Eh mon pâté !,,Nexusis,"L'enfant faisant le pâté est Max Chabat, fils du réalisateur Alain Chabat.",FALSE
+Le nez du Sphinx n'a cependant pas été retrouvé.",FALSE,0:50:37,0:50:41:10
+343,0:50:55,Le pâté pyramide est cadré pour faire croire aux véritables pyramides de Khéops,,visuel,"En fait, ça n'est que du sable. Pauvre pâté.",TRUE,0:50:52:11,0:51:02:14
+173,0:50:57,Eh mon pâté !,,Nexusis,"L'enfant faisant le pâté est Max Chabat, fils du réalisateur Alain Chabat.",FALSE,0:50:55:14,0:51:00:05
 174,0:51:20,"- Tu peux me comprendre, tu as été à ma place jadis.
-- Moi c'est Numérobis",,"Itinéris, Numérobis","""Jadis"", qui signifie ""Il y a longtemps"", sonne comme un nom propre.",FALSE
+- Moi c'est Numérobis",,"Itinéris, Numérobis","""Jadis"", qui signifie ""Il y a longtemps"", sonne comme un nom propre.",FALSE,0:51:15,0:51:21
 175,0:51:38,Itinéris ne capte pas,"*Itinéris ne capte pas*
 Et- l à -- Tu - me ? cap tes ? Et - à ? Parc- que- eh.
-Ça me... Ça me le fait tout le temps en ce moment...","Itinéris, cliché",Allusion aux artéfacts audio fréquents pour les utilisateurs de la compagnie de téléphonie mobile Itineris.,FALSE
+Ça me... Ça me le fait tout le temps en ce moment...","Itinéris, cliché",Allusion aux artéfacts audio fréquents pour les utilisateurs de la compagnie de téléphonie mobile Itineris.,FALSE,0:51:37:14,0:51:45:11
 176,0:51:52,J'ai la dalle.,"- Ça va Obé ?
-- Bah j'ai la dalle",Obélix,"Jeu de mot entre l'expression ""J'ai la dalle"" signifiant ""J'ai faim"" et de littéralement porter une dalle de pierre.",TRUE
+- Bah j'ai la dalle",Obélix,"Jeu de mot entre l'expression ""J'ai la dalle"" signifiant ""J'ai faim"" et de littéralement porter une dalle de pierre.",TRUE,0:51:48,0:51:53
 354,0:51:56,"- Oh ! Comment ont-ils pu bâtir de tels édifices ?
 - En empilant les pierres les unes sur les autres.",,"Panoramix, Obélix","Obélix prend la remarque de Panoramix au pied de la lettre.
-La construction de la pyramide de Khéops aurait duré une vingtaine d'années.",FALSE
+La construction de la pyramide de Khéops aurait duré une vingtaine d'années.",FALSE,0:51:50:16,0:51:57:05
 177,0:52:41,"- Attention les couloirs sont très étroits, il faut pas être trop gros.
-- Personne n'est gros.",,"Nexusis, Obélix",,FALSE
-178,0:53:18,Indicateur lumineux de fermeture de la porte,,visuel,"Le son qui joue quand l'indicateur s'allume est celui de l'indicateur ""attachez vos ceintures"" dans les avions.",TRUE
-179,0:53:26,Ce tombeau sera votre tombeau !,,Nexusis,,FALSE
-358,0:53:39,"C'est une visite gratuite, j'aurais dû me méfier",,Astérix,"Quand c'est gratuit, c'est vous le produit.",FALSE
-180,0:53:53,"Les hiéroglyphes sur les murs disent ""Si vous pouvez lire ça, vous êtes archéologue""",,"visuel, historique",,TRUE
-181,0:54:07,"S'ils s'en sortent de celle là, je jure de plus jamais me raser la tête.",,Nexusis,"Dans une scène ultérieure, on peut observer que Nexusis ne se rase plus la tête !",TRUE
-182,0:54:35,Les tresses d'Obélix se hérissent lorsqu'il prend trois gouttes de potion magique.,,"Obélix, visuel",,FALSE
+- Personne n'est gros.",,"Nexusis, Obélix",,FALSE,0:52:35:17,0:52:42:14
+178,0:53:18,Indicateur lumineux de fermeture de la porte,,visuel,"Le son qui joue quand l'indicateur s'allume est celui de l'indicateur ""attachez vos ceintures"" dans les avions.",TRUE,0:53:16,0:53:25
+179,0:53:26,Ce tombeau sera votre tombeau !,,Nexusis,,FALSE,0:53:24,0:53:29:05
+358,0:53:39,"C'est une visite gratuite, j'aurais dû me méfier",,Astérix,"Quand c'est gratuit, c'est vous le produit.",FALSE,0:53:38:14,0:53:43:05
+180,0:53:53,"Les hiéroglyphes sur les murs disent ""Si vous pouvez lire ça, vous êtes archéologue""",,"visuel, historique",,TRUE,0:53:51,0:54:01:02
+181,0:54:07,"S'ils s'en sortent de celle là, je jure de plus jamais me raser la tête.",,Nexusis,"Dans une scène ultérieure, on peut observer que Nexusis ne se rase plus la tête !",TRUE,0:54:05:05,0:54:12:10
+182,0:54:35,Les tresses d'Obélix se hérissent lorsqu'il prend trois gouttes de potion magique.,,"Obélix, visuel",,FALSE,0:54:33,0:54:42
 183,0:55:12,Obé ? Pano ?  Oui ?   Pano ? Obé ? Non c'est Pano. Astérix ? Oho. Oui je suis là. Oho. Ici. Obélix ?,"Astérix : Obé ?
 Obé : Pano ?
 Pano : Oui ?
@@ -493,197 +493,197 @@ Astérix : Oui je suis là.
 Pano : Oho.
 Obélix : Ici.
 Panoramix : Obélix ?
-",,,FALSE
+",,,FALSE,0:55:10,0:55:19
 184,0:55:39,"- La situation est grave.
-- Très grave, je commence à avoir faim.",,Obélix,,FALSE
+- Très grave, je commence à avoir faim.",,Obélix,,FALSE,0:55:38:07,0:55:41:07
 185,0:56:20,"- Môsieur Astérix sait mieux que tout le monde.
 - Oui peut-être
 - Je signale à Môsieur Astérix qui voulait absolument visiter la pyramide que tout cela ne serait pas arrivé dans un menhir.
 - Ahhh l'argument à deux sesterces !",,"Obélix, Astérix","Les sesterces étaient un type de pièce à l'époque Gauloise.
-Référence à l'expression ""l'argument à deux balles"".",FALSE
-186,0:56:30,"- Qu'est-ce qu'ils font, déjà sable-et-demi. Les pierres sont chargées là il faut y aller !",,Otis,"Otis utilise son sablier comme une montre, ce qui ne paraît pas très pratique.",FALSE
+Référence à l'expression ""l'argument à deux balles"".",FALSE,0:56:12:07,0:56:24:07
+186,0:56:30,"- Qu'est-ce qu'ils font, déjà sable-et-demi. Les pierres sont chargées là il faut y aller !",,Otis,"Otis utilise son sablier comme une montre, ce qui ne paraît pas très pratique.",FALSE,0:56:29:14,0:56:37:02
 187,0:56:45,"- Mea Culpa
-- Mea Culpa moi, ça aurait très bien pu arriver dans un menhir...",,"Astérix, Obélix",,FALSE
+- Mea Culpa moi, ça aurait très bien pu arriver dans un menhir...",,"Astérix, Obélix",,FALSE,0:56:43:22,0:56:49:05
 188,0:57:12,"- Quelqu'un a de quoi rallumer la torche ?
-- Non, non non.. Enfin, moi j'ai la boîte d'amulettes de Numérobis mais ça sert à rien :(",,Astérix,Une boite d'allumettes aurait pu être utile.,FALSE
-189,0:57:42,Benny Hill et balade dans le noir,Nos trois gaulois guidés par Idéfix se baladent dans le noir de la pyramide dans un style dessiné sur la musique de Benny Hill.,"visuel, référence",,FALSE
+- Non, non non.. Enfin, moi j'ai la boîte d'amulettes de Numérobis mais ça sert à rien :(",,Astérix,Une boite d'allumettes aurait pu être utile.,FALSE,0:57:04:02,0:57:13
+189,0:57:42,Benny Hill et balade dans le noir,Nos trois gaulois guidés par Idéfix se baladent dans le noir de la pyramide dans un style dessiné sur la musique de Benny Hill.,"visuel, référence",,FALSE,0:57:40,0:57:51:17
 190,0:58:04,Des fois j'ai l'impression qu'il comprend tout ce que je lui dit.,,Obélix,"Un peu plus tôt, Obélix avait promis une farandole d'os à Idéfix s'ils les aidaient à sortir de la pyramide.
-La farandole d'os apparaissant à l'écran, on peut imaginer qu'Idéfix le comprend effectivement.",FALSE
-344,0:58:20,À cette allure là on sera jamais rentré en Gaule pour le banquet avec les sangliers. Et comme les lentilles ça va bien 5 minutes.,,Obélix,,FALSE
+La farandole d'os apparaissant à l'écran, on peut imaginer qu'Idéfix le comprend effectivement.",FALSE,0:57:59:14,0:58:05
+344,0:58:20,À cette allure là on sera jamais rentré en Gaule pour le banquet avec les sangliers. Et comme les lentilles ça va bien 5 minutes.,,Obélix,,FALSE,0:58:19:10,0:58:25:10
 191,0:58:32,Otis parle du Nil,"Otis : Mais, vous savez, le nil est un fleuve capricieux hein. De temps en temps tumultueux, de temps en temps paresseux.
 Je sais pas si vous connaissez d'ailleurs ce très beau poème égyptien sur le Nil justement.
 Astérix : Noon.
-Otis : Et qui fait : Nil, nil, nil...",Otis,Otis fait référence au poème déclamé au début du film.,FALSE
-192,0:58:50,Otis se casse la gueule,,"Otis, visuel",,FALSE
+Otis : Et qui fait : Nil, nil, nil...",Otis,Otis fait référence au poème déclamé au début du film.,FALSE,0:58:24:05,0:58:39:19
+192,0:58:50,Otis se casse la gueule,,"Otis, visuel",,FALSE,0:58:49:18,0:58:57
 193,0:59:07,"- Hip hip hip !
 - hourra...
 - Hip hip hipeuuuh !
-- hOUrra...",,Barbe Rouge,,FALSE
-194,0:59:18,Bruit de radar de la vision sous-marine d'Obélix,,"Obélix, audio",,TRUE
+- hOUrra...",,Barbe Rouge,,FALSE,0:59:03:12,0:59:08
+194,0:59:18,Bruit de radar de la vision sous-marine d'Obélix,,"Obélix, audio",,TRUE,0:59:17:05,0:59:21:15
 195,0:59:53,"- Hip hip hip ourra eh !
-- Oh ça va hein !",,Barbe Rouge,,FALSE
+- Oh ça va hein !",,Barbe Rouge,,FALSE,0:59:51:17,0:59:54:17
 196,1:00:02,"Numérobis était maintenant certain de respecter les délais.
-Ce qui était très rare dans le bâtiment, à l'époque.",,"voix-off, cliché",,FALSE
-197,1:00:20,"De la fausse potion magique circule sur le chantier, même consistence, même couleur mais ce n'est pas de la potion magique, c'est de la soupe aux potirons !",,Astérix,,FALSE
-198,1:00:24,Trente minutes d'attente à partir de ce point.,,"Astérix, visuel",Cela semble être de véritables hiéroglyphes mais pas sûr de la signification du panneau.,FALSE
+Ce qui était très rare dans le bâtiment, à l'époque.",,"voix-off, cliché",,FALSE,0:59:56:19,1:00:04:10
+197,1:00:20,"De la fausse potion magique circule sur le chantier, même consistence, même couleur mais ce n'est pas de la potion magique, c'est de la soupe aux potirons !",,Astérix,,FALSE,1:00:11:16,1:00:21
+198,1:00:24,Trente minutes d'attente à partir de ce point.,,"Astérix, visuel",Cela semble être de véritables hiéroglyphes mais pas sûr de la signification du panneau.,FALSE,1:00:22,1:00:25
 199,1:00:35,"Parce que j'avais aussi pensé à ""Bande de chacals, vous allez tous crever comme des chacals. Mais ça faisait deux fois chacals. Donc...""
 *Amonbofis attrape Nexusis*
 Quoi ? On dit des chacaux ?",,Nexusis,"""Ce tombeau sera votre tombeau"" contient aussi deux fois ""tombeau"".
 Référence aux pluriels irréguliers des noms finissant en -al.
-Liste connue car martelée en cours de français au primaire au point de devenir un meme.",FALSE
-345,1:00:41,2e caméo des ZZ Top,,visuel,,FALSE
+Liste connue car martelée en cours de français au primaire au point de devenir un meme.",FALSE,1:00:33:02,1:00:37:05
+345,1:00:41,2e caméo des ZZ Top,,visuel,,FALSE,1:00:40:07,1:00:47:21
 200,1:01:08,"Oh je viens d'avoir une idée horrible. Non deux. Même - trois !
-Oh lala, ohlala, olala j'ai plein d'idées oh je suis trop fort hihihihsishisisisi",,Amonbofis,,FALSE
-201,1:02:52,Numérobis se retrouve coincé sur un palmier,Quelqu'un peut m'aider à descendre ?,Numérobis,,FALSE
+Oh lala, ohlala, olala j'ai plein d'idées oh je suis trop fort hihihihsishisisisi",,Amonbofis,,FALSE,1:01:02:07,1:01:09:12
+201,1:02:52,Numérobis se retrouve coincé sur un palmier,Quelqu'un peut m'aider à descendre ?,Numérobis,,FALSE,1:02:50,1:02:56:01
 202,1:03:50,"- Je le finis avec deux mois de retard.
 - D'accord si tu le termines avec quatre mois de retard.
 - Trois. Je peux pas aller moins vite.
-- D'accord va pour trois mais pas moins sinon tu paieras de ta poche des pénalités d'avance.",,"Amonbofis, César",,FALSE
-203,1:04:00,César et Amonbofis n'arrivent pas à se serrer la main.,,"Amonbofis, César",La coutume est de se serrer la main lorsque l'on conclut un marché.,FALSE
-204,1:04:28,"Attention, c'est très très tiède.",,,Un bain peut être trop chaud ou trop froid.,FALSE
-205,1:04:57,"Oula, c'est tiède.",,,Sucettalanis agit comme si le bain était trop chaud ou trop froid.,FALSE
+- D'accord va pour trois mais pas moins sinon tu paieras de ta poche des pénalités d'avance.",,"Amonbofis, César",,FALSE,1:03:45:05,1:03:53:19
+203,1:04:00,César et Amonbofis n'arrivent pas à se serrer la main.,,"Amonbofis, César",La coutume est de se serrer la main lorsque l'on conclut un marché.,FALSE,1:03:58,1:04:07:20
+204,1:04:28,"Attention, c'est très très tiède.",,,Un bain peut être trop chaud ou trop froid.,FALSE,1:04:23:05,1:04:29
+205,1:04:57,"Oula, c'est tiède.",,,Sucettalanis agit comme si le bain était trop chaud ou trop froid.,FALSE,1:04:52:15,1:04:58:12
 206,1:05:08,"- Repas intime : Quarante danseurs, quatre-vingt musiciens et trois cents plats simples.
-- Moi aussi ça me saoule quand il y a trop de monde.",,"Cléopâtre, Sucettalanis",,FALSE
+- Moi aussi ça me saoule quand il y a trop de monde.",,"Cléopâtre, Sucettalanis",,FALSE,1:05:03:10,1:05:12:07
 207,1:05:25,"Mais c'est pas autorisé vous vous rendez pas compte.
-Je me suis renseigné ça reste relativement du porc.",,Numérobis,,FALSE
+Je me suis renseigné ça reste relativement du porc.",,Numérobis,,FALSE,1:05:20:19,1:05:26:02
 208,1:05:54,"Moi je vais rester ici pour raviver le feu, parce que des fois il se déravive.
-*Numérobis souffle sur le feu*",,Numérobis,,FALSE
-209,1:06:00,Schbleh,,,Schbleh,TRUE
-346,1:06:12,Le goûteur malade est tout vert,,visuel,Comme dans la BD.,FALSE
+*Numérobis souffle sur le feu*",,Numérobis,,FALSE,1:05:51:02,1:05:56:10
+209,1:06:00,Schbleh,,,Schbleh,TRUE,1:05:58,1:06:05:23
+346,1:06:12,Le goûteur malade est tout vert,,visuel,Comme dans la BD.,FALSE,1:06:10,1:06:19
 210,1:06:41,"- On est sur le chantier du matin au soir, à travailler, à avaler de la poussière !
-- Des lentilles !",,"Astérix, Obélix",,FALSE
-211,1:06:52,"Vous pensez que si on avait un gâteau comme ça, on l'aurait mangé nous ! Soyons logique.",,Obélix,,FALSE
-359,1:07:05,Et que l'on serve l'apéritif aux crocodiles sacrés,,Cléopâtre,"Cléopâtre parle de l'exécution comme on parlerait d'un cocktail. Le crocodile était sacré dans l'Égypte antique, associé au dieu Sobek.",FALSE
+- Des lentilles !",,"Astérix, Obélix",,FALSE,1:06:38,1:06:43:05
+211,1:06:52,"Vous pensez que si on avait un gâteau comme ça, on l'aurait mangé nous ! Soyons logique.",,Obélix,,FALSE,1:06:49:12,1:06:53:23
+359,1:07:05,Et que l'on serve l'apéritif aux crocodiles sacrés,,Cléopâtre,"Cléopâtre parle de l'exécution comme on parlerait d'un cocktail. Le crocodile était sacré dans l'Égypte antique, associé au dieu Sobek.",FALSE,1:07:03:22,1:07:07:19
 212,1:08:13,"- Coucou je t'aime !
 - C'est formidable d'avoir l'air aussi bête...
 - Coucou oh je t'aime.
-- C'est fin.. c'est fin.",,"Obélix, Astérix",,FALSE
+- C'est fin.. c'est fin.",,"Obélix, Astérix",,FALSE,1:08:06:02,1:08:14
 360,1:08:29:06,Obélix boit tout l'antipoison,"- Une gorgée chacun, c'est un antipoison.
 - Obélix ne bois pas tout le broc, on a dit une gorgée.
 - Ouais, ben, une gorgée ‽
 - Maintenant, Obélix, ouvre la porte du cachot.
-- J'ai pas bu tout le broc.","Obélix, Panoramix, Astérix","Obélix et le partage, c'est une longue histoire. Le gag revient un peu plus tard avec les trois parts de gâteau.",FALSE
+- J'ai pas bu tout le broc.","Obélix, Panoramix, Astérix","Obélix et le partage, c'est une longue histoire. Le gag revient un peu plus tard avec les trois parts de gâteau.",FALSE,1:08:25:05,1:08:37:02
 213,1:08:44,"- Ecartez vous derrière, on sort !
-- Ouais c'est ça. Et puis si en revenant vous pourriez me ramener un paquet de- Aaaaah !",,Obélix,,FALSE
+- Ouais c'est ça. Et puis si en revenant vous pourriez me ramener un paquet de- Aaaaah !",,Obélix,,FALSE,1:08:41:10,1:08:45
 214,1:09:07,"- J'en ai un peu assez de me voir de profil. Tu ne pourrais pas me faire une fois de face ? Comme ca ?
 - Oh moi l'art contemporain...",,Cléopâtre,"Caméo de Claude Berri, le producteur du film.
-Cléopâtre imite la joconde.",FALSE
+Cléopâtre imite la joconde.",FALSE,1:08:59:22,1:09:08
 215,1:09:13,"- Euh s'il vous plaît ?
-*Obélix envoie voler un garde égyptien jusqu'au trône*",,Obélix,,FALSE
+*Obélix envoie voler un garde égyptien jusqu'au trône*",,Obélix,,FALSE,1:09:09:10,1:09:14
 216,1:09:43,"- Obélix ! Coupe trois parts de ce gâteau.
 *Chop* *Chop*
 - On a dit trois parts Obélix.","- Obélix ! Coupe trois parts de ce gâteau.
 *Chop* *Chop*
 - On a dit trois parts Obélix.
-- Une. Deux. Et trois ! *soulève le gâteau*","Astérix, Obélix",,FALSE
-217,1:10:24,Ti amo avec Gimmieukis,,Astérix,,FALSE
+- Une. Deux. Et trois ! *soulève le gâteau*","Astérix, Obélix",,FALSE,1:09:39,1:09:49:10
+217,1:10:24,Ti amo avec Gimmieukis,,Astérix,,FALSE,1:10:23:03,1:10:31
 218,1:10:39,"Cette nuit j'ai fait un rêve. Je gagnais un million de sesterces.
-Et avec j'achetais une paire de chaussures. Trop grandes, puis moches en plus !",,Caius Céplus,,FALSE
-219,1:10:49,Phillipmorris ?,,"Caius Céplus, référence",Référence à la marque de tabac.,FALSE
+Et avec j'achetais une paire de chaussures. Trop grandes, puis moches en plus !",,Caius Céplus,,FALSE,1:10:31:19,1:10:40
+219,1:10:49,Phillipmorris ?,,"Caius Céplus, référence",Référence à la marque de tabac.,FALSE,1:10:48:12,1:10:53:05
 220,1:11:06,"- Cartapus ?
 - Oui ?
-*César bondit de peur*",,"Cartapus, César",,FALSE
+*César bondit de peur*",,"Cartapus, César",,FALSE,1:11:04:07,1:11:09:07
 221,1:11:22,"Quand je regarde comme ça on me voit.
 Si je regarde comme ça on me voit plus.
 On me voit, on me voit plus. On me voit, on me voit plus on me voit plus, on me voit.
 On me voit plus. On me voit plus on me voit. On me voit on me voit plus. On me voit un peu on me voit plus.
-On me voit.",,Cartapus,,FALSE
-222,1:11:47,Là elle était pas en forme en plus.,,Caius Céplus,,FALSE
-223,1:12:06,Oh doucement ! Pas les habits ma mère elle va me tuer !,,Numérobis,,FALSE
-224,1:13:01,Voix-off... vraiment off ?,,visuel,"On peut voir à gauche un caméo de Pierre Tchernia, la voix-off du film et de la majorité des Astérix au cinéma.",TRUE
+On me voit.",,Cartapus,,FALSE,1:11:18:16,1:11:23
+222,1:11:47,Là elle était pas en forme en plus.,,Caius Céplus,,FALSE,1:11:46:14,1:11:50:05
+223,1:12:06,Oh doucement ! Pas les habits ma mère elle va me tuer !,,Numérobis,,FALSE,1:12:04:21,1:12:09:10
+224,1:13:01,Voix-off... vraiment off ?,,visuel,"On peut voir à gauche un caméo de Pierre Tchernia, la voix-off du film et de la majorité des Astérix au cinéma.",TRUE,1:13:00:02,1:13:04:19
 225,1:13:03,"- Je suis maintenant une surfemme.
-- Menubestofplus, met une claque à cette présomptueuse.",,"César, référence",Référence au menu best-of de McDonalds.,FALSE
-226,1:13:21,Cartapus explose Menubestofplus,,"Cartapus, visuel",,FALSE
+- Menubestofplus, met une claque à cette présomptueuse.",,"César, référence",Référence au menu best-of de McDonalds.,FALSE,1:13:01:03,1:13:06:04
+226,1:13:21,Cartapus explose Menubestofplus,,"Cartapus, visuel",,FALSE,1:13:20:01,1:13:24:09
 227,1:13:37,Le sort en est jeté. Alea jacta est.,,"César, latin","Formule latine commune attribuée à Jules César quand il franchit le Rubicon et déclenche la guerre civile.
-Elle signifie qu'on laisse ses chances au hasard.",FALSE
+Elle signifie qu'on laisse ses chances au hasard.",FALSE,1:13:33:17,1:13:38
 228,1:13:40,"César trébuche et se prend des objets.
-- Laissez moi !",,César,,FALSE
+- Laissez moi !",,César,,FALSE,1:13:38,1:13:45:07
 229,1:13:53,"Aussi j'ordonne à Esséfix, Inzemix et Avoranfix de se rendre !",,"Caius Céplus, référence","Esséfix = SFX (Special effects).
 Inzemix = In the mix. (Dans le mix)
-Avoranfix = À vos rangs fixe. Personnage de la serpe d'or.",FALSE
+Avoranfix = À vos rangs fixe. Personnage de la serpe d'or.",FALSE,1:13:52:14,1:14:04:02
 230,1:14:12,"- On peut discuter peut-être !?
-- Nous vous massacrerons jusqu'au dernier.",,"Numérobis, Caius Céplus",,FALSE
+- Nous vous massacrerons jusqu'au dernier.",,"Numérobis, Caius Céplus",,FALSE,1:14:09:12,1:14:17:01
 231,1:14:25,"- Jeanclaudus, préparez nos troupes à l'attaque, et pas de quartiers.
 - Antivirus, je m'appelle Antivirus en fait.
-- Hhhhhaahh",,"Caius Céplus, Antivirus, référence",Jean Claude Dusse est un personnage de la saga Les Bronzés.,FALSE
-232,1:14:39,Un ! Deux ! Trois ! Quatre ! Six ! Euh.. Cinq !,,légionnaire,,TRUE
-233,1:15:11,Tenez ! Allez me le garer à l'ombre.,,Caius Céplus,,FALSE
-234,1:15:24,"Un légionnaire se prend un bouclier dans le bras et dit ""Aie""",,légionnaire,,TRUE
+- Hhhhhaahh",,"Caius Céplus, Antivirus, référence",Jean Claude Dusse est un personnage de la saga Les Bronzés.,FALSE,1:14:23,1:14:26:20
+232,1:14:39,Un ! Deux ! Trois ! Quatre ! Six ! Euh.. Cinq !,,légionnaire,,TRUE,1:14:37:20,1:14:42:01
+233,1:15:11,Tenez ! Allez me le garer à l'ombre.,,Caius Céplus,,FALSE,1:15:07:21,1:15:12:02
+234,1:15:24,"Un légionnaire se prend un bouclier dans le bras et dit ""Aie""",,légionnaire,,TRUE,1:15:22,1:15:30:03
 235,1:15:57,"- C'est pas très bien dessiné.
 - Oui mais là c'est parce que je le fais vite.
-- En même temps moi je l'aurais fait un petit peu plus de profil.",,"Amonbofis, Caius Céplus, Nexusis",,FALSE
-236,1:16:15,Obélix dégage la mouche de sa joue,,"Obélix, référence","Référence à la scène d'ouverture de ""Il était une fois dans l'Ouest""",FALSE
-347,1:16:17,"Effet sonore de ""l'homme qui valait 3 milliards""",,"audio, référence","L'effet métallique est tiré de la série ""L'homme qui valait 3 milliards"" qui a popularisé ce bruitage comme représentation sonore du ralenti.",TRUE
+- En même temps moi je l'aurais fait un petit peu plus de profil.",,"Amonbofis, Caius Céplus, Nexusis",,FALSE,1:15:55:05,1:15:59:10
+236,1:16:15,Obélix dégage la mouche de sa joue,,"Obélix, référence","Référence à la scène d'ouverture de ""Il était une fois dans l'Ouest""",FALSE,1:16:12:20,1:16:22
+347,1:16:17,"Effet sonore de ""l'homme qui valait 3 milliards""",,"audio, référence","L'effet métallique est tiré de la série ""L'homme qui valait 3 milliards"" qui a popularisé ce bruitage comme représentation sonore du ralenti.",TRUE,1:16:16:02,1:16:25:06
 237,1:16:28,Documentaire sur la langouste,"voix-off : Devant la violence de cette scène, nous préférons vous montrer ce document consacré à la langouste.
 voix-off 2 : Contrairement à une idée largement répandue. La langouste se nourrit exclusivement de fruits de mer.
-Ce qui ne l'empêche pas - de rester très humaine.",voix-off,Caméo de Jean-Pierre Bacri qui fait la voix-off du documentaire.,FALSE
-238,1:16:56,Un légionnaire court comme un chien sur la musique de la pub Royal Canin.,,"Idéfix, légionnaire, référence",Cyril Casmèze qui joue le légionnaire est un comédien zoomorphe. Il fait et se vit animal depuis l'enfance.,FALSE
+Ce qui ne l'empêche pas - de rester très humaine.",voix-off,Caméo de Jean-Pierre Bacri qui fait la voix-off du documentaire.,FALSE,1:16:25:05,1:16:36:14
+238,1:16:56,Un légionnaire court comme un chien sur la musique de la pub Royal Canin.,,"Idéfix, légionnaire, référence",Cyril Casmèze qui joue le légionnaire est un comédien zoomorphe. Il fait et se vit animal depuis l'enfance.,FALSE,1:16:54:21,1:17:02:09
 239,1:17:17,"Monsieur s'il vous plaît. On passe pas comme ça comme ça à toute vitesse devant les gens.
-On est pas en romanie ici !",,Numérobis,,FALSE
-240,1:17:50,"Maintenant qu'est-ce qu'on fait ? Euh je demande, hein. En amateur.",,Amonbofis,"Amonbofis se paye la tête de Caius Céplus, qui l'a traité d'amateur avant de subir un échec cuisant.",FALSE
+On est pas en romanie ici !",,Numérobis,,FALSE,1:17:16:14,1:17:21:07
+240,1:17:50,"Maintenant qu'est-ce qu'on fait ? Euh je demande, hein. En amateur.",,Amonbofis,"Amonbofis se paye la tête de Caius Céplus, qui l'a traité d'amateur avant de subir un échec cuisant.",FALSE,1:17:48:08,1:17:52:22
 241,1:18:08,"- Je suis très déçu par votre attitude centurion Affairedrefus.
 - Moi c'est Antivirus.",,"Caius Céplus, référence","Affairedrefus = Affaire Dreyfus.
-Caius Céplus reprend la scène de Star Wars IV : Un Nouvel Espoir où Dark Vador étrangle un général.",FALSE
+Caius Céplus reprend la scène de Star Wars IV : Un Nouvel Espoir où Dark Vador étrangle un général.",FALSE,1:18:04:22,1:18:09
 242,1:18:17,"Quand on l'attaque, l'empire contre-attaque !",,"Caius Céplus, référence","Référence à Star Wars V : L'Empire contre-attaque.
-Scène jouée sur la musique ""La Marche Impériale"" de John Williams, le thème de Dark Vador. Mission Cléopâtre est le premier film ayant eu le droit de l'utiliser.",FALSE
-317,1:18:21,Le casque de Caius Céplus ressemble à celui de Vador,,"Caius Céplus, visuel, référence",,FALSE
+Scène jouée sur la musique ""La Marche Impériale"" de John Williams, le thème de Dark Vador. Mission Cléopâtre est le premier film ayant eu le droit de l'utiliser.",FALSE,1:18:16:14,1:18:22:14
+317,1:18:21,Le casque de Caius Céplus ressemble à celui de Vador,,"Caius Céplus, visuel, référence",,FALSE,1:18:18:13,1:18:27:09
 243,1:18:27,"Aie il m'a fait super mal à la gorge.
-*Bruit strident metallique*",,Antivirus,,FALSE
-244,1:18:45,C'est trop calme. J'aime pas trop beaucoup ça. J'préfère quand c'est un peu trop plus moins calme.,,Numérobis,,FALSE
+*Bruit strident metallique*",,Antivirus,,FALSE,1:18:25,1:18:30:01
+244,1:18:45,C'est trop calme. J'aime pas trop beaucoup ça. J'préfère quand c'est un peu trop plus moins calme.,,Numérobis,,FALSE,1:18:41:09,1:18:55:09
 245,1:19:25,"- C'est joli le paysage.
-- C'est central quoi.",,légionnaire,,FALSE
+- C'est central quoi.",,légionnaire,,FALSE,1:19:18,1:19:26
 246,1:19:32,Quand je baisse le bras...,"- Quand je baisse le bras...
 *La catapulte tire*
-- ... T'envoies.",légionnaire,,FALSE
-348,1:19:56,Deux légionnaires se font un chest bump,,légionnaire,"Pour célébrer leur attaque réussie, deux légionnaires se choquent le torse comme des fans sportifs.",FALSE
+- ... T'envoies.",légionnaire,,FALSE,1:19:31:01,1:19:35:05
+348,1:19:56,Deux légionnaires se font un chest bump,,légionnaire,"Pour célébrer leur attaque réussie, deux légionnaires se choquent le torse comme des fans sportifs.",FALSE,1:19:55:19,1:19:59:10
 319,1:20:10,"Inscriptions sur les boulets
 ""AVEC LES COMPLIMENTS DE CESAR""
-""HOMUS MINUS GROSSUS""",,,"""HOMUS MINUS GROSSUS"" signifie littéralement ""Homme Petit Gros"" est une référence aux bombes atomiques envoyées par les américains lors de la seconde guerre mondiale: ""Little Boy"" et ""Fat Man"".",TRUE
+""HOMUS MINUS GROSSUS""",,,"""HOMUS MINUS GROSSUS"" signifie littéralement ""Homme Petit Gros"" est une référence aux bombes atomiques envoyées par les américains lors de la seconde guerre mondiale: ""Little Boy"" et ""Fat Man"".",TRUE,1:20:09:21,1:20:17
 247,1:20:20,"- Je me demande si c'est vraiment nécessaire toute cette violence
-- Non ça va",,légionnaire,,FALSE
+- Non ça va",,légionnaire,,FALSE,1:20:18,1:20:23:22
 248,1:20:56,"- Si
 - Non
 - Si
-- Non",,"Amonbofis, Caius Céplus",,FALSE
-249,1:21:25,Les boulets sont parfaitement empilés dans les bols de bronze,,visuel,,FALSE
-250,1:21:28,Eh les romains ! Vous êtes des romaines !,,Numérobis,,FALSE
+- Non",,"Amonbofis, Caius Céplus",,FALSE,1:20:54,1:21:05:01
+249,1:21:25,Les boulets sont parfaitement empilés dans les bols de bronze,,visuel,,FALSE,1:21:24:03,1:21:29
+250,1:21:28,Eh les romains ! Vous êtes des romaines !,,Numérobis,,FALSE,1:21:25:17,1:21:31:05
 251,1:21:37,Toujours là ! Gnagnagnagnagna,"*Numérobis envoie des petits cailloux*
 *Un boulet manque de l'écraser*
-- Toujours là ! Gnagnagnagnagna",Numérobis,,FALSE
+- Toujours là ! Gnagnagnagnagna",Numérobis,,FALSE,1:21:34:23,1:21:42:22
 252,1:22:39,"Aaah ! Aaargh ! Je crois que j'ai été touché !
-...Ah non c'est rien.",,Numérobis,"Jamel Debbouze, l'acteur qui joue Numérobis, a perdu l'usage de son bras droit dans un accident de train quand il était jeune.",FALSE
-253,1:22:54,C'est un fameux un mât. Fin comme un oiseau ! Hissez haut !,,"Barbe Rouge, référence","Référence à la chanson de marin ""Santiano"" adapté de l'anglais par Jacques Plante et popularisé par la chanson d'Hugues Aufray.",FALSE
+...Ah non c'est rien.",,Numérobis,"Jamel Debbouze, l'acteur qui joue Numérobis, a perdu l'usage de son bras droit dans un accident de train quand il était jeune.",FALSE,1:22:33:17,1:22:40
+253,1:22:54,C'est un fameux un mât. Fin comme un oiseau ! Hissez haut !,,"Barbe Rouge, référence","Référence à la chanson de marin ""Santiano"" adapté de l'anglais par Jacques Plante et popularisé par la chanson d'Hugues Aufray.",FALSE,1:22:53:14,1:22:59:09
 254,1:23:10,"- Si.
 - Non.
 - Ssssssssssssssss...
-- Hhhhaahhhhhhhhh...",,"Amonbofis, Caius Céplus",,FALSE
-255,1:23:21,Obélix transforme un essai,,Obélix,"Référence au Rugby où, après avoir marqué un essai, l'objectif est de faire passer le ballon entre deux poteaux au dessus de la transversale.",FALSE
-256,1:23:35,La méduse pirate,,référence,"Reproduction du tableau ""Le Radeau de La Méduse"" par Théodore Géricault",TRUE
-257,1:23:39,Je suis médusé,,Barbe Rouge,"Jeu de mot par rapport au tableau ""Le Radeau de La Méduse"" reproduit sur la scène d'avant.",TRUE
-258,1:24:04,"Cours, Astérixme ! Cours !",,"Numérobis, astérixme, référence","Référence à Forrest Gump où Jenny crie à Forrest qui se fait pourchasser ""Cours, Forrest ! Cours !"" ",FALSE
+- Hhhhaahhhhhhhhh...",,"Amonbofis, Caius Céplus",,FALSE,1:23:08,1:23:13:22
+255,1:23:21,Obélix transforme un essai,,Obélix,"Référence au Rugby où, après avoir marqué un essai, l'objectif est de faire passer le ballon entre deux poteaux au dessus de la transversale.",FALSE,1:23:20:04,1:23:24:13
+256,1:23:35,La méduse pirate,,référence,"Reproduction du tableau ""Le Radeau de La Méduse"" par Théodore Géricault",TRUE,1:23:33:03,1:23:38:16
+257,1:23:39,Je suis médusé,,Barbe Rouge,"Jeu de mot par rapport au tableau ""Le Radeau de La Méduse"" reproduit sur la scène d'avant.",TRUE,1:23:33:03,1:23:40:12
+258,1:24:04,"Cours, Astérixme ! Cours !",,"Numérobis, astérixme, référence","Référence à Forrest Gump où Jenny crie à Forrest qui se fait pourchasser ""Cours, Forrest ! Cours !"" ",FALSE,1:24:02,1:24:07:15
 259,1:24:39,"Couloirdebus, Francorus, rattrapez-le !",,"Caius Céplus, référence","Couloirdebus = Couloir de bus
-Francorus = FrancOrusse, une marque de desserts populaire à la fin du XXe siècle",FALSE
-349,1:25:07,Gling gling gling de flipper,,"Amonbofis, audio, visuel",Bruitage et effet visuel d'un flipper après avoir touché un bidule.,FALSE
+Francorus = FrancOrusse, une marque de desserts populaire à la fin du XXe siècle",FALSE,1:24:36:12,1:24:48:11
+349,1:25:07,Gling gling gling de flipper,,"Amonbofis, audio, visuel",Bruitage et effet visuel d'un flipper après avoir touché un bidule.,FALSE,1:25:05:10,1:25:14
 260,1:25:25,Course poursuite,,audio,"Astérix - qui court - vrombit comme une voiture.
-Le bruit du dérapage de char s'apparente à un crissement de pneus.",FALSE
-261,1:25:43,Prépare ton sarcophage.,,Amonbofis,"Référence à l'expression ""Prépare ton cercueil""",FALSE
-262,1:25:55,Combat dans le style Opération Dragon,,référence,"La scène de combat entre Amonbofis et Numérobis suit les codes d'Opération Dragon, le film de Kung-Fu mettant en vedette Bruce Lee.",TRUE
+Le bruit du dérapage de char s'apparente à un crissement de pneus.",FALSE,1:25:23:17,1:25:29:19
+261,1:25:43,Prépare ton sarcophage.,,Amonbofis,"Référence à l'expression ""Prépare ton cercueil""",FALSE,1:25:41:05,1:25:44:05
+262,1:25:55,Combat dans le style Opération Dragon,,référence,"La scène de combat entre Amonbofis et Numérobis suit les codes d'Opération Dragon, le film de Kung-Fu mettant en vedette Bruce Lee.",TRUE,1:25:53:09,1:26:00:14
 350,1:26:02,"*whoosh whoosh*
-Double esquive",,Numérobis,,FALSE
-315,1:26:10,Numérobis craque ses yeux,,Numérobis,,FALSE
-263,1:26:17,La violence du moine n'a jamais fait l'habit du moine.,,Numérobis,"Mélange des deux proverbes ""l'habit ne fait pas le moine"" et ""la violence ne résout rien"".",FALSE
+Double esquive",,Numérobis,,FALSE,1:26:01:02,1:26:04:23
+315,1:26:10,Numérobis craque ses yeux,,Numérobis,,FALSE,1:26:08:11,1:26:16:18
+263,1:26:17,La violence du moine n'a jamais fait l'habit du moine.,,Numérobis,"Mélange des deux proverbes ""l'habit ne fait pas le moine"" et ""la violence ne résout rien"".",FALSE,1:26:15:07,1:26:21:16
 264,1:26:21,"Arrête tes salamalecs, pitoune !",,Amonbofis,"Salamalec  = Saluts, politesses exagérées.
-Pitoune = Personne avenante.",FALSE
-265,1:26:33,Coup de pied arrière,,Numérobis,Une des nombreuses référence à Opération Dragon.,FALSE
+Pitoune = Personne avenante.",FALSE,1:26:19:09,1:26:24:14
+265,1:26:33,Coup de pied arrière,,Numérobis,Une des nombreuses référence à Opération Dragon.,FALSE,1:26:32:11,1:26:38:17
 266,1:26:48,Partie de pierre-feuille-ciseaux.,"- La feuille enveloppe la pierre ?
 - T'es sûr ?
 - Sûr.
-- D'accord.","Numérobis, Amonbofis",,FALSE
+- D'accord.","Numérobis, Amonbofis",,FALSE,1:26:47:01,1:26:55:23
 267,1:27:07,Amonbofis et Numérobis dialoguent en chinois.,"(En mandarin) Amonbofis : ""Lao-Tseu va t'apprendre à reconnaître la force du kung-fu romain""
 (En cantonais) Numérobis : ""Pourquoi tu te mets à parler en mandarin, ne crois pas que je ne comprends pas, je ne suis pas stupide""
 (En mandarin) Amonbofis : ""Viens""","Numérobis, Amonbofis","Référence aux films de kung-fu chinois.
-Amonbofis se met à parler soudainement mandarin tandis que Numérobis répond en cantonais.",FALSE
-268,1:27:24,Je suis Amonbofis et j'ai bouyave Numérobis,,Amonbofis,,FALSE
+Amonbofis se met à parler soudainement mandarin tandis que Numérobis répond en cantonais.",FALSE,1:27:04:03,1:27:11:14
+268,1:27:24,Je suis Amonbofis et j'ai bouyave Numérobis,,Amonbofis,,FALSE,1:27:22:11,1:27:31:19
 269,1:28:02,"Ça va, ça va, imhotep.","- Et la famille ça va ?
 - Ça va, ça va, imhotep.
 - Et toi ça va ?
@@ -692,105 +692,105 @@ Amonbofis se met à parler soudainement mandarin tandis que Numérobis répond e
 - Et ton cousin, qu'est-ce qu'il devient ton cousin ?
 - Ça va, imhotep.
 - Et les affaires, ça marche les affaires ?
-- Imhotep.",,,FALSE
-270,1:28:30,"C'est fréquenté par ici, hein.",,,"Au milieu du désert, 2 chars d'affilés fait foule.",FALSE
-271,1:28:40,Tiens c'est pratique ça.,,Astérix,"En hiéroglyphes, il serait écrit ""Les objets dans le miroir sont plus proches qu'il n'y paraisse"". Référence au miroir où apparaît le T-Rex dans Jurassic Park !",TRUE
+- Imhotep.",,,FALSE,1:28:01:10,1:28:06:16
+270,1:28:30,"C'est fréquenté par ici, hein.",,,"Au milieu du désert, 2 chars d'affilés fait foule.",FALSE,1:28:25:02,1:28:31
+271,1:28:40,Tiens c'est pratique ça.,,Astérix,"En hiéroglyphes, il serait écrit ""Les objets dans le miroir sont plus proches qu'il n'y paraisse"". Référence au miroir où apparaît le T-Rex dans Jurassic Park !",TRUE,1:28:39:08,1:28:48:04
 272,1:28:45,"Ça va, je suis à fond, c'est un deux-chevaux ! Je peux pas aller plus vite !",,"légionnaire, référence","Référence à la ""Citroën 2 CV"", voiture iconique.
-Aussi un jeu de mot rapport aux chevaux-vapeurs et les deux chevaux tirant le char.",TRUE
+Aussi un jeu de mot rapport aux chevaux-vapeurs et les deux chevaux tirant le char.",TRUE,1:28:42:10,1:28:49:03
 273,1:28:55,"Ya ! Ya ! Ya !
-Mais pourquoi on dit tout le temps ""Ya-Ya-Ya !"" ?",,légionnaire,,FALSE
+Mais pourquoi on dit tout le temps ""Ya-Ya-Ya !"" ?",,légionnaire,,FALSE,1:28:47:05,1:28:57:12
 274,1:29:24,"- Et tu vas faire comment pour te relever maintenant ?
-- Comme ça.",,"Numérobis, Amonbofis",,FALSE
+- Comme ça.",,"Numérobis, Amonbofis",,FALSE,1:29:20:01,1:29:33:02
 275,1:29:32,Le lion ne s'associe pas avec le cafard.,"- Le lion ne s'associe pas avec le cafard.
 - Quoi ?
 - Le.. b-b-bon un lion. Ne s'associe pas ! Avec le cafard.
 - Non parce que moi. Moi j'avais compris. Agnon et n'a jamais euh pat e placard.
 Je me disais c'est n'importe quoi quand même.
-- Non c'est pas ça.","Amonbofis, Numérobis",,FALSE
-276,1:29:52,Envolationnn !!,,"Numérobis, visuel, référence",Référence visuelle aux combats dans Dragon Ball Z.,FALSE
+- Non c'est pas ça.","Amonbofis, Numérobis",,FALSE,1:29:31,1:29:50:01
+276,1:29:52,Envolationnn !!,,"Numérobis, visuel, référence",Référence visuelle aux combats dans Dragon Ball Z.,FALSE,1:29:51:18,1:29:55:07
 277,1:30:14,Numérobis vole sur place,,"Numérobis, visuel, référence","Référence au dessin animé ""Bip Bip et Coyote"" où Coyote se retrouve souvent dans la même situation.
-Les effets sont tirés du dessin animé sont d'ailleurs joués pendant la scène.",FALSE
-278,1:30:39,Amonbofis laisse des traces de son passage dans les murs,,"Amonbofis, visuel",,FALSE
-279,1:30:44,Et c'est qui le lion maintenant.,,Numérobis,"Caméo auditif du comédien Thierry Desroses, connu pour doubler Samuel L. Jackson.",FALSE
-280,1:30:47,"Viens me le dire de profil, si t'es un homme !",,"Amonbofis, visuel",,FALSE
-281,1:31:05,En allez vous ! En allez vous !,,légionnaire,"On dit généralement ""Allez vous-en !""",TRUE
-282,1:31:36,Les légionnaires font marche arrière,,"légionnaire, audio",Un bruit faisant penser à une marche arrière peut être entendu,TRUE
-283,1:31:48,"Vous savez, moi, Cléopâtre, je suis dans ses petits papyrus.",,Malococsis,"Référence à l'expression ""Être dans les petits papiers"".",FALSE
+Les effets sont tirés du dessin animé sont d'ailleurs joués pendant la scène.",FALSE,1:30:12,1:30:19:17
+278,1:30:39,Amonbofis laisse des traces de son passage dans les murs,,"Amonbofis, visuel",,FALSE,1:30:38:22,1:30:44:21
+279,1:30:44,Et c'est qui le lion maintenant.,,Numérobis,"Caméo auditif du comédien Thierry Desroses, connu pour doubler Samuel L. Jackson.",FALSE,1:30:41:21,1:30:45:05
+280,1:30:47,"Viens me le dire de profil, si t'es un homme !",,"Amonbofis, visuel",,FALSE,1:30:44:21,1:30:48:20
+281,1:31:05,En allez vous ! En allez vous !,,légionnaire,"On dit généralement ""Allez vous-en !""",TRUE,1:31:03:01,1:31:08:21
+282,1:31:36,Les légionnaires font marche arrière,,"légionnaire, audio",Un bruit faisant penser à une marche arrière peut être entendu,TRUE,1:31:34,1:31:39:13
+283,1:31:48,"Vous savez, moi, Cléopâtre, je suis dans ses petits papyrus.",,Malococsis,"Référence à l'expression ""Être dans les petits papiers"".",FALSE,1:31:43:17,1:31:49
 284,1:32:35,Quiproquo de Malococsis,"- Le chantier devrait être terminé depuis facile, quatre mois !
 - QUOI ?! Ça se passera pas comme ça.
-- Ah merci ma reine de prendre mon problème avec tant d'attention.",,,FALSE
+- Ah merci ma reine de prendre mon problème avec tant d'attention.",,,FALSE,1:32:32:22,1:32:37:19
 285,1:33:38,"- Eh bien ça a l'air de bien se détruire tout ça.
-- Oh ben gentiment ça va se mettre en place, tranquiloum.",,"César, Caius Céplus",,FALSE
-286,1:33:41,"Ça, il faut rendre à vous-même ce qui appartient à vous-même.",,"Caius Céplus, référence","Référence à l'expression ""Il faut rendre à César ce qui appartient à César""",FALSE
-287,1:33:55,Astérix joue au bowling,,"Astérix, audio",Un effet sonore de bowling est joué quand Astérix explose éclate les légionnaires.,FALSE
+- Oh ben gentiment ça va se mettre en place, tranquiloum.",,"César, Caius Céplus",,FALSE,1:33:32:22,1:33:39
+286,1:33:41,"Ça, il faut rendre à vous-même ce qui appartient à vous-même.",,"Caius Céplus, référence","Référence à l'expression ""Il faut rendre à César ce qui appartient à César""",FALSE,1:33:39:17,1:33:43:18
+287,1:33:55,Astérix joue au bowling,,"Astérix, audio",Un effet sonore de bowling est joué quand Astérix explose éclate les légionnaires.,FALSE,1:33:54:13,1:33:58:18
 288,1:33:57,Quand je baisse le bras... *un légionnaire est catapulté*,"- Quand je baisse le bras...
 *La catapulte tire, avec un légionnaire sur le boulet*
 - Ben alors, ben eh...
-- Ben je sais pas... Un reflex...",légionnaire,,FALSE
+- Ben je sais pas... Un reflex...",légionnaire,,FALSE,1:33:55:14,1:33:59:03
 289,1:34:42,"Ce qu'il s'est passé c'est que tu as goûté à la meilleur des potions magiques.
-Coucouuuu.",,Panoramix,,FALSE
-290,1:35:14,"Je suis sorti du palais en courant, sans prendre le temps de me changer.",,Cléopâtre,,FALSE
+Coucouuuu.",,Panoramix,,FALSE,1:34:37:12,1:34:43
+290,1:35:14,"Je suis sorti du palais en courant, sans prendre le temps de me changer.",,Cléopâtre,,FALSE,1:35:13:14,1:35:27:23
 351,1:35:42,"Tu n'es pas en pays conquis ici !
-*Un chien répond en aboyant en fond*",,"Cléopâtre, audio","Cléopâtre crie si fort qu'un chien répond à son appel, comme si on se trouvait dans un quartier résidentiel et non dans le désert.",FALSE
-291,1:36:09,On lève le siège et on répare tes dégâts imbécile !,,César,"Une minute plus tôt, César se félicite d'avoir eu une si bonne idée.",FALSE
-292,1:36:18,Il faudrait quand même pas que Cléopâtre m'ait dans le nez... Qu'elle a joli d'ailleurs.,,César,,FALSE
+*Un chien répond en aboyant en fond*",,"Cléopâtre, audio","Cléopâtre crie si fort qu'un chien répond à son appel, comme si on se trouvait dans un quartier résidentiel et non dans le désert.",FALSE,1:35:38:22,1:35:43:03
+291,1:36:09,On lève le siège et on répare tes dégâts imbécile !,,César,"Une minute plus tôt, César se félicite d'avoir eu une si bonne idée.",FALSE,1:36:07:07,1:36:12:17
+292,1:36:18,Il faudrait quand même pas que Cléopâtre m'ait dans le nez... Qu'elle a joli d'ailleurs.,,César,,FALSE,1:36:15:02,1:36:19
 293,1:36:41,"C'est incroyable de penser que chacun de ces romains va laisser dans le sable une sorte de tra-
 *Numérobis met Otis K.O.*","- C'est incroyable de penser que chacun de ces romains va laisser dans le sable une sorte de tra-
 *Numérobis met Otis K.O.*
 - Nan mais excuse moi mais là c'est parti tout seul.
-- Non non ça va","Otis, Numérobis",,FALSE
+- Non non ça va","Otis, Numérobis",,FALSE,1:36:36:22,1:36:48:12
 294,1:37:46,"- Je me dis que ça peut traîner un peu tu vois.
-- Ouais, pas trop quand même. Que ça ne devienne pas une habitude dans le bâtiment.",,"Numérobis, Panoramix, cliché",,FALSE
-295,1:38:00,Domus Quietus Domus,,"visuel, latin","Inscrit sur la façade du palais Domus Quietus Domus serait un équivalent latin de ""Home, Sweet Home"" (Foyer, doux foyer), la locution traditionnelle anglaise évoquant la douceur du foyer domestique.",TRUE
+- Ouais, pas trop quand même. Que ça ne devienne pas une habitude dans le bâtiment.",,"Numérobis, Panoramix, cliché",,FALSE,1:37:45:14,1:37:51:04
+295,1:38:00,Domus Quietus Domus,,"visuel, latin","Inscrit sur la façade du palais Domus Quietus Domus serait un équivalent latin de ""Home, Sweet Home"" (Foyer, doux foyer), la locution traditionnelle anglaise évoquant la douceur du foyer domestique.",TRUE,1:37:58:09,1:38:05:13
 296,1:38:30,"- Qu'on le couvre d'or.
-- Ouais c'est ça qu'on avait prévu à la base. Qu'on me couvre d'or !",,Numérobis,,FALSE
+- Ouais c'est ça qu'on avait prévu à la base. Qu'on me couvre d'or !",,Numérobis,,FALSE,1:38:28:17,1:38:31:17
 297,1:39:08,Le sans-efforceur,"- C'est l'invention de mon ami Otis, ça s'appelle le sans-efforceur.
 - Oui parce que c'est un nom qu'on a trouvé car on s'est aperçu que c'était une machine qui permettait de monter et descendre les gens sans effort.
 - Parle pour toi !
 - Ou, la ! Ça fait des petits guilis au ventre, quand ça s'arrête.","Otis, Numérobis, Barbe Rouge, César, référence","Otis, le nom du personnage qui invente le sans-efforceur, est aussi une grande marque d'ascenseurs !
-On peut entendre une musique d'ascenseur en fond.",FALSE
+On peut entendre une musique d'ascenseur en fond.",FALSE,1:39:00:07,1:39:25:15
 298,1:40:09,Qu'est-ce qu'ils font à ton avis Cléopâtre et Césame ?,"- Qu'est-ce qu'ils font à ton avis Cléopâtre et Césame ?
-- Ça doit pas être bien méchant","Numérobis, astérixme",,FALSE
-361,1:40:47,"Et, une fois n'est pas coutume. Le traditionnel banquet qui clôt chaque aventure d'Astérix n'eut pas lieu en Gaule, mais en Égypte.","Et, une fois n'est pas coutume, le traditionnel banquet qui clôt chaque aventure d'Astérix n'eut pas lieu en Gaule,  mais en Égypte.","voix-off, référence","Chaque album d'Astérix se termine par le traditionnel banquet au village, sous les étoiles, souvent avec Assurancetourix ligoté pour l'empêcher de chanter. Le narrateur souligne l'exception.",FALSE
+- Ça doit pas être bien méchant","Numérobis, astérixme",,FALSE,1:40:07:07,1:40:10:12
+361,1:40:47,"Et, une fois n'est pas coutume. Le traditionnel banquet qui clôt chaque aventure d'Astérix n'eut pas lieu en Gaule, mais en Égypte.","Et, une fois n'est pas coutume, le traditionnel banquet qui clôt chaque aventure d'Astérix n'eut pas lieu en Gaule,  mais en Égypte.","voix-off, référence","Chaque album d'Astérix se termine par le traditionnel banquet au village, sous les étoiles, souvent avec Assurancetourix ligoté pour l'empêcher de chanter. Le narrateur souligne l'exception.",FALSE,1:40:46:14,1:40:56:23
 299,1:41:05,"- C'est bon ces grosses crevettes, là.
 - Homard.
-- Obélix.",,Obélix,Obélix pense que l'égyptien déclare son nom.,FALSE
+- Obélix.",,Obélix,Obélix pense que l'égyptien déclare son nom.,FALSE,1:40:56:23,1:41:06:21
 300,1:41:16,"Et là le mec lui dit, c'est le ""Phare à On"".
 Parce qu'il s'appelle ""On"" le mec !","Et là le mec lui dit, c'est le ""Phare à On"".
 Parce qu'il s'appelle ""On"" le mec !
 Le mec s'appelle ""On"". Il lui dit c'était c'était le et comme il avait un phare.
 Il lui dit c'est le f- c'est le f- c'est le c'est le phare à On. St-s-s-st Ha. ha...
 Le mec s'appelle ""On"". Il lui, Il lui dit, il lui dit c'est, il lui dit c'est son phare. Ben c'est le c'est le phare à On !
-Comme comme le phare à on qu'est qu'est euh euh le chef dès le chef le chef de nous !",Numérobis,,FALSE
+Comme comme le phare à on qu'est qu'est euh euh le chef dès le chef le chef de nous !",Numérobis,,FALSE,1:41:10:22,1:41:26:14
 301,1:42:09,"- Comme tes tresses, qui soit-dit en passant sont bien plus belles que celles d'Obélix.
 - Merci, tu sais trouver les mots pour parler aux femmes.
 - Oh c'est une tradition chez nous. C'est la Gaule.",,"Astérix, Guimieukis, cliché","Cliché international du Français séducteur.
 Par ailleurs, ""Avoir la gaule"" est une expression signifiant avoir une érection.
-",FALSE
-302,1:42:49,Et Gilles qui n'a pas pu venir,,visuel,,TRUE
-303,1:43:03,"Bonsoir, est-ce que vous pouvez me donner votre nom s'il vous plaît ?",,,Caméo de Matthieu Kassovitz qui joue le physionomiste et ne reconnaît pas César.,FALSE
+",FALSE,1:42:07:10,1:42:10:14
+302,1:42:49,Et Gilles qui n'a pas pu venir,,visuel,,TRUE,1:42:47,1:42:56
+303,1:43:03,"Bonsoir, est-ce que vous pouvez me donner votre nom s'il vous plaît ?",,,Caméo de Matthieu Kassovitz qui joue le physionomiste et ne reconnaît pas César.,FALSE,1:42:58:10,1:43:04
 304,1:43:35,"Non, j'ai un Cétaparis, un Cénesaindenis..",,référence,"Cétaparis = C'est à Paris.
-Cénesaindenis = Seine-Saint-Denis, le département.",FALSE
+Cénesaindenis = Seine-Saint-Denis, le département.",FALSE,1:43:33,1:43:42
 305,1:44:00,"Monsieur, écoutez là, je travaille.","Monsieur, écoutez là, je travaille.
-*Laisse passer divers convives sans vérifier leur nom*",,,FALSE
+*Laisse passer divers convives sans vérifier leur nom*",,,FALSE,1:43:58,1:44:07
 306,1:44:16,"*(chuchotant)* Connard de merde, la prochaine fois je te grille.","- Vous êtes à la table de la reine.
 - Bah oui.
-- *(chuchotant)* Connard de merde, la prochaine fois je te grille.",,,FALSE
+- *(chuchotant)* Connard de merde, la prochaine fois je te grille.",,,FALSE,1:44:14,1:44:23
 307,1:44:41,Musique de fin organisée par Snoop Dogg.,,,"Snoop Dogg accepte de produire la musique du générique sous l'incitation de ses enfants, fans d'Astérix. Il interprète donc aux côtés de Jamel la chanson Mission Cleopatra.
 « Jamel est parti enregistrer pendant dix jours à Los Angeles. Le courant est très bien passé entre eux. Snoop aurait même déclaré à propos de Jamel : « he’s my brother ! ». J’avais donné des directives concernant les paroles : la chanson devait parler d’amour et de paix. »
-- Alain Chabat",TRUE
-309,1:45:10,"Dans le Sud de la Gaule, il y a une ville ""Avignon"" qui a un très joli pont d'ailleurs le pont d'Avignon.",,Panoramix,"Sur le pont d'Avignon. L'on y danse, l'on y danse. Sur le pont d'Avignon. L'on y danse tous en rond.",FALSE
+- Alain Chabat",TRUE,1:44:39,1:44:48
+309,1:45:10,"Dans le Sud de la Gaule, il y a une ville ""Avignon"" qui a un très joli pont d'ailleurs le pont d'Avignon.",,Panoramix,"Sur le pont d'Avignon. L'on y danse, l'on y danse. Sur le pont d'Avignon. L'on y danse tous en rond.",FALSE,1:45:06:19,1:45:15:05
 308,1:45:12,"Au fait ma reine, on dit ""À Alexandrie"" ou ""En Alexandrie"" ?",,Panoramix,"Référence au débat ""en Avignon ou à Avignon"".
-Référence à la voix-off au début du film qui parle de la même question.",TRUE
+Référence à la voix-off au début du film qui parle de la même question.",TRUE,1:45:10,1:45:19
 310,1:45:25,"- Vous êtes une courtisane ?
-- Oui, enfin je fais d'autres trucs avant. Je peux même parler sans bouger les lèvres.",,"Caius Céplus, Sucettalanis",,FALSE
+- Oui, enfin je fais d'autres trucs avant. Je peux même parler sans bouger les lèvres.",,"Caius Céplus, Sucettalanis",,FALSE,1:45:20:05,1:45:26
 311,1:45:50,Otis fait le magicien,"Chaque partie de ton visage recèle une beauté caché.
 De ton oreille surgit une rose.
-Dans ton nez un sphinx.",Otis,,FALSE
+Dans ton nez un sphinx.",Otis,,FALSE,1:45:44:07,1:45:51
 312,1:46:12,"Le mec. Il lui dit: ""C'est le phare à on"". On c'est son, On c'est son prénom.
 Et c'est c- Et c'est son phare. Donc c'est ça, ça lui a, c'est son appartenance. C'est son appartenance, le phare.
-C'est le phare à On, comme il s'appelle On.",,Numérobis,,FALSE
-362,1:47:11,Walk Like an Egyptian des Bangles au générique.,,"référence, audio",Tube des Bangles sorti en 1986.,FALSE
+C'est le phare à On, comme il s'appelle On.",,Numérobis,,FALSE,1:46:10:17,1:46:22:22
+362,1:47:11,Walk Like an Egyptian des Bangles au générique.,,"référence, audio",Tube des Bangles sorti en 1986.,FALSE,1:47:10:14,1:47:26:22
 313,1:47:39,Remerciements de fin,"Et moi, je dis :
 Merci à mes parents et ma famille.
 Merci et Respect à René Goscinny et Albert Uderzo, les créateurs.
@@ -801,5 +801,5 @@ Merci à Claude B, Nathalie R, Richard P, Pierre G, Patrick B, Roberto K, Mon Lo
 Chanchan et Dom (on a fait les Nuls ensemble), Stan, Béa et Cyril (quel zen, quelle patience!), Phil Chan', Stef, Thomas, Anne, Thierry, Gaël et toute la Duboi team, Kader et sa voix de braise, Melja, Gégé, Nini et Luc, Aruna, Piano, Joey et Spank pour la vitesse de réaction (trop fort), Seb F, Axelle, ma Choune (qui fait fi), mon Besnehard que j'aime, Bruno et Pierre à qui on pense, Snoop Dogg, George, Mandoche, Missiund, Fatimouze, Agathe, Julien et tout le Chez Wam Crew, Thierry Quellier, Manu Montamat, ""Les Versaillais"" (la classe), Mia et Michel, Pierre Tchernia, Gaston, Les Lebon's Bros & les gars/filles du son, Doofn, Lucie, Louise et Max,
 tous les enfants du tournage, tous les enfants en général d'ailleurs, Tatine et tous les Français, Marocains, Maltais, Italiens, Anglais, Suédois, Américains, Oranais, Vietnamiens, Métèques, Vikings et Martiens
 qui ont participé au film d'une manière ou d'une autre. Peace.
-Et merci aux gens qui lisent les génériques jusqu'au bout (mais il faut rentrer maintenant, vous n'avez pas un chez vous ?) Imhotep.",,"Alain Chabat, le réalisateur du film, a des remerciements.",TRUE
-314,1:47:56,Au secours !,,Amonbofis,,FALSE
+Et merci aux gens qui lisent les génériques jusqu'au bout (mais il faut rentrer maintenant, vous n'avez pas un chez vous ?) Imhotep.",,"Alain Chabat, le réalisateur du film, a des remerciements.",TRUE,1:47:37,1:47:46
+314,1:47:56,Au secours !,,Amonbofis,,FALSE,1:47:53:10,1:48:03
