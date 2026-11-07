@@ -29,9 +29,14 @@ import urllib.parse
 
 DATA = "data.csv"
 FPS = 24  # frame rate of movie.mkv; a timecode can end with :ff to pick a frame, like in prepare.py
+CLIP_START, CLIP_END = "Début extrait", "Fin extrait"  # clip bounds; "Timecode" is the screenshot
 CLIPS_KEPT = 40  # encoded clips cached on disk
 MAX_CLIP = 120  # seconds
 TIMECODE = re.compile(r"^\d+:\d\d:\d\d(:\d\d?)?$")
+
+
+def valid_timecode(timecode):
+    return bool(TIMECODE.match(timecode)) and (timecode.count(":") < 3 or int(timecode.split(":")[3]) < FPS)
 
 
 def to_seconds(timecode):
@@ -107,8 +112,10 @@ def save(fields, rows):
     if len(ids) != len(set(ids)):
         raise ValueError("deux blagues ont le même ID")
     for r in rows:
-        if not TIMECODE.match(r["Timecode"]) or (r["Timecode"].count(":") == 3 and int(r["Timecode"].split(":")[3]) >= FPS):
-            raise ValueError("timecode invalide pour #%s : %r" % (r["ID"], r["Timecode"]))
+        for col in ("Timecode", CLIP_START, CLIP_END):
+            tc = r.get(col, "")
+            if (tc or col == "Timecode") and not valid_timecode(tc):
+                raise ValueError("%s invalide pour #%s : %r" % (col, r["ID"], tc))
     rows = sorted(rows, key=lambda r: to_seconds(r["Timecode"]))  # stable: same-second jokes keep their order
     with open(DATA + ".tmp", "w", encoding="utf8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
@@ -278,6 +285,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         with self.lock:
             fields, old = load()
+            # A page loaded before a column existed doesn't send it: keep its current value.
+            old_by_id = {r["ID"]: r for r in old}
+            for r in body["rows"] + body.get("drafts", []):
+                for k in fields:
+                    if k not in r and r["ID"] in old_by_id:
+                        r[k] = old_by_id[r["ID"]][k]
             if "drafts" in body:
                 published, drafts = body["rows"], body["drafts"]
             else:
@@ -347,6 +360,8 @@ PAGE = r"""<!doctype html>
   .seg.at { background: #fff4e0; }
   #media { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
   #media img, #media video { width: 420px; background: #000; min-height: 100px; }
+  #frame { transition: opacity .1s; }
+  #frame.loading { opacity: .45; }
   button { padding: 5px 10px; cursor: pointer; white-space: nowrap; }
   .row { flex-wrap: wrap; }
   #save { font-weight: bold; }
@@ -398,7 +413,8 @@ PAGE = r"""<!doctype html>
 <script>
 const F = {title: "Titre/Citation", extended: "Citation étendue (optionnel)", tags: "Tags", explanation: "Explication"};
 let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
-let clipCustom = false;  // the user moved the clip's start/end, so they no longer follow the timecode
+const CS = "Début extrait", CE = "Fin extrait";  // clip bounds; "Timecode" is only the screenshot
+let frameToken = 0;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const FPS = 24;  // a timecode can end with :ii, the frame (0 to 23) within the second
@@ -454,8 +470,12 @@ function select(r) {
   $("form").hidden = !r; $("empty").hidden = !!r;
   if (!r) return render();
   history.replaceState(null, "", "#" + encodeURIComponent(r.ID));
-  clipCustom = false;
   $("sharemsg").textContent = "";
+  if (!validTc(r[CS] || "") || !validTc(r[CE] || "")) {
+    r._autoClip = true;  // no clip bounds yet: -4 s / +15 s around the screenshot, until edited
+    defaultClip(r);
+  }
+  $("cs").value = r[CS]; $("ce").value = r[CE];
   $("id").textContent = "#" + r.ID + (r._draft ? " (brouillon)" : "");
   $("draft").checked = !!r._draft;
   $("tc").value = r.Timecode;
@@ -493,14 +513,39 @@ function prefetch() {
   for (const d of [-24, -1, 1, 24]) if (f + d >= 0) new Image().src = "frame?t=" + (f + d) / FPS;
 }
 
+function defaultClip(r) {
+  if (!validTc(r.Timecode)) return;
+  const f = frames(r.Timecode);
+  r[CS] = fmtFrames(Math.max(0, f - 4 * FPS));
+  r[CE] = fmtFrames(f + 15 * FPS);
+}
+
+// Name of the image the site already generated for a timecode, like prepare.py: 585 or 585f12.
+const imageName = (tc) => { const f = frames(tc); return Math.floor(f / FPS) + (f % FPS ? "f" + (f % FPS) : ""); };
+
+// Shows the frame at tc. The previous image stays, faded, until the new one is ready; at the joke's
+// own timecode the site's already generated image shows at once while the exact frame loads.
+function setFrame(tc) {
+  const token = ++frameToken, img = $("frame");
+  let exactShown = false;
+  img.classList.add("loading");
+  const exact = new Image();
+  exact.onload = () => { if (token === frameToken) { exactShown = true; img.src = exact.src; img.classList.remove("loading"); } };
+  exact.src = "frame?t=" + secs(tc);
+  if (sel && tc === sel.Timecode) {
+    const quick = new Image();
+    quick.onload = () => { if (token === frameToken && !exactShown) { img.src = quick.src; img.classList.remove("loading"); } };
+    quick.src = "../images/" + imageName(tc) + "_previewxl.jpg";
+  }
+}
+
 function showFrame() {
   showTranscript();
   clearTimeout(frameTimer);
-  frameTimer = setTimeout(() => { if (validTc($("tc").value)) { $("frame").src = "frame?t=" + secs($("tc").value); prefetch(); } }, 250);
-  if (!clipCustom && validTc($("tc").value)) {
-    const f = frames($("tc").value);
-    $("cs").value = fmtFrames(Math.max(0, f - 4 * FPS));
-    $("ce").value = fmtFrames(f + 15 * FPS);
+  frameTimer = setTimeout(() => { if (validTc($("tc").value)) { setFrame($("tc").value); prefetch(); } }, 150);
+  if (sel && sel._autoClip) {
+    defaultClip(sel);
+    $("cs").value = sel[CS]; $("ce").value = sel[CE];
   }
   prepareClip();
 }
@@ -541,12 +586,18 @@ document.querySelectorAll("[data-step]:not([data-clip])").forEach((b) => b.oncli
   $("tc").value = fmtFrames(Math.max(0, frames($("tc").value) + Number(b.dataset.step)));
   edit("Timecode", $("tc").value); sortRows(); render(); showFrame();
 });
-for (const id of ["cs", "ce"]) $(id).oninput = () => { clipCustom = true; prepareClip(); };
+function editClip(id) {
+  if (!validTc($(id).value)) return;
+  sel._autoClip = false;
+  edit(id === "cs" ? CS : CE, $(id).value);
+  prepareClip();
+}
+for (const id of ["cs", "ce"]) $(id).oninput = () => editClip(id);
 document.querySelectorAll("[data-clip]").forEach((b) => b.onclick = () => {
   const input = $(b.dataset.clip);
   if (!validTc(input.value)) return;
   input.value = fmtFrames(Math.max(0, frames(input.value) + Number(b.dataset.step)));
-  clipCustom = true; prepareClip();
+  editClip(b.dataset.clip);
 });
 $("play").onclick = () => {
   const c = clipRange();
@@ -594,7 +645,7 @@ $("delete").onclick = () => {
 async function doSave() {
   if (!dirty.size) return;
   // Drafts go to the drafts file, the rest to data.csv (and git).
-  const strip = ({_draft, ...r}) => r;
+  const strip = ({_draft, _autoClip, ...r}) => r;
   const body = {rows: rows.filter((r) => !r._draft).map(strip), drafts: rows.filter((r) => r._draft).map(strip)};
   const res = await fetch("api/save", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
   const out = await res.json();
