@@ -21,6 +21,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import tempfile
 import threading
@@ -29,6 +30,7 @@ import urllib.parse
 DATA = "data.csv"
 FPS = 24  # frame rate of movie.mkv; a timecode can end with :ff to pick a frame, like in prepare.py
 CLIPS_KEPT = 40  # encoded clips cached on disk
+MAX_CLIP = 120  # seconds
 TIMECODE = re.compile(r"^\d+:\d\d:\d\d(:\d\d?)?$")
 
 
@@ -65,17 +67,17 @@ class Movie:
                                           "-vf", "scale=640:-2", "-f", "image2", "-c:v", "mjpeg", "pipe:1"])
         return self.frames[t]
 
-    def clip(self, t):
-        """Path to an mp4 from 4 s before to 15 s after t, encoded once (~2.5 s) and cached.
+    def clip(self, start, end):
+        """Path to an mp4 of the movie from start to end (seconds), encoded once (~2.5 s for 19 s) and cached.
         The index is at the front (faststart), so the browser knows the duration at once and can seek."""
-        key = "%.3f" % t
+        key = "%.3f-%.3f" % (start, end)
         path = os.path.join(self.clip_dir, key + ".mp4")
         with self.clip_locks_lock:
             lock = self.clip_locks.setdefault(key, threading.Lock())
         with lock:  # a click during the background preparation waits for it instead of encoding twice
             if os.path.exists(path):
                 return path
-            args = ["-ss", "%.3f" % max(0, t - 4), "-t", "19", "-i", "{movie}", "-vf", "scale=640:-2",
+            args = ["-ss", "%.3f" % start, "-t", "%.3f" % (end - start), "-i", "{movie}", "-vf", "scale=640:-2",
                     "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2",
                     "-movflags", "+faststart", "-f", "mp4", "-y"]
             with open(path + ".part", "wb") as out:
@@ -173,6 +175,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
     transcript = []
     use_git = False
     rebuild = None
+    share_dir = None
+    share_url = ""
     lock = threading.Lock()
 
     def send(self, body, content_type, status=200, cache=False):
@@ -237,15 +241,36 @@ class Handler(http.server.BaseHTTPRequestHandler):
                                       "transcript": self.transcript}), "application/json")
             elif url.path == "/frame":
                 self.send(self.movie.frame(float(query["t"][0])), "image/jpeg", cache=True)
-            elif url.path == "/clip":
-                self.send_file(self.movie.clip(float(query["t"][0])), "video/mp4")
-            elif url.path == "/prepare":  # encode the clip in the background, before the click
-                threading.Thread(target=self.movie.clip, args=(float(query["t"][0]),), daemon=True).start()
-                self.send("", "text/plain")
+            elif url.path in ("/clip", "/prepare", "/share"):
+                start, end = float(query["s"][0]), float(query["e"][0])
+                if not 0 <= start < end <= start + MAX_CLIP:
+                    return self.send(json.dumps({"error": "début/fin invalides (%d s max)" % MAX_CLIP}),
+                                     "application/json", 400)
+                if url.path == "/clip":
+                    self.send_file(self.movie.clip(start, end), "video/mp4")
+                elif url.path == "/prepare":  # encode the clip in the background, before the click
+                    threading.Thread(target=self.movie.clip, args=(start, end), daemon=True).start()
+                    self.send("", "text/plain")
+                else:
+                    self.send(json.dumps({"url": self.share(start, end, query.get("id", [""])[0])}),
+                              "application/json")
             else:
                 self.send("not found", "text/plain", 404)
         except subprocess.CalledProcessError as e:
             self.send("ffmpeg: " + e.stderr.decode(errors="replace"), "text/plain", 500)
+
+    def share(self, start, end, joke_id):
+        """Copies the clip where the public site serves it and returns its URL. Without --share-dir,
+        returns the editor's own clip URL, which only works for whoever can open the editor."""
+        if not self.share_dir:
+            return "clip?s=%.3f&e=%.3f" % (start, end)
+        name = "%s_%.2f-%.2f.mp4" % (re.sub(r"[^0-9A-Za-z]", "", joke_id) or "clip", start, end)
+        target = os.path.join(self.share_dir, name)
+        if not os.path.exists(target):
+            os.makedirs(self.share_dir, exist_ok=True)
+            shutil.copyfile(self.movie.clip(start, end), target + ".part")
+            os.replace(target + ".part", target)
+        return self.share_url + name
 
     def do_POST(self):
         if self.path != "/api/save":
@@ -312,6 +337,8 @@ PAGE = r"""<!doctype html>
   input[type=text], textarea { width: 100%; box-sizing: border-box; padding: 6px; font: inherit; font-size: 14px; }
   textarea { resize: vertical; }
   #tc { width: 110px; font-variant-numeric: tabular-nums; }
+  .clipTc { width: 95px; font-variant-numeric: tabular-nums; }
+  #sharemsg { font-size: 13px; color: #555; }
   .row { display: flex; gap: 6px; align-items: center; }
   #transcript { max-height: 220px; overflow-y: auto; border: 1px solid #ddd; font-size: 13px; }
   .seg { padding: 3px 6px; cursor: pointer; }
@@ -348,7 +375,16 @@ PAGE = r"""<!doctype html>
     </div>
     <div id="media">
       <img id="frame" alt="">
-      <div><button id="play">▶ Extrait (−4 s / +15 s)</button><br><video id="clip" controls hidden></video></div>
+      <div>
+        <div class="row">
+          Début <input id="cs" class="clipTc" type="text"><button data-clip="cs" data-step="-24">−1 s</button><button data-clip="cs" data-step="24">+1 s</button>
+          &nbsp;Fin <input id="ce" class="clipTc" type="text"><button data-clip="ce" data-step="-24">−1 s</button><button data-clip="ce" data-step="24">+1 s</button>
+        </div>
+        <div class="row" style="margin:6px 0">
+          <button id="play">▶ Extrait</button><button id="share">Partager le clip</button><span id="sharemsg"></span>
+        </div>
+        <video id="clip" controls hidden></video>
+      </div>
     </div>
     <label>Titre/Citation</label><textarea id="title" rows="3"></textarea>
     <label>Citation étendue (optionnel)</label><textarea id="extended" rows="4"></textarea>
@@ -362,6 +398,7 @@ PAGE = r"""<!doctype html>
 <script>
 const F = {title: "Titre/Citation", extended: "Citation étendue (optionnel)", tags: "Tags", explanation: "Explication"};
 let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
+let clipCustom = false;  // the user moved the clip's start/end, so they no longer follow the timecode
 const $ = (id) => document.getElementById(id);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const FPS = 24;  // a timecode can end with :ii, the frame (0 to 23) within the second
@@ -387,8 +424,12 @@ async function load() {
   }
   sortRows();
   render();
-  select(rows.find((r) => r._draft) || rows[0]);
+  select(fromHash() || rows.find((r) => r._draft) || rows[0]);
 }
+
+// The URL ends with #<ID> of the joke being edited, so a reload or a link reopens it.
+const fromHash = () => rows.find((r) => r.ID === decodeURIComponent(location.hash.slice(1)));
+window.addEventListener("hashchange", () => { const r = fromHash(); if (r && r !== sel) select(r); });
 
 function sortRows() { rows.sort((a, b) => (validTc(a.Timecode) ? secs(a.Timecode) : 0) - (validTc(b.Timecode) ? secs(b.Timecode) : 0)); }
 
@@ -412,6 +453,9 @@ function select(r) {
   sel = r;
   $("form").hidden = !r; $("empty").hidden = !!r;
   if (!r) return render();
+  history.replaceState(null, "", "#" + encodeURIComponent(r.ID));
+  clipCustom = false;
+  $("sharemsg").textContent = "";
   $("id").textContent = "#" + r.ID + (r._draft ? " (brouillon)" : "");
   $("draft").checked = !!r._draft;
   $("tc").value = r.Timecode;
@@ -453,9 +497,25 @@ function showFrame() {
   showTranscript();
   clearTimeout(frameTimer);
   frameTimer = setTimeout(() => { if (validTc($("tc").value)) { $("frame").src = "frame?t=" + secs($("tc").value); prefetch(); } }, 250);
-  // Have the server encode the clip once the timecode stops moving, so "Extrait" plays right away.
+  if (!clipCustom && validTc($("tc").value)) {
+    const f = frames($("tc").value);
+    $("cs").value = fmtFrames(Math.max(0, f - 4 * FPS));
+    $("ce").value = fmtFrames(f + 15 * FPS);
+  }
+  prepareClip();
+}
+
+// [start, end] of the clip in seconds, or null if the fields are not valid.
+function clipRange() {
+  if (!validTc($("cs").value) || !validTc($("ce").value)) return null;
+  const s = secs($("cs").value), e = secs($("ce").value);
+  return e > s && e - s <= 120 ? [s, e] : null;
+}
+
+// Have the server encode the clip once it stops changing, so "Extrait" plays right away.
+function prepareClip() {
   clearTimeout(clipTimer);
-  clipTimer = setTimeout(() => { if (validTc($("tc").value)) fetch("prepare?t=" + secs($("tc").value)); }, 1000);
+  clipTimer = setTimeout(() => { const c = clipRange(); if (c) fetch(`prepare?s=${c[0]}&e=${c[1]}`); }, 1000);
 }
 
 function edit(field, value) {
@@ -476,14 +536,47 @@ $("draft").onchange = () => {
 };
 $("tc").oninput = () => { if (validTc($("tc").value)) { edit("Timecode", $("tc").value); showFrame(); } };
 $("tc").onchange = () => { sortRows(); render(); };
-document.querySelectorAll("[data-step]").forEach((b) => b.onclick = () => {
+document.querySelectorAll("[data-step]:not([data-clip])").forEach((b) => b.onclick = () => {
   if (!validTc($("tc").value)) return;
   $("tc").value = fmtFrames(Math.max(0, frames($("tc").value) + Number(b.dataset.step)));
   edit("Timecode", $("tc").value); sortRows(); render(); showFrame();
 });
+for (const id of ["cs", "ce"]) $(id).oninput = () => { clipCustom = true; prepareClip(); };
+document.querySelectorAll("[data-clip]").forEach((b) => b.onclick = () => {
+  const input = $(b.dataset.clip);
+  if (!validTc(input.value)) return;
+  input.value = fmtFrames(Math.max(0, frames(input.value) + Number(b.dataset.step)));
+  clipCustom = true; prepareClip();
+});
 $("play").onclick = () => {
-  if (!validTc($("tc").value)) return;
-  $("clip").hidden = false; $("clip").src = "clip?t=" + secs($("tc").value); $("clip").play();
+  const c = clipRange();
+  if (!c) return alert("Début/fin invalides (le début avant la fin, 2 min max).");
+  $("clip").hidden = false; $("clip").src = `clip?s=${c[0]}&e=${c[1]}`; $("clip").play();
+};
+$("share").onclick = async () => {
+  const c = clipRange();
+  if (!c || !sel) return alert("Début/fin invalides (le début avant la fin, 2 min max).");
+  $("sharemsg").textContent = "Préparation du clip…";
+  const res = await fetch(`share?s=${c[0]}&e=${c[1]}&id=${encodeURIComponent(sel.ID)}`);
+  const out = await res.json();
+  if (!res.ok) return $("sharemsg").textContent = out.error;
+  const url = new URL(out.url, location.href).href;
+  const title = sel["Titre/Citation"].split("\n")[0];
+  // On a phone, share the video itself (WhatsApp, Messages…); elsewhere copy the link.
+  if (matchMedia("(pointer: coarse)").matches && navigator.canShare) {
+    try {
+      const blob = await (await fetch(`clip?s=${c[0]}&e=${c[1]}`)).blob();
+      const file = new File([blob], url.split("/").pop(), {type: "video/mp4"});
+      if (navigator.canShare({files: [file]})) {
+        await navigator.share({files: [file], title, text: title + "\n" + url});
+        return $("sharemsg").textContent = "Partagé";
+      }
+    } catch (e) {
+      if (e.name === "AbortError") return $("sharemsg").textContent = "";
+    }
+  }
+  const copied = await navigator.clipboard.writeText(url).then(() => true, () => false);
+  $("sharemsg").innerHTML = (copied ? "Lien copié : " : "Lien : ") + `<a href="${esc(url)}" target="_blank">${esc(url)}</a>`;
 };
 $("search").oninput = render;
 $("new").onclick = () => {
@@ -529,10 +622,14 @@ def main():
     parser.add_argument("--transcript", help="Whisper segments JSON ([{start, end, text}]); default: transcript.json if present")
     parser.add_argument("--git", action="store_true", help="commit and push data.csv after each save")
     parser.add_argument("--rebuild", help="shell command run in the background after each save")
+    parser.add_argument("--share-dir", help="folder served by the public site where shared clips are copied")
+    parser.add_argument("--share-url", default="", help="public URL of --share-dir, ending with /")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
 
     Handler.use_git, Handler.rebuild = args.git, args.rebuild
+    Handler.share_dir = args.share_dir and os.path.abspath(args.share_dir)
+    Handler.share_url = args.share_url
     Handler.movie = Movie(local=args.movie and os.path.abspath(args.movie), ssh=args.ssh)
     Handler.drafts_path = args.drafts and os.path.abspath(args.drafts)
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # data.csv sits next to this script
