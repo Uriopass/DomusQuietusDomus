@@ -22,11 +22,13 @@ import os
 import re
 import shlex
 import subprocess
+import tempfile
 import threading
 import urllib.parse
 
 DATA = "data.csv"
 FPS = 24  # frame rate of movie.mkv; a timecode can end with :ff to pick a frame, like in prepare.py
+CLIPS_KEPT = 40  # encoded clips cached on disk
 TIMECODE = re.compile(r"^\d+:\d\d:\d\d(:\d\d?)?$")
 
 
@@ -41,10 +43,16 @@ class Movie:
         self.local = local
         self.host, self.path = ssh.split(":", 1) if ssh else (None, None)
         self.frames = {}
+        self.clip_dir = tempfile.mkdtemp(prefix="domus-clips-")
+        self.clip_locks = {}
+        self.clip_locks_lock = threading.Lock()
+
+    def resolve(self, args):
+        path = self.local or self.path
+        return ["ffmpeg", "-v", "error"] + [path if a == "{movie}" else a for a in args]
 
     def command(self, args):
-        path = self.local or self.path
-        cmd = ["ffmpeg", "-v", "error"] + [path if a == "{movie}" else a for a in args]
+        cmd = self.resolve(args)
         return ["ssh", self.host, shlex.join(cmd)] if self.host else cmd
 
     def ffmpeg(self, args):
@@ -58,14 +66,32 @@ class Movie:
         return self.frames[t]
 
     def clip(self, t):
-        """Starts encoding 4 s before to 15 s after t. Read stdout as it comes: fragmented mp4 with a
-        keyframe every half second, so the browser can start playing after the first fragment."""
-        start = max(0, t - 4)
-        return subprocess.Popen(self.command(
-            ["-ss", "%.3f" % start, "-t", "19", "-i", "{movie}", "-vf", "scale=640:-2",
-             "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-g", "12", "-c:a", "aac", "-ac", "2",
-             "-movflags", "frag_keyframe+empty_moov+default_base_moof", "-f", "mp4", "pipe:1"]),
-            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        """Path to an mp4 from 4 s before to 15 s after t, encoded once (~2.5 s) and cached.
+        The index is at the front (faststart), so the browser knows the duration at once and can seek."""
+        key = "%.3f" % t
+        path = os.path.join(self.clip_dir, key + ".mp4")
+        with self.clip_locks_lock:
+            lock = self.clip_locks.setdefault(key, threading.Lock())
+        with lock:  # a click during the background preparation waits for it instead of encoding twice
+            if os.path.exists(path):
+                return path
+            args = ["-ss", "%.3f" % max(0, t - 4), "-t", "19", "-i", "{movie}", "-vf", "scale=640:-2",
+                    "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2",
+                    "-movflags", "+faststart", "-f", "mp4", "-y"]
+            with open(path + ".part", "wb") as out:
+                if self.host:
+                    # faststart needs a seekable output: encode to a temp file on the server, then send it.
+                    encode = shlex.join(self.resolve(args)) + ' "$f"'
+                    remote = 'f=$(mktemp --suffix=.mp4) && %s && cat "$f"; rm -f "$f"' % encode
+                    subprocess.run(["ssh", self.host, remote], stdout=out, check=True)
+                else:
+                    subprocess.run(self.resolve(args + [path + ".part"]), check=True)
+            os.replace(path + ".part", path)
+            clips = sorted((os.path.join(self.clip_dir, f) for f in os.listdir(self.clip_dir) if f.endswith(".mp4")),
+                           key=os.path.getmtime)
+            for old in clips[:-CLIPS_KEPT]:
+                os.remove(old)
+            return path
 
 
 def load():
@@ -160,22 +186,42 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def stream(self, process):
-        # No Content-Length: the HTTP/1.0 response ends when ffmpeg is done and the connection closes.
-        self.send_response(200)
-        self.send_header("Content-Type", "video/mp4")
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("X-Accel-Buffering", "no")  # tells nginx to pass chunks through right away
+    def send_file(self, path, content_type):
+        """Sends a file, honouring Range requests so the browser can seek in videos."""
+        size = os.path.getsize(path)
+        start, end = 0, size - 1
+        match = re.match(r"bytes=(\d*)-(\d*)$", self.headers.get("Range", ""))
+        if match and (match.group(1) or match.group(2)):
+            if match.group(1):
+                start = int(match.group(1))
+                end = min(int(match.group(2)), size - 1) if match.group(2) else size - 1
+            else:  # "bytes=-N": the last N bytes
+                start = max(0, size - int(match.group(2)))
+            if start > end:
+                self.send_response(416)
+                self.send_header("Content-Range", "bytes */%d" % size)
+                self.end_headers()
+                return
+            self.send_response(206)
+            self.send_header("Content-Range", "bytes %d-%d/%d" % (start, end, size))
+        else:
+            self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(end - start + 1))
         self.end_headers()
         try:
-            while chunk := process.stdout.read1(65536):
-                self.wfile.write(chunk)
-                self.wfile.flush()
+            with open(path, "rb") as f:
+                f.seek(start)
+                remaining = end - start + 1
+                while remaining > 0:
+                    chunk = f.read(min(65536, remaining))
+                    if not chunk:
+                        break
+                    self.wfile.write(chunk)
+                    remaining -= len(chunk)
         except (BrokenPipeError, ConnectionResetError):
-            pass  # the user started another clip or closed the page
-        finally:
-            process.kill()
-            process.wait()
+            pass  # the browser often drops a request once it has what it needs
 
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
@@ -192,7 +238,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             elif url.path == "/frame":
                 self.send(self.movie.frame(float(query["t"][0])), "image/jpeg", cache=True)
             elif url.path == "/clip":
-                self.stream(self.movie.clip(float(query["t"][0])))
+                self.send_file(self.movie.clip(float(query["t"][0])), "video/mp4")
+            elif url.path == "/prepare":  # encode the clip in the background, before the click
+                threading.Thread(target=self.movie.clip, args=(float(query["t"][0]),), daemon=True).start()
+                self.send("", "text/plain")
             else:
                 self.send("not found", "text/plain", 404)
         except subprocess.CalledProcessError as e:
@@ -312,7 +361,7 @@ PAGE = r"""<!doctype html>
 </div>
 <script>
 const F = {title: "Titre/Citation", extended: "Citation étendue (optionnel)", tags: "Tags", explanation: "Explication"};
-let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null;
+let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const FPS = 24;  // a timecode can end with :ii, the frame (0 to 23) within the second
@@ -404,6 +453,9 @@ function showFrame() {
   showTranscript();
   clearTimeout(frameTimer);
   frameTimer = setTimeout(() => { if (validTc($("tc").value)) { $("frame").src = "frame?t=" + secs($("tc").value); prefetch(); } }, 250);
+  // Have the server encode the clip once the timecode stops moving, so "Extrait" plays right away.
+  clearTimeout(clipTimer);
+  clipTimer = setTimeout(() => { if (validTc($("tc").value)) fetch("prepare?t=" + secs($("tc").value)); }, 1000);
 }
 
 function edit(field, value) {
