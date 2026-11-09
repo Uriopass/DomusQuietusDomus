@@ -27,6 +27,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed&display=swap" rel="stylesheet">
+    <script>
+        // Opening the editor (/editeur/, behind a password) marks this browser: its pages then show
+        // a link to edit each joke. Only a shortcut: the editor still asks for the password.
+        try { if (localStorage.getItem('domusAdmin')) document.documentElement.classList.add('admin'); } catch (e) {}
+    </script>
 </head>
 <body>
 <div id="content">
@@ -47,6 +52,7 @@
                     <img src="../assets/share.svg" height="16" width="16" onclick="sh('$id')" alt="Partager la citation" title="Partager la citation"/>
                     <img src="../assets/copy.svg" height="16" width="16" onclick="copyLink('$id', event)" alt="Copier le lien" title="Copier le lien" style="cursor:pointer"/>
                     $cliplink
+                    <a class="admin-only" href="/editeur/#$id" title="Modifier dans l'éditeur"><img src="../assets/edit.svg" height="16" width="16" alt="Modifier dans l'éditeur"/></a>
                 </div>
             </div>
             <div class="quote-expanded">
@@ -86,6 +92,13 @@ function stopClips(container) {
     }
 }
 
+// White icons for the buttons over a GIF
+const ICONS = Object.fromEntries(Object.entries({
+    link: 'M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z',
+    download: 'M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z',
+    check: 'M9 16.17L4.83 12l-1.42 1.42L9 19 21 7l-1.41-1.41z',
+}).map(([k, d]) => [k, '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="' + d + '" fill="#fff"/></svg>']));
+
 // Shows the joke's GIF over its screenshot (a second click hides it).
 function showGif(link) {
     const quote = link.closest('.quote'), media = quote.querySelector('.quote-media');
@@ -112,13 +125,15 @@ function showGif(link) {
     actions.className = 'quote-gif-actions';
     actions.addEventListener('click', (e) => e.stopPropagation());
     const copy = document.createElement('button');
-    copy.textContent = 'Copier le lien';
+    copy.innerHTML = ICONS.link;
+    copy.title = 'Copier le lien du GIF';
     copy.onclick = () => navigator.clipboard.writeText(link.dataset.link || link.href).then(() => {
-        copy.textContent = 'Lien copié ✓';
-        setTimeout(() => { copy.textContent = 'Copier le lien'; }, 1500);
+        copy.innerHTML = ICONS.check;
+        setTimeout(() => { copy.innerHTML = ICONS.link; }, 1500);
     });
     const save = document.createElement('a');
-    save.textContent = 'Télécharger';
+    save.innerHTML = ICONS.download;
+    save.title = 'Télécharger le GIF';
     save.href = link.href;
     save.download = link.getAttribute('download');
     actions.append(copy, save);

@@ -694,6 +694,9 @@ async function load() {
 }
 
 // The URL ends with #<ID> of the joke being edited, so a reload or a link reopens it.
+// Marks this browser as the site's admin: the site's pages then show a link to edit each joke here.
+try { localStorage.setItem("domusAdmin", "1"); } catch (e) {}
+
 const fromHash = () => rows.find((r) => r.ID === decodeURIComponent(location.hash.slice(1)));
 window.addEventListener("hashchange", () => { const r = fromHash(); if (r && r !== sel) select(r); });
 

@@ -305,19 +305,29 @@ a {
 }
 
 .quote-gif-actions button, .quote-gif-actions a {
-    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
     border: none;
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    font: inherit;
-    font-size: 13px;
-    text-decoration: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
     cursor: pointer;
 }
 
 .quote-gif-actions button:hover, .quote-gif-actions a:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.75);
+}
+
+/* Link to the editor, in browsers that opened it */
+.admin-only {
+    display: none !important;
+}
+
+.admin .admin-only {
+    display: flex !important;
 }
 
 @keyframes quote-gif-hint {
