@@ -17,7 +17,7 @@ computed once, on a machine with torch, and placed next to `movie.mkv`; `prepare
 
     python3 tools/align_words.py --emissions audio.ogg emissions.npz
 
-The server needs ffmpeg with libass (to burn the subtitles in) and gifsicle (to shrink the GIFs).
+The server needs ffmpeg with libass (to burn the subtitles in) and gifski (`cargo install gifski`, for the GIFs; without it, ffmpeg and gifsicle make bigger, noisier ones).
 
 ## Copyright
 
