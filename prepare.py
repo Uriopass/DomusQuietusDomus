@@ -117,8 +117,10 @@ def genClipHtml(datum: dict, prefix: str):
     if not datum['clip_name']:
         return '', ''
     url = f"{prefix}extraits/{datum['clip_name']}.mp4"
-    link = (f'<a href="{url}" target="_blank"><img src="{prefix}assets/clip.svg" height="16" width="16" '
-            f'alt="Extrait vidéo" title="Extrait vidéo"/></a>')
+    # Downloads the clip under a readable name, e.g. 355-amonbofis-menace-numerobis-de-devenir.mp4
+    filename = f"{datum['id']}-{slugify(datum['title'].split(chr(10))[0])[:50].rstrip('-')}.mp4"
+    link = (f'<a href="{url}" download="{filename}"><img src="{prefix}assets/clip.svg" height="16" width="16" '
+            f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>')
     play = (f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
             f'title="Lancer l\'extrait" aria-label="Lancer l\'extrait">{PLAY_ICON}</button>')
     return link, play
