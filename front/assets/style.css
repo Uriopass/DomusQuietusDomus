@@ -256,6 +256,26 @@ a {
     object-fit: contain;
 }
 
+/* Over a GIF shown to copy: how to copy it, fading out */
+.quote-gif-hint {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 4;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 13px;
+    pointer-events: none;
+    animation: quote-gif-hint 4s forwards;
+}
+
+@keyframes quote-gif-hint {
+    0%, 75% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 .quote-selected .quote-image-preview {
     height: 200px;
     width: 470px;

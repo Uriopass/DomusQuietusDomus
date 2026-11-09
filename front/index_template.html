@@ -53,9 +53,16 @@
     // On a phone, the clip / GIF icons hand the file to the share sheet (WhatsApp, Messages...) instead
     // of downloading it. The file is fetched on the first tap; if that took too long for the browser to
     // still allow sharing, the icon lights up and the next tap shares it at once.
+    // On a computer, the GIF shows over the screenshot, to copy (right click) or drag into a chat.
     const clipFiles = {};
     async function shareClip(link, event) {
-        if (!matchMedia('(pointer: coarse)').matches || !navigator.canShare) return;  // a plain download
+        if (!matchMedia('(pointer: coarse)').matches || !navigator.canShare) {
+            if (link.getAttribute('download').endsWith('.gif')) {
+                event.preventDefault();
+                showGif(link);
+            }
+            return;  // the video: a plain download
+        }
         event.preventDefault();
         const url = link.href, name = link.getAttribute('download');
         try {
@@ -397,9 +404,28 @@
     
     function stopClips(container) {
         for (const media of container.querySelectorAll('.quote-media.playing')) {
-            media.querySelector('.quote-clip').remove();
+            media.querySelectorAll('.quote-clip, .quote-gif-hint').forEach((el) => el.remove());
             media.classList.remove('playing');
         }
+    }
+
+    // Shows the joke's GIF over its screenshot (a second click hides it).
+    function showGif(link) {
+        const quote = link.closest('.quote'), media = quote.querySelector('.quote-media');
+        const shown = media.querySelector('img.quote-clip');
+        stopClips(quote);
+        if (shown && shown.src === link.href) return;
+        const gif = document.createElement('img');
+        gif.className = 'quote-clip';
+        gif.src = link.href;
+        gif.alt = 'GIF de l\'extrait';
+        gif.title = 'Clic droit → Copier l\'image, ou glisse le GIF dans une conversation';
+        gif.addEventListener('click', (e) => e.stopPropagation());
+        const hint = document.createElement('div');
+        hint.className = 'quote-gif-hint';
+        hint.textContent = 'Clic droit → Copier l\'image';
+        media.append(gif, hint);
+        media.classList.add('playing');
     }
 
     for (let quote of document.querySelectorAll('.quote')) {

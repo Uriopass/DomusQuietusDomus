@@ -118,14 +118,15 @@ def genClipHtml(datum: dict, prefix: str):
         return '', ''
     url = f"{prefix}extraits/{datum['clip_name']}.mp4"
     # Downloads the clip under a readable name, e.g. 355-amonbofis-menace-numerobis-de-devenir.mp4.
-    # On a phone, shareClip hands the file to the share sheet (WhatsApp...) instead.
+    # On a phone, shareClip hands the file to the share sheet (WhatsApp...) instead; on a computer,
+    # the GIF shows over the screenshot, to copy it.
     filename = f"{datum['id']}-{slugify(datum['title'].split(chr(10))[0])[:50].rstrip('-')}"
     link = (f'<a href="{url}" download="{filename}.mp4" onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/clip.svg" height="16" width="16" '
             f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>'
             f'<a href="{url[:-4]}.gif" download="{filename}.gif" onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/gif.svg" height="16" width="16" '
-            f'alt="Télécharger le GIF" title="Télécharger le GIF"/></a>')
+            f'alt="GIF de l\'extrait" title="GIF de l\'extrait, à copier ou partager"/></a>')
     play = (f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
             f'title="Lancer l\'extrait" aria-label="Lancer l\'extrait">{PLAY_ICON}</button>')
     return link, play
