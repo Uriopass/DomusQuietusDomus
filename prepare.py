@@ -442,10 +442,8 @@ def formatTimecode(seconds: int) -> str:
 
 
 def metaText(text: str, limit: int = 0) -> str:
-    """Text for a <title> or a meta tag (link previews): on one line, without the dialogue dashes
-    ("- Oui" / "- Non" -> "Oui / Non") or *stage directions*, escaped (a title can hold quotes)."""
-    lines = [re.sub(r'^\s*-\s*', '', line).strip() for line in text.replace('*', '').split('\n')]
-    text = ' / '.join(line for line in lines if line)
+    """Text for a <title> or a meta tag (link previews): on one line, escaped (a title can hold quotes)."""
+    text = ' '.join(text.split())
     if limit and len(text) > limit:
         text = text[:limit - 1].rsplit(' ', 1)[0] + '…'
     return html.escape(text, quote=True)
