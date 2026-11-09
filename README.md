@@ -17,6 +17,8 @@ computed once, on a machine with torch, and placed next to `movie.mkv`; `prepare
 
     python3 tools/align_words.py --emissions audio.ogg emissions.npz
 
+The server needs ffmpeg with libass (to burn the subtitles in) and gifsicle (to shrink the GIFs).
+
 ## Copyright
 
 I do not own the rights to the movie "Asterix & Obelix: Mission Cleopatra (2002)".

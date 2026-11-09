@@ -130,9 +130,13 @@ class Movie:
         path = mp4[:-4] + ".gif"
         with self.locked(path):
             if not os.path.exists(path):
-                with open(mp4, "rb") as src, open(path + ".part", "wb") as out:
-                    subprocess.run(self.command(["-f", "mp4", "-i", "pipe:0", "-filter_complex", clip_subs.gif_filter(end - start),
-                                                 "-loop", "0", "-f", "gif", "pipe:1"]), stdin=src, stdout=out, check=True)
+                def run(argv, data):  # ffmpeg and gifsicle run where the movie is
+                    cmd = ["ssh", self.host, shlex.join(argv)] if self.host else argv
+                    return subprocess.run(cmd, input=data, capture_output=True, check=True).stdout
+                with open(mp4, "rb") as src:
+                    gif = clip_subs.make_gif(src.read(), run)
+                with open(path + ".part", "wb") as out:
+                    out.write(gif)
                 os.replace(path + ".part", path)
             return path
 

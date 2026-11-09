@@ -227,7 +227,6 @@ def genClips(data: [dict], videoFilePath: str):
         if not datum['clip_name']:
             continue
         path = f"build/extraits/{datum['clip_name']}"
-        duration = datum['clip_end'] - datum['clip_start']
         if not os.path.exists(path + '.mp4'):
             ass = None
             if datum.get('clip_ass'):
@@ -235,7 +234,8 @@ def genClips(data: [dict], videoFilePath: str):
                 with open(ass, 'w', encoding='utf8') as f:
                     f.write(datum['clip_ass'])
             result = subprocess.run(
-                ['ffmpeg', '-v', 'error', '-y', '-ss', '%.3f' % datum['clip_start'], '-t', '%.3f' % duration,
+                ['ffmpeg', '-v', 'error', '-y', '-ss', '%.3f' % datum['clip_start'],
+                 '-t', '%.3f' % (datum['clip_end'] - datum['clip_start']),
                  '-i', videoFilePath, '-vf', clip_subs.video_filter(ass)] + clip_subs.MP4_ARGS
                 + ['-f', 'mp4', path + '.mp4.part'])
             if result.returncode != 0:
@@ -246,12 +246,16 @@ def genClips(data: [dict], videoFilePath: str):
             os.replace(path + '.mp4.part', path + '.mp4')
             print(f"{path}.mp4 generated")
         if not os.path.exists(path + '.gif'):
-            result = subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', path + '.mp4', '-filter_complex',
-                                     clip_subs.gif_filter(duration), '-loop', '0', '-f', 'gif', path + '.gif.part'])
-            if result.returncode == 0:
-                os.replace(path + '.gif.part', path + '.gif')
-            else:
-                print(f"Error while generating {path}.gif")
+            try:
+                with open(path + '.mp4', 'rb') as f:
+                    gif = clip_subs.make_gif(f.read(), lambda argv, data: subprocess.run(
+                        argv, input=data, capture_output=True, check=True).stdout)
+            except subprocess.CalledProcessError as e:
+                print(f"Error while generating {path}.gif: {e.stderr.decode(errors='replace')}")
+                continue
+            with open(path + '.gif.part', 'wb') as f:
+                f.write(gif)
+            os.replace(path + '.gif.part', path + '.gif')
     wanted = {datum['clip_name'] for datum in data if datum['clip_name']}
     for name in os.listdir('build/extraits'):
         stem, ext = os.path.splitext(name)

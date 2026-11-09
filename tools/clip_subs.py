@@ -8,7 +8,8 @@ until the moment it is spoken: the sentence builds up without giving away what c
 words: [{"w", "s", "e", "seg"}] from align_words.py (seg: the transcript line they belong to).
 
 Also the ffmpeg settings shared by the site (prepare.py) and the editor: the mp4 of a clip, with the
-subtitles burned in (ffmpeg needs libass for that), and its GIF, small enough to send on WhatsApp.
+subtitles burned in (ffmpeg needs libass for that), and its GIF, small enough to send on WhatsApp
+(gifsicle shrinks it further when installed).
 """
 import re
 
@@ -116,12 +117,41 @@ def video_filter(ass_path=None):
 MP4_ARGS = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2", "-movflags", "+faststart"]
 
 
-def gif_filter(duration):
-    """ffmpeg -filter_complex turning a clip into a looping GIF: 10 images/s, narrower for long clips so
-    the file stays a few MB (a 16 s clip at 400 px: ~5.5 MB), with a palette made for the clip."""
-    width = 400 if duration <= 12 else 320 if duration <= 25 else 240
-    return ("fps=10,scale=%d:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=96:stats_mode=diff[p];"
-            "[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" % width)
+GIF_BUDGET = 8 * 1024 * 1024  # bytes: sendable on WhatsApp, quick to load on a phone
+GIF_LADDER = [(480, 24), (480, 20), (480, 15), (400, 15), (320, 12), (240, 10)]  # (width, images/s), best first
+
+
+def gif_filter(width, fps):
+    """ffmpeg -filter_complex turning a clip into a looping GIF, with a 256-colour palette made for the
+    clip, ordered dithering (stable from one image to the next, so it compresses well) and only the
+    changed part of each image stored."""
+    return ("fps=%d,scale=%d:-1:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];"
+            "[b][p]paletteuse=dither=bayer:bayer_scale=3:diff_mode=rectangle" % (fps, width))
+
+
+def make_gif(mp4, run):
+    """The GIF of a clip (mp4 bytes): the best setting of GIF_LADDER that fits GIF_BUDGET, each then
+    shrunk by gifsicle's lossy compression (~45 % smaller, hardly visible).
+    run(argv, input bytes) -> output bytes runs ffmpeg or gifsicle (wherever they are)."""
+    rung, lossy = 0, True
+    while True:
+        width, fps = GIF_LADDER[rung]
+        gif = run(["ffmpeg", "-v", "error", "-f", "mp4", "-i", "pipe:0", "-filter_complex", gif_filter(width, fps),
+                   "-loop", "0", "-f", "gif", "pipe:1"], mp4)
+        if lossy:
+            try:
+                gif = run(["gifsicle", "-O2", "--lossy=80"], gif)
+            except Exception:  # gifsicle not installed: GIFs about twice as big
+                lossy = False
+        if len(gif) <= GIF_BUDGET or rung == len(GIF_LADDER) - 1:
+            return gif
+        # Skip to the first setting expected to fit: the size goes with images/s × width²
+        rung += 1
+        while rung < len(GIF_LADDER) - 1:
+            w, f = GIF_LADDER[rung]
+            if len(gif) * f / fps * (w / width) ** 2 <= 0.9 * GIF_BUDGET:
+                break
+            rung += 1
 
 
 def ffmpeg_has_libass(ffmpeg="ffmpeg"):
