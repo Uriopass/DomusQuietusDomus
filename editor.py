@@ -424,7 +424,7 @@ PAGE = r"""<!doctype html>
     </div>
     <label>Titre/Citation</label><textarea id="title" rows="3"></textarea>
     <label>Citation étendue (optionnel)</label><textarea id="extended" rows="4"></textarea>
-    <label>Transcription Whisper à ±20 s (clic sur une ligne = l'ajouter à la citation étendue, à corriger)</label>
+    <label>Transcription à ±20 s (clic sur une ligne = l'ajouter à la citation étendue)</label>
     <div id="transcript"></div>
     <label>Tags</label><input id="tags" type="text">
     <label>Explication</label><textarea id="explanation" rows="5"></textarea>
@@ -729,7 +729,8 @@ def main():
     source.add_argument("--movie", help="path to the movie file")
     source.add_argument("--ssh", help="host:path of the movie on a server with ffmpeg")
     parser.add_argument("--drafts", help="JSON file holding the draft jokes (created on first draft save)")
-    parser.add_argument("--transcript", help="Whisper segments JSON ([{start, end, text}]); default: transcript.json if present")
+    parser.add_argument("--transcript", help="transcript segments JSON ([{start, end, text}]); default: "
+                                             "transcription.json (corrected), else transcript.json (Whisper)")
     parser.add_argument("--git", action="store_true", help="commit and push data.csv after each save")
     parser.add_argument("--rebuild", help="shell command run in the background after each save")
     parser.add_argument("--share-dir", help="folder served by the public site where shared clips are copied")
@@ -743,7 +744,7 @@ def main():
     Handler.movie = Movie(local=args.movie and os.path.abspath(args.movie), ssh=args.ssh)
     Handler.drafts_path = args.drafts and os.path.abspath(args.drafts)
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # data.csv sits next to this script
-    transcript = args.transcript or ("transcript.json" if os.path.exists("transcript.json") else None)
+    transcript = args.transcript or next((f for f in ("transcription.json", "transcript.json") if os.path.exists(f)), None)
     if transcript:
         with open(transcript, encoding="utf8") as f:
             Handler.transcript = json.load(f)
