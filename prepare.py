@@ -179,7 +179,9 @@ def genQuotesPages(data: [dict]):
             imagepreviewxl=image_previewxl,
             timecode=datum['timecode'],
             title=prepare_html(datum['title']),
-            metatitle=datum['title'].replace('\n', ' ').strip(),
+            metatitle=metaText(datum['title']),
+            metadescription=(metaText(datum['explanation'] or datum['long_text'], 200)
+                             or metaText(f"Astérix & Obélix : Mission Cléopâtre, à {datum['timecode']}")),
             longtext=genLongText(datum['long_text']),
             tags=genTags(datum['tags']),
             explanation=genExplanation(datum['explanation']),
@@ -437,6 +439,16 @@ def formatDuration(seconds: int) -> str:
 
 def formatTimecode(seconds: int) -> str:
     return f'{seconds // 3600}:{seconds // 60 % 60:02d}:{seconds % 60:02d}'
+
+
+def metaText(text: str, limit: int = 0) -> str:
+    """Text for a <title> or a meta tag (link previews): on one line, without the dialogue dashes
+    ("- Oui" / "- Non" -> "Oui / Non") or *stage directions*, escaped (a title can hold quotes)."""
+    lines = [re.sub(r'^\s*-\s*', '', line).strip() for line in text.replace('*', '').split('\n')]
+    text = ' / '.join(line for line in lines if line)
+    if limit and len(text) > limit:
+        text = text[:limit - 1].rsplit(' ', 1)[0] + '…'
+    return html.escape(text, quote=True)
 
 
 def quoteTitle(datum: dict) -> str:
