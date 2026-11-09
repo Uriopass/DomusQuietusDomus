@@ -198,19 +198,19 @@ EMISSIONS = 'emissions.npz'  # the audio model's output for the movie (tools/ali
 
 
 def genSubtitles(data: [dict], printv=print):
-    """Word-by-word subtitles of each clip (see tools/), when emissions.npz is there and ffmpeg can
-    burn them in. A clip's name then ends with a hash of its subtitles, so it is encoded again when
-    they change (an edited quote or correction)."""
+    """Word-by-word subtitles of each clip (see tools/), when emissions.npz is there, burned in when
+    ffmpeg can. A clip's name then ends with a hash of its subtitles, so it is encoded again when they
+    change (an edited quote or correction)."""
     sys.path.insert(0, 'tools')
     import clip_subs
     if not os.path.exists(EMISSIONS):
         printv(f"no {EMISSIONS}: clips without subtitles")
         return
+    import subtitles  # needs numpy and num2words
+    words = subtitles.build(EMISSIONS, 'build/sous-titres', log=printv)  # also shown by the editor
     if not clip_subs.ffmpeg_has_libass():
         printv("ffmpeg can't burn subtitles in (no libass): clips without subtitles")
         return
-    import subtitles  # needs numpy and num2words
-    words = subtitles.build(EMISSIONS, 'build/sous-titres', log=printv)
     for datum in data:
         if datum['clip_name']:
             ass = clip_subs.make_ass(words, datum['clip_start'], datum['clip_end'])

@@ -165,6 +165,13 @@ class Subtitles:
                 self.cache[name] = (mtime, json.load(f))
         return self.cache[name][1]
 
+    def version(self):
+        """Changes each time a build rewrites the transcript."""
+        try:
+            return os.path.getmtime(os.path.join(SUBTITLES, "transcription.json"))
+        except OSError:
+            return 0
+
     def transcript(self):
         lines = self.load("transcription.json")
         if lines is None and self.fallback and os.path.exists(self.fallback):
@@ -182,6 +189,57 @@ PROPOSALS = "corrections_proposees.csv"    # tools/propose_corrections.py
 DECISIONS = "relecture.json"               # the user's decision on each proposal
 CORRECTIONS = "corrections_sous_titres.csv"  # applied by tools/subs_base.py
 CORRECTION_FIELDS = ["Début", "Fin", "Original", "Correction"]
+EDITS = "corrections_transcription.csv"    # lines of the transcript edited here (tools/build_transcript.apply_edits)
+
+
+def tc_tenths(t):
+    return "%d:%02d:%04.1f" % (t // 3600, t % 3600 // 60, t % 60)
+
+
+def tenths_seconds(tc):
+    h, m, sec = tc.split(":")
+    return int(h) * 3600 + int(m) * 60 + float(sec)
+
+
+def edit_transcript(body):
+    """Records an edit of a transcript line in EDITS, from the editor's transcript panel:
+    {"edit": {Début, Original}} changes a line edited before (back to its original text: the edit is
+    dropped); {"insert": true, "start", "end"} adds a line; otherwise {"start", "original"} edits a line.
+    An empty text removes the line. Returns the commit message, or None if nothing changes."""
+    rows = []
+    if os.path.exists(EDITS):
+        with open(EDITS, encoding="utf8") as f:
+            rows = list(csv.DictReader(f))
+    text = " ".join(body.get("text", "").split())
+    if body.get("edit"):
+        key = body["edit"]
+        row = next((r for r in rows if r["Début"] == key["Début"] and r["Original"] == key["Original"]), None)
+        if row is None:
+            raise ValueError("cette correction n'est plus dans %s" % EDITS)
+        before, when = row["Correction"], row["Début"]
+        if text == row["Original"] or (not row["Original"] and not text):
+            rows.remove(row)
+        else:
+            row["Correction"] = text
+    elif body.get("insert"):
+        if not text:
+            return None
+        start, end = float(body["start"]), float(body["end"])
+        before, when = "", tc_tenths(start)
+        rows.append({"Début": when, "Fin": tc_tenths(end), "Original": "", "Correction": text})
+    else:
+        before, when = body["original"], tc_tenths(float(body["start"]))
+        if text == before:
+            return None
+        rows.append({"Début": when, "Fin": "", "Original": before, "Correction": text})
+    rows.sort(key=lambda r: tenths_seconds(r["Début"]))
+    with open(EDITS, "w", encoding="utf8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=CORRECTION_FIELDS, lineterminator="\n")
+        w.writeheader()
+        w.writerows({k: r.get(k, "") for k in CORRECTION_FIELDS} for r in rows)
+    if not before:
+        return "Sous-titres %s : ligne ajoutée « %s »" % (when, text)
+    return "Sous-titres %s : « %s » → %s" % (when, before, "ligne supprimée" if not text else "« %s »" % text)
 
 
 def proposal_key(p):
@@ -280,11 +338,11 @@ def git(*args):
     return subprocess.run(["git"] + list(args), capture_output=True, text=True)
 
 
-def commit_and_push(message):
-    """Commits data.csv and pushes it. Returns a short status for the page."""
-    if not git("status", "--porcelain", DATA).stdout.strip():
+def commit_and_push(message, path=DATA):
+    """Commits path (data.csv) and pushes it. Returns a short status for the page."""
+    if not git("status", "--porcelain", path).stdout.strip():
         return "rien à commiter"
-    git("add", DATA)
+    git("add", path)
     result = git("commit", "-m", message)
     if result.returncode:
         return "commit échoué : " + (result.stderr or result.stdout).strip()
@@ -372,7 +430,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 ids = {r["ID"] for r in rows}
                 drafts = [d for d in read_drafts(self.drafts_path) if d.get("ID") not in ids]
                 self.send(json.dumps({"fields": fields, "rows": rows, "drafts": drafts,
-                                      "transcript": self.subtitles.transcript()}), "application/json")
+                                      "transcript": self.subtitles.transcript(),
+                                      "transcript_version": self.subtitles.version()}), "application/json")
+            elif url.path == "/api/transcript":
+                self.send(json.dumps({"transcript": self.subtitles.transcript(), "version": self.subtitles.version()}),
+                          "application/json")
             elif url.path == "/frame":
                 self.send(self.movie.frame(float(query["t"][0])), "image/jpeg", cache=True)
             elif url.path in ("/clip", "/gif", "/prepare", "/share"):
@@ -418,6 +480,24 @@ class Handler(http.server.BaseHTTPRequestHandler):
             with self.lock:
                 decide(body["key"], body["decision"], body.get("text", ""))
             return self.send(json.dumps({"ok": True}), "application/json")
+        if self.path == "/api/transcription":
+            body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+            with self.lock:
+                try:
+                    message = edit_transcript(body)
+                except (ValueError, KeyError) as e:
+                    return self.send(json.dumps({"error": str(e)}), "application/json", 400)
+                if message is None:
+                    return self.send(json.dumps({"ok": True, "status": "rien à changer", "rebuilding": False}),
+                                     "application/json")
+                status = EDITS + " enregistré"
+                if self.use_git:
+                    status = commit_and_push(message, EDITS)
+                rebuilding = bool(self.rebuild) and not status.startswith("rien à commiter")
+                if rebuilding:
+                    subprocess.Popen(self.rebuild, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    status += ", sous-titres en reconstruction…"
+            return self.send(json.dumps({"ok": True, "status": status, "rebuilding": rebuilding}), "application/json")
         if self.path != "/api/save":
             return self.send("not found", "text/plain", 404)
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
@@ -507,6 +587,13 @@ PAGE = r"""<!doctype html>
   .seg:hover { background: #f0f6ff; }
   .seg .tc { color: #888; margin-right: 6px; font-variant-numeric: tabular-nums; }
   .seg.at { background: #fff4e0; }
+  .seg .segtools { float: right; visibility: hidden; }
+  .seg:hover .segtools { visibility: visible; }
+  .seg .segtools button { padding: 0 6px; font-size: 12px; margin-left: 2px; }
+  .seg.edited .txt { border-bottom: 2px solid #9c6; }
+  .seg.pending .txt { color: #999; font-style: italic; }
+  .seg input { width: calc(100% - 90px); font-size: 13px; padding: 2px 4px; }
+  #transcriptMsg { font-size: 12px; color: #555; margin-left: 8px; font-weight: normal; }
   #media { flex-wrap: wrap; display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
   #media img, #media video { width: 420px; background: #000; min-height: 100px; }
   #frame { transition: opacity .1s; }
@@ -564,7 +651,7 @@ PAGE = r"""<!doctype html>
     </div>
     <label>Titre/Citation</label><textarea id="title" rows="3"></textarea>
     <label>Citation étendue (optionnel)</label><textarea id="extended" rows="4"></textarea>
-    <label>Transcription à ±20 s (clic sur une ligne = l'ajouter à la citation étendue)</label>
+    <label>Transcription à ±20 s (clic sur une ligne = l'ajouter à la citation étendue ; ✎ = corriger les sous-titres, + = ajouter une ligne après)<span id="transcriptMsg"></span></label>
     <div id="transcript"></div>
     <label>Tags</label><input id="tags" type="text">
     <label>Explication</label><textarea id="explanation" rows="5"></textarea>
@@ -573,7 +660,7 @@ PAGE = r"""<!doctype html>
 </div>
 <script>
 const F = {title: "Titre/Citation", extended: "Citation étendue (optionnel)", tags: "Tags", explanation: "Explication"};
-let rows = [], transcript = [], lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
+let rows = [], transcript = [], transcriptVersion = 0, lastSave = "", sel = null, dirty = new Set(), frameTimer = null, clipTimer = null;
 const CS = "Début extrait", CE = "Fin extrait";
 let saving = false, editedWhileSaving = new Set();  // clip bounds; "Timecode" is only the screenshot
 let frameToken = 0;
@@ -590,6 +677,7 @@ async function load() {
   const res = await (await fetch("api/jokes")).json();
   rows = res.rows;
   transcript = res.transcript;
+  transcriptVersion = res.transcript_version;
   for (const d of res.drafts) {
     const row = Object.fromEntries(res.fields.map((f) => [f, d[f] ?? ""]));
     // Prefill new jokes with what Whisper heard around the timecode, for the user to correct.
@@ -661,9 +749,18 @@ function showTranscript() {
   const t = secs($("tc").value);
   for (const s of near(t - 20, t + 20)) {
     const div = document.createElement("div");
-    div.className = "seg" + (Math.floor(s.start) === Math.floor(t) ? " at" : "");
-    div.innerHTML = `<span class="tc">${fmt(Math.floor(s.start))}</span>${esc(s.text)}`;
-    div.onclick = () => {
+    div.className = "seg" + (Math.floor(s.start) === Math.floor(t) ? " at" : "") + (s.edit ? " edited" : "") +
+                    (s._pending ? " pending" : "");
+    div.innerHTML = `<span class="tc">${fmt(Math.floor(s.start))}</span><span class="txt">${esc(s.text)}</span>` +
+      (s._pending ? "" : `<span class="segtools"><button class="segEdit" title="Corriger cette ligne des sous-titres">✎</button>` +
+                         `<button class="segAdd" title="Ajouter une ligne des sous-titres après celle-ci">+</button></span>`);
+    if (s.edit) div.title = s.original ? `Corrigé (avant : ${s.original})` : "Ligne ajoutée";
+    if (!s._pending) {
+      div.querySelector(".segEdit").onclick = (e) => { e.stopPropagation(); editLine(div, s); };
+      div.querySelector(".segAdd").onclick = (e) => { e.stopPropagation(); addLine(div, s); };
+    }
+    div.onclick = (e) => {
+      if (e.target.closest("input")) return;
       const ext = $("extended");
       ext.value = (ext.value ? ext.value + "\n" : "") + "- " + s.text;
       edit(F.extended, ext.value);
@@ -672,6 +769,72 @@ function showTranscript() {
   }
   const box = $("transcript"), at = box.querySelector(".at");
   if (at) box.scrollTop = at.offsetTop - box.offsetTop - box.clientHeight / 2;  // scroll the box, not the page
+}
+
+// A text field in place of a transcript line: Enter saves, Escape cancels.
+function lineInput(div, value, onSave) {
+  const input = document.createElement("input");
+  input.value = value;
+  div.querySelector(".txt").replaceWith(input);
+  div.querySelector(".segtools")?.remove();
+  input.focus();
+  input.onkeydown = (e) => {
+    if (e.key === "Escape") showTranscript();
+    if (e.key === "Enter") onSave(input.value.trim());
+  };
+}
+
+function editLine(div, s) {
+  lineInput(div, s.text, (text) => {
+    if (text === s.text) return showTranscript();
+    if (!text && !confirm("Supprimer cette ligne des sous-titres ?")) return;
+    saveLine({edit: s.edit, start: s.start, original: s.text, text}, () => { s.text = text; s._pending = true; });
+  });
+}
+
+// A new line after s, said between its end and the next line (or in the 2.5 s after it).
+function addLine(div, s) {
+  const next = transcript.find((x) => x.start > s.start && x !== s);
+  const start = Math.max(s.start, s.end - 0.2);
+  const end = next && next.start - start >= 1 ? next.start + 0.2 : start + 2.5;
+  const row = document.createElement("div");
+  row.className = "seg";
+  row.innerHTML = `<span class="tc">${fmt(Math.floor(start))}</span><span class="txt"></span>`;
+  div.after(row);
+  lineInput(row, "", (text) => {
+    if (!text) return showTranscript();
+    saveLine({insert: true, start, end, text}, () => {
+      transcript.push({start, end, text, _pending: true});
+      transcript.sort((a, b) => a.start - b.start);
+    });
+  });
+}
+
+// Saves a transcript edit; the site's build then aligns the words again and re-encodes the clips
+// concerned. The panel (and the clip) update once the build has rewritten the transcript.
+async function saveLine(body, showLocally) {
+  $("transcriptMsg").textContent = "Enregistrement…";
+  const res = await fetch("api/transcription", {method: "POST", headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify(body)});
+  const out = await res.json();
+  if (!res.ok) { $("transcriptMsg").textContent = "Erreur : " + out.error; return showTranscript(); }
+  $("transcriptMsg").textContent = out.status;
+  if (!out.rebuilding) return showTranscript();
+  showLocally();
+  showTranscript();
+  for (let tries = 0; tries < 90; tries++) {
+    await new Promise((r) => setTimeout(r, 2000));
+    const now = await (await fetch("api/transcript")).json();
+    if (now.version !== transcriptVersion) {
+      transcript = now.transcript; transcriptVersion = now.version;
+      showTranscript();
+      $("transcriptMsg").textContent = "Sous-titres à jour";
+      if (!$("clip").hidden) $("play").onclick();  // the clip again, with the new subtitles
+      prepareClip();
+      return;
+    }
+  }
+  $("transcriptMsg").textContent = "La reconstruction prend du temps : recharge la page plus tard.";
 }
 
 // Preload the frames the step buttons lead to, so clicking them shows the image almost instantly.

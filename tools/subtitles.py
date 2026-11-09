@@ -1,8 +1,9 @@
 """Word-timed transcript of the movie, for the clips' subtitles: rebuilt by prepare.py whenever
 data.csv, corrections_sous_titres.csv or subtitles.json change.
 
-    DVD subtitles + corrections   (subs_base.py)
+    DVD subtitles + corrections_sous_titres.csv   (subs_base.py)
     -> the jokes' quotes replace them where they are said   (build_transcript.py)
+    -> lines edited in the editor: corrections_transcription.csv   (build_transcript.apply_edits)
     -> every word timed on the audio   (align_words.py, from the precomputed emissions)
 
 Writes, in out_dir: transcription.json (lines), mots.json (words), and memo.json, the alignments
@@ -37,10 +38,10 @@ def signature(paths, emissions_path):
 
 
 def build(emissions_path, out_dir, data_csv="data.csv", subs_json="subtitles.json",
-          corrections_csv="corrections_sous_titres.csv", log=print):
+          corrections_csv="corrections_sous_titres.csv", edits_csv="corrections_transcription.csv", log=print):
     """Returns the timed words [{"w", "s", "e", "seg", "p"}], rebuilt only if an input changed."""
     here = os.path.dirname(os.path.abspath(__file__))
-    inputs = [data_csv, subs_json] + ([corrections_csv] if os.path.exists(corrections_csv) else [])
+    inputs = [data_csv, subs_json] + [p for p in (corrections_csv, edits_csv) if os.path.exists(p)]
     sig = signature(inputs + [os.path.join(here, t) for t in TOOLS], emissions_path)
     words_path, sig_path = os.path.join(out_dir, "mots.json"), os.path.join(out_dir, "signature")
     if os.path.exists(words_path) and os.path.exists(sig_path) and open(sig_path).read() == sig:
@@ -71,6 +72,12 @@ def build(emissions_path, out_dir, data_csv="data.csv", subs_json="subtitles.jso
     with open(data_csv, encoding="utf8") as f:
         rows = list(csv.DictReader(f))
     segments = build_transcript.build(rows, base, log=log)
+    edits = subs_base.read_corrections(edits_csv)
+    segments, unused = build_transcript.apply_edits(segments, edits)
+    if edits:
+        log("transcript lines edited in the editor: %d of %d applied" % (len(edits) - len(unused), len(edits)))
+    for e in unused:
+        log("  edit not applied (no line with that text at that time): %(Début)s %(Original)s" % e)
     words, failed, _ = aw.align_segments(segments, log=False)
     reused = len(aw.memo_used & before)
 

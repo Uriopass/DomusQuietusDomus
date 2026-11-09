@@ -20,6 +20,7 @@ import sys
 import unicodedata
 
 import align_words as aw
+import subs_base
 
 FPS = 24
 SOUNDS = {"rugissement"}  # *word* that describes a sound rather than stressing a spoken word
@@ -138,6 +139,31 @@ def build(rows, base, log=print):
     log("quotes placed: %(placed)d, not spoken or no clip: %(not spoken)d, same dialogue as another quote: %(overlap)d" % stats)
     log("subtitle words replaced: %d of %d; segments: %d" % (sum(removed), len(base_words), len(segments)))
     return segments
+
+
+def apply_edits(segments, edits):
+    """Hand edits of the final transcript's lines (corrections_transcription.csv, written by the editor),
+    whatever the line came from (subtitles, correction or quote). Columns Début, Fin, Original, Correction:
+    - with an Original: the line starting at Début (within a second) with that text gets Correction
+      (empty: the line is removed);
+    - without one: a line said between Début and Fin is added.
+    Edited and added lines keep the row's Début and Original under "edit", so the editor can change it
+    again. Returns (segments, edits that matched no line)."""
+    out, unused = [dict(seg) for seg in segments], []
+    for e in edits:
+        t, key = subs_base.seconds(e["Début"]), {"Début": e["Début"], "Original": e["Original"]}
+        if e["Original"].strip():
+            lines = [seg for seg in out if "edit" not in seg and abs(seg["start"] - t) <= 1.0
+                     and norm(seg["text"]) == norm(e["Original"])]
+            if not lines:
+                unused.append(e)
+                continue
+            seg = min(lines, key=lambda seg: abs(seg["start"] - t))
+            seg.update(original=seg["text"], text=e["Correction"].strip(), edit=key)
+        else:
+            end = subs_base.seconds(e["Fin"]) if e.get("Fin", "").strip() else t + 2.5
+            out.append({"start": t, "end": end, "text": e["Correction"].strip(), "source": "ajout", "edit": key})
+    return sorted((seg for seg in out if seg["text"]), key=lambda seg: seg["start"]), unused
 
 
 def main():
