@@ -171,6 +171,16 @@ a {
     cursor: pointer;
 }
 
+/* Clip / GIF being fetched to share, then ready to share on the next tap */
+.quote-share a.loading img {
+    opacity: 0.35;
+}
+
+.quote-share a.ready img {
+    border-radius: 4px;
+    background: #f0c060;
+}
+
 /* Slightly bigger icons and tap areas on touch screens */
 @media (pointer: coarse) {
     .quote-share {

@@ -6,3 +6,5 @@ build
 *.mkv
 venv
 views.json
+emissions.npz
+__pycache__

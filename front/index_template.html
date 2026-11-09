@@ -50,6 +50,35 @@
         navigator.share({url: 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html'});
     }
 
+    // On a phone, the clip / GIF icons hand the file to the share sheet (WhatsApp, Messages...) instead
+    // of downloading it. The file is fetched on the first tap; if that took too long for the browser to
+    // still allow sharing, the icon lights up and the next tap shares it at once.
+    const clipFiles = {};
+    async function shareClip(link, event) {
+        if (!matchMedia('(pointer: coarse)').matches || !navigator.canShare) return;  // a plain download
+        event.preventDefault();
+        const url = link.href, name = link.getAttribute('download');
+        try {
+            if (!clipFiles[url]) {
+                link.classList.add('loading');
+                const blob = await (await fetch(url)).blob();
+                clipFiles[url] = new File([blob], name, {type: name.endsWith('.gif') ? 'image/gif' : 'video/mp4'});
+                link.classList.remove('loading');
+            }
+            if (!navigator.canShare({files: [clipFiles[url]]})) throw new TypeError('cannot share this file');
+            link.classList.remove('ready');
+            await navigator.share({files: [clipFiles[url]]});
+        } catch (e) {
+            link.classList.remove('loading');
+            if (e.name === 'AbortError') return;
+            if (e.name === 'NotAllowedError' && clipFiles[url]) return link.classList.add('ready');
+            const a = document.createElement('a');  // sharing files isn't possible here: download it
+            a.href = clipFiles[url] ? URL.createObjectURL(clipFiles[url]) : url;
+            a.download = name;
+            a.click();
+        }
+    }
+
     function copyLink(id, event) {
         const url = 'https://domusquietusdomus.douady.paris/quotes/' + id + '.html';
         navigator.clipboard.writeText(url).then(() => {

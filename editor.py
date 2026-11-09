@@ -10,12 +10,15 @@ Usage:
 Needs ffmpeg where the movie is. Nothing is written until you click "Enregistrer".
 With --git, each save is committed and pushed, and --rebuild runs a command afterwards
 (on the server: --rebuild "venv/bin/python prepare.py movie.mkv" to update the site).
+Clips show the site's word-by-word subtitles (build/sous-titres, from the last build) when ffmpeg can
+burn them in (libass); "GIF" makes the looping GIF the site offers, to send on WhatsApp.
 All URLs are relative, so it also works behind a reverse proxy under a sub-path like /editeur/.
 Jokes ticked "Brouillon" are kept in the --drafts JSON file instead of data.csv: they stay off the
 site and out of git until unticked and saved.
 """
 import argparse
 import csv
+import hashlib
 import http.server
 import json
 import os
@@ -23,15 +26,20 @@ import re
 import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 import threading
 import urllib.parse
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools"))
+import clip_subs  # noqa: E402  (subtitles and ffmpeg settings shared with the site)
 
 DATA = "data.csv"
 FPS = 24  # frame rate of movie.mkv; a timecode can end with :ff to pick a frame, like in prepare.py
 CLIP_START, CLIP_END = "Début extrait", "Fin extrait"  # clip bounds; "Timecode" is the screenshot
 CLIPS_KEPT = 40  # encoded clips cached on disk
 MAX_CLIP = 120  # seconds
+SUBTITLES = os.path.join("build", "sous-titres")  # written by each build (tools/subtitles.py)
 TIMECODE = re.compile(r"^\d+:\d\d:\d\d(:\d\d?)?$")
 
 
@@ -53,6 +61,7 @@ class Movie:
         self.clip_dir = tempfile.mkdtemp(prefix="domus-clips-")
         self.clip_locks = {}
         self.clip_locks_lock = threading.Lock()
+        self._can_burn = None
 
     def resolve(self, args):
         path = self.local or self.path
@@ -72,33 +81,97 @@ class Movie:
                                           "-vf", "scale=640:-2", "-f", "image2", "-c:v", "mjpeg", "pipe:1"])
         return self.frames[t]
 
-    def clip(self, start, end):
-        """Path to an mp4 of the movie from start to end (seconds), encoded once (~2.5 s for 19 s) and cached.
-        The index is at the front (faststart), so the browser knows the duration at once and can seek."""
-        key = "%.3f-%.3f" % (start, end)
-        path = os.path.join(self.clip_dir, key + ".mp4")
+    def can_burn(self):
+        """Whether ffmpeg where the movie is can burn subtitles in (it needs libass)."""
+        if self._can_burn is None:
+            if self.host:
+                out = subprocess.run(["ssh", self.host, "ffmpeg -hide_banner -filters"], capture_output=True, text=True).stdout
+                self._can_burn = any(line.split()[1:2] == ["ass"] for line in out.splitlines())
+            else:
+                self._can_burn = clip_subs.ffmpeg_has_libass()
+        return self._can_burn
+
+    def locked(self, key):
         with self.clip_locks_lock:
-            lock = self.clip_locks.setdefault(key, threading.Lock())
-        with lock:  # a click during the background preparation waits for it instead of encoding twice
+            return self.clip_locks.setdefault(key, threading.Lock())
+
+    def clip(self, start, end, ass=None):
+        """Path to an mp4 of the movie from start to end (seconds), with the subtitles ass (ASS text)
+        burned in, encoded once (~2.5 s for 19 s) and cached. The index is at the front (faststart), so
+        the browser knows the duration at once and can seek."""
+        key = "%.3f-%.3f" % (start, end) + ("-" + hashlib.sha1(ass.encode()).hexdigest()[:8] if ass else "")
+        path = os.path.join(self.clip_dir, key + ".mp4")
+        with self.locked(key):  # a click during the background preparation waits for it instead of encoding twice
             if os.path.exists(path):
                 return path
-            args = ["-ss", "%.3f" % start, "-t", "%.3f" % (end - start), "-i", "{movie}", "-vf", "scale=640:-2",
-                    "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2",
-                    "-movflags", "+faststart", "-f", "mp4", "-y"]
+            def args(ass_path):
+                return (["-ss", "%.3f" % start, "-t", "%.3f" % (end - start), "-i", "{movie}",
+                         "-vf", clip_subs.video_filter(ass_path)] + clip_subs.MP4_ARGS + ["-f", "mp4", "-y"])
             with open(path + ".part", "wb") as out:
                 if self.host:
                     # faststart needs a seekable output: encode to a temp file on the server, then send it.
-                    encode = shlex.join(self.resolve(args)) + ' "$f"'
-                    remote = 'f=$(mktemp --suffix=.mp4) && %s && cat "$f"; rm -f "$f"' % encode
-                    subprocess.run(["ssh", self.host, remote], stdout=out, check=True)
+                    # The subtitles go through stdin to a temp file there.
+                    encode = shlex.join(self.resolve(args("__ASS__" if ass else None))).replace("__ASS__", '"$a"')
+                    remote = ('a=$(mktemp --suffix=.ass) && cat > "$a" && f=$(mktemp --suffix=.mp4) && %s "$f" && cat "$f"; '
+                              'rm -f "$f" "$a"' % encode)
+                    subprocess.run(["ssh", self.host, remote], input=(ass or "").encode(), stdout=out, check=True)
                 else:
-                    subprocess.run(self.resolve(args + [path + ".part"]), check=True)
+                    if ass:
+                        with open(path + ".ass", "w", encoding="utf8") as f:
+                            f.write(ass)
+                    subprocess.run(self.resolve(args(ass and path + ".ass") + [path + ".part"]), check=True)
             os.replace(path + ".part", path)
-            clips = sorted((os.path.join(self.clip_dir, f) for f in os.listdir(self.clip_dir) if f.endswith(".mp4")),
-                           key=os.path.getmtime)
-            for old in clips[:-CLIPS_KEPT]:
-                os.remove(old)
+            self.prune()
             return path
+
+    def gif(self, start, end, ass=None):
+        """Path to the looping GIF of that clip (the same as the site's)."""
+        mp4 = self.clip(start, end, ass)
+        path = mp4[:-4] + ".gif"
+        with self.locked(path):
+            if not os.path.exists(path):
+                with open(mp4, "rb") as src, open(path + ".part", "wb") as out:
+                    subprocess.run(self.command(["-f", "mp4", "-i", "pipe:0", "-filter_complex", clip_subs.gif_filter(end - start),
+                                                 "-loop", "0", "-f", "gif", "pipe:1"]), stdin=src, stdout=out, check=True)
+                os.replace(path + ".part", path)
+            return path
+
+    def prune(self):
+        files = sorted((os.path.join(self.clip_dir, f) for f in os.listdir(self.clip_dir) if f.endswith((".mp4", ".gif"))),
+                       key=os.path.getmtime)
+        for old in files[:-CLIPS_KEPT]:
+            os.remove(old)
+
+
+class Subtitles:
+    """The site's transcript and word timings, as of the last build, reloaded when a build rewrites them."""
+
+    def __init__(self, fallback_transcript=None):
+        self.fallback = fallback_transcript
+        self.cache = {}
+
+    def load(self, name):
+        path = os.path.join(SUBTITLES, name)
+        try:
+            mtime = os.path.getmtime(path)
+        except OSError:
+            return None
+        if self.cache.get(name, (None,))[0] != mtime:
+            with open(path, encoding="utf8") as f:
+                self.cache[name] = (mtime, json.load(f))
+        return self.cache[name][1]
+
+    def transcript(self):
+        lines = self.load("transcription.json")
+        if lines is None and self.fallback and os.path.exists(self.fallback):
+            with open(self.fallback, encoding="utf8") as f:
+                lines = json.load(f)
+        return lines or []
+
+    def ass(self, start, end):
+        words = self.load("mots.json")
+        ass = clip_subs.make_ass(words, start, end) if words else ""
+        return ass if clip_subs.has_subtitles(ass) else None
 
 
 PROPOSALS = "corrections_proposees.csv"    # tools/propose_corrections.py
@@ -225,7 +298,7 @@ def commit_and_push(message):
 class Handler(http.server.BaseHTTPRequestHandler):
     movie = None
     drafts_path = None
-    transcript = []
+    subtitles = None
     use_git = False
     rebuild = None
     share_dir = None
@@ -295,37 +368,43 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 ids = {r["ID"] for r in rows}
                 drafts = [d for d in read_drafts(self.drafts_path) if d.get("ID") not in ids]
                 self.send(json.dumps({"fields": fields, "rows": rows, "drafts": drafts,
-                                      "transcript": self.transcript}), "application/json")
+                                      "transcript": self.subtitles.transcript()}), "application/json")
             elif url.path == "/frame":
                 self.send(self.movie.frame(float(query["t"][0])), "image/jpeg", cache=True)
-            elif url.path in ("/clip", "/prepare", "/share"):
+            elif url.path in ("/clip", "/gif", "/prepare", "/share"):
                 start, end = float(query["s"][0]), float(query["e"][0])
                 if not 0 <= start < end <= start + MAX_CLIP:
                     return self.send(json.dumps({"error": "début/fin invalides (%d s max)" % MAX_CLIP}),
                                      "application/json", 400)
+                # subs=0: without the subtitles (the review page, where they'd give the answer away)
+                ass = self.subtitles.ass(start, end) if query.get("subs", ["1"])[0] != "0" and self.movie.can_burn() else None
+                gif = url.path == "/gif" or query.get("fmt", [""])[0] == "gif"
                 if url.path == "/clip":
-                    self.send_file(self.movie.clip(start, end), "video/mp4")
+                    self.send_file(self.movie.clip(start, end, ass), "video/mp4")
+                elif url.path == "/gif":
+                    self.send_file(self.movie.gif(start, end, ass), "image/gif")
                 elif url.path == "/prepare":  # encode the clip in the background, before the click
-                    threading.Thread(target=self.movie.clip, args=(start, end), daemon=True).start()
+                    threading.Thread(target=self.movie.clip, args=(start, end, ass), daemon=True).start()
                     self.send("", "text/plain")
                 else:
-                    self.send(json.dumps({"url": self.share(start, end, query.get("id", [""])[0])}),
+                    self.send(json.dumps({"url": self.share(start, end, query.get("id", [""])[0], ass, gif)}),
                               "application/json")
             else:
                 self.send("not found", "text/plain", 404)
         except subprocess.CalledProcessError as e:
             self.send("ffmpeg: " + e.stderr.decode(errors="replace"), "text/plain", 500)
 
-    def share(self, start, end, joke_id):
-        """Copies the clip where the public site serves it and returns its URL. Without --share-dir,
-        returns the editor's own clip URL, which only works for whoever can open the editor."""
+    def share(self, start, end, joke_id, ass=None, gif=False):
+        """Copies the clip (or its GIF) where the public site serves it and returns its URL. Without
+        --share-dir, returns the editor's own URL, which only works for whoever can open the editor."""
         if not self.share_dir:
-            return "clip?s=%.3f&e=%.3f" % (start, end)
-        name = "%s_%.2f-%.2f.mp4" % (re.sub(r"[^0-9A-Za-z]", "", joke_id) or "clip", start, end)
+            return "%s?s=%.3f&e=%.3f&subs=%d" % ("gif" if gif else "clip", start, end, ass is not None)
+        name = "%s_%.2f-%.2f%s.%s" % (re.sub(r"[^0-9A-Za-z]", "", joke_id) or "clip", start, end,
+                                      "_" + hashlib.sha1(ass.encode()).hexdigest()[:8] if ass else "", "gif" if gif else "mp4")
         target = os.path.join(self.share_dir, name)
         if not os.path.exists(target):
             os.makedirs(self.share_dir, exist_ok=True)
-            shutil.copyfile(self.movie.clip(start, end), target + ".part")
+            shutil.copyfile((self.movie.gif if gif else self.movie.clip)(start, end, ass), target + ".part")
             os.replace(target + ".part", target)
         return self.share_url + name
 
@@ -473,7 +552,8 @@ PAGE = r"""<!doctype html>
           <img id="ceImg" class="clipThumb" alt="">
         </div>
         <div class="row" style="margin:6px 0">
-          <button id="play">▶ Extrait</button><button id="share">Partager le clip</button><span id="sharemsg"></span>
+          <button id="play">▶ Extrait</button><label style="margin:0 6px"><input id="subs" type="checkbox" checked> Sous-titres</label>
+          <button id="share">Partager le clip</button><button id="shareGif">Partager le GIF</button><span id="sharemsg"></span>
         </div>
         <video id="clip" controls hidden></video>
       </div>
@@ -641,10 +721,13 @@ function clipRange() {
   return e > s && e - s <= 120 ? [s, e] : null;
 }
 
+// Query of the clip's URLs: its bounds, and whether to burn the subtitles in.
+function clipQuery(c) { return `s=${c[0]}&e=${c[1]}&subs=${$("subs").checked ? 1 : 0}`; }
+
 // Have the server encode the clip once it stops changing, so "Extrait" plays right away.
 function prepareClip() {
   clearTimeout(clipTimer);
-  clipTimer = setTimeout(() => { const c = clipRange(); if (c) fetch(`prepare?s=${c[0]}&e=${c[1]}`); }, 1000);
+  clipTimer = setTimeout(() => { const c = clipRange(); if (c) fetch(`prepare?${clipQuery(c)}`); }, 1000);
 }
 
 function edit(field, value) {
@@ -706,22 +789,25 @@ document.querySelectorAll("[data-clip]").forEach((b) => b.onclick = () => {
 $("play").onclick = () => {
   const c = clipRange();
   if (!c) return alert("Début/fin invalides (le début avant la fin, 2 min max).");
-  $("clip").hidden = false; $("clip").src = `clip?s=${c[0]}&e=${c[1]}`; $("clip").play();
+  $("clip").hidden = false; $("clip").src = `clip?${clipQuery(c)}`; $("clip").play();
 };
-$("share").onclick = async () => {
+$("subs").onchange = () => { if (!$("clip").hidden) $("play").onclick(); prepareClip(); };
+$("share").onclick = () => shareClip("mp4");
+$("shareGif").onclick = () => shareClip("gif");
+async function shareClip(fmt) {
   const c = clipRange();
   if (!c || !sel) return alert("Début/fin invalides (le début avant la fin, 2 min max).");
-  $("sharemsg").textContent = "Préparation du clip…";
-  const res = await fetch(`share?s=${c[0]}&e=${c[1]}&id=${encodeURIComponent(sel.ID)}`);
+  $("sharemsg").textContent = fmt === "gif" ? "Préparation du GIF…" : "Préparation du clip…";
+  const res = await fetch(`share?${clipQuery(c)}&fmt=${fmt}&id=${encodeURIComponent(sel.ID)}`);
   const out = await res.json();
   if (!res.ok) return $("sharemsg").textContent = out.error;
   const url = new URL(out.url, location.href).href;
   const title = sel["Titre/Citation"].split("\n")[0];
-  // On a phone, share the video itself (WhatsApp, Messages…); elsewhere copy the link.
+  // On a phone, share the video / GIF itself (WhatsApp, Messages…); elsewhere copy the link.
   if (matchMedia("(pointer: coarse)").matches && navigator.canShare) {
     try {
-      const blob = await (await fetch(`clip?s=${c[0]}&e=${c[1]}`)).blob();
-      const file = new File([blob], url.split("/").pop(), {type: "video/mp4"});
+      const blob = await (await fetch(`${fmt === "gif" ? "gif" : "clip"}?${clipQuery(c)}`)).blob();
+      const file = new File([blob], url.split("/").pop(), {type: fmt === "gif" ? "image/gif" : "video/mp4"});
       if (navigator.canShare({files: [file]})) {
         await navigator.share({files: [file], title, text: title + "\n" + url});
         return $("sharemsg").textContent = "Partagé";
@@ -732,7 +818,7 @@ $("share").onclick = async () => {
   }
   const copied = await navigator.clipboard.writeText(url).then(() => true, () => false);
   $("sharemsg").innerHTML = (copied ? "Lien copié : " : "Lien : ") + `<a href="${esc(url)}" target="_blank">${esc(url)}</a>`;
-};
+}
 $("search").oninput = render;
 $("new").onclick = () => {
   const id = String(Math.max(0, ...rows.map((r) => Number(r.ID) || 0)) + 1);
@@ -880,10 +966,10 @@ function show() {
   $("diff").innerHTML = diffHtml(it.Original, it.Correction);
   $("text").value = it.decision === "gemini" ? it.text : it.Correction;
   const [a, b] = range(it);
-  $("clip").src = `clip?s=${Math.max(0, a)}&e=${b}`;
+  $("clip").src = `clip?s=${Math.max(0, a)}&e=${b}&subs=0`;
   $("clip").play().catch(() => {});
   for (const next of list.slice(pos + 1, pos + 3)) {  // have the server encode the next clips already
-    const [x, y] = range(next); fetch(`prepare?s=${Math.max(0, x)}&e=${y}`);
+    const [x, y] = range(next); fetch(`prepare?s=${Math.max(0, x)}&e=${y}&subs=0`);
   }
 }
 
@@ -930,8 +1016,8 @@ def main():
     source.add_argument("--movie", help="path to the movie file")
     source.add_argument("--ssh", help="host:path of the movie on a server with ffmpeg")
     parser.add_argument("--drafts", help="JSON file holding the draft jokes (created on first draft save)")
-    parser.add_argument("--transcript", help="transcript segments JSON ([{start, end, text}]); default: "
-                                             "transcription.json (corrected), else transcript.json (Whisper)")
+    parser.add_argument("--transcript", help="transcript segments JSON ([{start, end, text}]) shown until a build "
+                                             "writes build/sous-titres/transcription.json")
     parser.add_argument("--git", action="store_true", help="commit and push data.csv after each save")
     parser.add_argument("--rebuild", help="shell command run in the background after each save")
     parser.add_argument("--share-dir", help="folder served by the public site where shared clips are copied")
@@ -944,11 +1030,8 @@ def main():
     Handler.share_url = args.share_url
     Handler.movie = Movie(local=args.movie and os.path.abspath(args.movie), ssh=args.ssh)
     Handler.drafts_path = args.drafts and os.path.abspath(args.drafts)
+    Handler.subtitles = Subtitles(args.transcript and os.path.abspath(args.transcript))
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # data.csv sits next to this script
-    transcript = args.transcript or next((f for f in ("transcription.json", "transcript.json") if os.path.exists(f)), None)
-    if transcript:
-        with open(transcript, encoding="utf8") as f:
-            Handler.transcript = json.load(f)
     server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print("Éditeur de blagues sur http://localhost:%d" % args.port)
     server.serve_forever()
