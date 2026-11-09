@@ -119,14 +119,15 @@ def genClipHtml(datum: dict, prefix: str):
     url = f"{prefix}extraits/{datum['clip_name']}.mp4"
     # Downloads the clip under a readable name, e.g. 355-amonbofis-menace-numerobis-de-devenir.mp4.
     # On a phone, shareClip hands the file to the share sheet (WhatsApp...) instead; on a computer,
-    # the GIF shows over the screenshot, to copy it.
+    # the GIF shows over the screenshot, to drag into a chat or copy its link.
     filename = f"{datum['id']}-{slugify(datum['title'].split(chr(10))[0])[:50].rstrip('-')}"
     link = (f'<a href="{url}" download="{filename}.mp4" onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/clip.svg" height="16" width="16" '
             f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>'
-            f'<a href="{url[:-4]}.gif" download="{filename}.gif" onclick="shareClip(this, event)">'
+            f'<a href="{url[:-4]}.gif" download="{filename}.gif" data-link="{SITE}/gif/{datum["id"]}.gif" '
+            f'onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/gif.svg" height="16" width="16" '
-            f'alt="GIF de l\'extrait" title="GIF de l\'extrait, à copier ou partager"/></a>')
+            f'alt="GIF de l\'extrait" title="GIF de l\'extrait, à partager"/></a>')
     play = (f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
             f'title="Lancer l\'extrait" aria-label="Lancer l\'extrait">{PLAY_ICON}</button>')
     return link, play
@@ -193,6 +194,7 @@ def genQuotesPages(data: [dict]):
             quote_file.write(quote)
 
 
+SITE = 'https://domusquietusdomus.douady.paris'
 EMISSIONS = 'emissions.npz'  # the audio model's output for the movie (tools/align_words.py --emissions)
 
 
@@ -257,6 +259,18 @@ def genClips(data: [dict], videoFilePath: str):
             with open(path + '.gif.part', 'wb') as f:
                 f.write(gif)
             os.replace(path + '.gif.part', path + '.gif')
+    # A link that stays the same when the subtitles change (and the clip's name with them), to paste in
+    # a chat: gif/<id>.gif points to the joke's current GIF.
+    os.makedirs('build/gif', exist_ok=True)
+    links = {f"{datum['id']}.gif": f"../extraits/{datum['clip_name']}.gif" for datum in data
+             if datum['clip_name'] and os.path.exists(f"build/extraits/{datum['clip_name']}.gif")}
+    for name in os.listdir('build/gif'):
+        if name not in links:
+            os.remove(f'build/gif/{name}')
+    for name, target in links.items():
+        if not os.path.islink(f'build/gif/{name}') or os.readlink(f'build/gif/{name}') != target:
+            os.symlink(target, f'build/gif/{name}.part')
+            os.replace(f'build/gif/{name}.part', f'build/gif/{name}')
     wanted = {datum['clip_name'] for datum in data if datum['clip_name']}
     for name in os.listdir('build/extraits'):
         stem, ext = os.path.splitext(name)

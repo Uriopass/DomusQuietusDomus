@@ -79,7 +79,7 @@ function playClip(button, event) {
 
 function stopClips(container) {
     for (const media of container.querySelectorAll('.quote-media.playing')) {
-        media.querySelectorAll('.quote-clip, .quote-gif-hint').forEach((el) => el.remove());
+        media.querySelectorAll('.quote-clip, .quote-gif-hint, .quote-gif-actions').forEach((el) => el.remove());
         media.classList.remove('playing');
     }
 }
@@ -94,19 +94,35 @@ function showGif(link) {
     gif.className = 'quote-clip';
     gif.src = link.href;
     gif.alt = 'GIF de l\'extrait';
-    gif.title = 'Clic droit → Copier l\'image, ou glisse le GIF dans une conversation';
+    gif.title = 'Glisse le GIF dans une conversation';
     gif.addEventListener('click', (e) => e.stopPropagation());
     const hint = document.createElement('div');
     hint.className = 'quote-gif-hint';
-    hint.textContent = 'Clic droit → Copier l\'image';
-    media.append(gif, hint);
+    hint.textContent = 'Glisse le GIF dans la conversation';
+    // A pasted link shows as an animated GIF in Discord, Slack, Messenger, Telegram...
+    const actions = document.createElement('div');
+    actions.className = 'quote-gif-actions';
+    actions.addEventListener('click', (e) => e.stopPropagation());
+    const copy = document.createElement('button');
+    copy.textContent = 'Copier le lien';
+    copy.onclick = () => navigator.clipboard.writeText(link.dataset.link || link.href).then(() => {
+        copy.textContent = 'Lien copié ✓';
+        setTimeout(() => { copy.textContent = 'Copier le lien'; }, 1500);
+    });
+    const save = document.createElement('a');
+    save.textContent = 'Télécharger';
+    save.href = link.href;
+    save.download = link.getAttribute('download');
+    actions.append(copy, save);
+    media.append(gif, hint, actions);
     media.classList.add('playing');
 }
 
 // On a phone, the clip / GIF icons hand the file to the share sheet (WhatsApp, Messages...) instead
 // of downloading it. The file is fetched on the first tap; if that took too long for the browser to
 // still allow sharing, the icon lights up and the next tap shares it at once.
-// On a computer, the GIF shows over the screenshot, to copy (right click) or drag into a chat.
+// On a computer, the GIF shows over the screenshot, to drag into a chat, copy its link or download it
+// (browsers only copy a still image to the clipboard, never an animated GIF).
 const clipFiles = {};
 async function shareClip(link, event) {
     if (!matchMedia('(pointer: coarse)').matches || !navigator.canShare) {
