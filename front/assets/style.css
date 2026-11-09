@@ -171,7 +171,7 @@ a {
     cursor: pointer;
 }
 
-/* Clip / GIF being fetched to share, then ready to share on the next tap */
+/* Clip being fetched to share, then ready to share on the next tap */
 .quote-share a.loading img {
     opacity: 0.35;
 }
@@ -243,6 +243,29 @@ a {
 
 .quote-media.playing .quote-play {
     display: none;
+}
+
+/* The GIF button, left of the play button; it stays over a playing clip or GIF (click: GIF / hide it) */
+.quote-play.quote-gif {
+    right: 42px;
+    z-index: 4;
+    color: #fff;
+    font: bold 10px sans-serif;
+    text-decoration: none;
+}
+
+.quote-selected .quote-media.playing .quote-gif {
+    display: flex;
+}
+
+/* GIF being fetched to share on a phone, then ready to share on the next tap */
+.quote-play.quote-gif.loading {
+    opacity: 0.4;
+}
+
+.quote-play.quote-gif.ready {
+    background: #f0c060;
+    color: #000;
 }
 
 .quote-clip {

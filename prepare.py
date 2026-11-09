@@ -113,7 +113,7 @@ PLAY_ICON = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
 
 
 def genClipHtml(datum: dict, prefix: str):
-    """The clap and GIF icons next to the share buttons, and the play button over the screenshot."""
+    """The clap icon next to the share buttons, and the play and GIF buttons over the screenshot."""
     if not datum['clip_name']:
         return '', ''
     url = f"{prefix}extraits/{datum['clip_name']}.mp4"
@@ -123,12 +123,11 @@ def genClipHtml(datum: dict, prefix: str):
     filename = f"{datum['id']}-{slugify(datum['title'].split(chr(10))[0])[:50].rstrip('-')}"
     link = (f'<a href="{url}" download="{filename}.mp4" onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/clip.svg" height="16" width="16" '
-            f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>'
-            f'<a href="{url[:-4]}.gif" download="{filename}.gif" data-link="{SITE}/gif/{datum["id"]}.gif" '
-            f'onclick="shareClip(this, event)">'
-            f'<img src="{prefix}assets/gif.svg" height="16" width="16" '
-            f'alt="GIF de l\'extrait" title="GIF de l\'extrait, à partager"/></a>')
-    play = (f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
+            f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>')
+    play = (f'<a class="quote-play quote-gif" href="{url[:-4]}.gif" download="{filename}.gif" '
+            f'data-link="{SITE}/gif/{datum["id"]}.gif" onclick="shareClip(this, event)" '
+            f'title="GIF de l\'extrait, à partager" aria-label="GIF de l\'extrait">GIF</a>'
+            f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
             f'title="Lancer l\'extrait" aria-label="Lancer l\'extrait">{PLAY_ICON}</button>')
     return link, play
 

@@ -96,9 +96,15 @@ function showGif(link) {
     gif.alt = 'GIF de l\'extrait';
     gif.title = 'Glisse le GIF dans une conversation';
     gif.addEventListener('click', (e) => e.stopPropagation());
-    const hint = document.createElement('div');
-    hint.className = 'quote-gif-hint';
-    hint.textContent = 'Glisse le GIF dans la conversation';
+    // The tip shows the first 3 times only (counted in this browser)
+    let tips = 3;
+    try { tips = Number(localStorage.getItem('gifTips')) || 0; localStorage.setItem('gifTips', tips + 1); } catch (e) {}
+    if (tips < 3) {
+        const hint = document.createElement('div');
+        hint.className = 'quote-gif-hint';
+        hint.textContent = 'Glisse le GIF dans la conversation';
+        media.append(hint);
+    }
     // A pasted link shows as an animated GIF in Discord, Slack, Messenger, Telegram...
     const actions = document.createElement('div');
     actions.className = 'quote-gif-actions';
@@ -114,7 +120,7 @@ function showGif(link) {
     save.href = link.href;
     save.download = link.getAttribute('download');
     actions.append(copy, save);
-    media.append(gif, hint, actions);
+    media.append(gif, actions);
     media.classList.add('playing');
 }
 
