@@ -101,6 +101,52 @@ class Movie:
             return path
 
 
+PROPOSALS = "corrections_proposees.csv"    # tools/propose_corrections.py
+DECISIONS = "relecture.json"               # the user's decision on each proposal
+CORRECTIONS = "corrections_sous_titres.csv"  # applied by tools/subs_base.py
+CORRECTION_FIELDS = ["Début", "Fin", "Original", "Correction"]
+
+
+def proposal_key(p):
+    return "%s|%s|%s" % (p["Début"], p["Original"], p["Type"])
+
+
+def load_review():
+    if not os.path.exists(PROPOSALS):
+        return []
+    decisions = json.load(open(DECISIONS, encoding="utf8")) if os.path.exists(DECISIONS) else {}
+    items = []
+    for p in csv.DictReader(open(PROPOSALS, encoding="utf8")):
+        key = proposal_key(p)
+        items.append(dict(p, key=key, **decisions.get(key, {})))
+    return items
+
+
+def decide(key, decision, text):
+    """Records the decision ("gemini": take the (edited) text, "dvd": keep the subtitle, "" to undo)
+    and keeps corrections_sous_titres.csv in line with it."""
+    proposal = next(p for p in load_review() if p["key"] == key)
+    decisions = json.load(open(DECISIONS, encoding="utf8")) if os.path.exists(DECISIONS) else {}
+    if decision:
+        decisions[key] = {"decision": decision, "text": text}
+    else:
+        decisions.pop(key, None)
+    with open(DECISIONS + ".tmp", "w", encoding="utf8") as f:
+        json.dump(decisions, f, ensure_ascii=False, indent=1)
+    os.replace(DECISIONS + ".tmp", DECISIONS)
+    rows = list(csv.DictReader(open(CORRECTIONS, encoding="utf8"))) if os.path.exists(CORRECTIONS) else []
+    same = lambda r: r["Début"] == proposal["Début"] and r["Original"] == proposal["Original"] and \
+        (proposal["Original"] or r["Fin"] == proposal["Fin"])
+    rows = [r for r in rows if not same(r)]
+    if decision == "gemini":
+        rows.append({"Début": proposal["Début"], "Fin": proposal["Fin"], "Original": proposal["Original"], "Correction": text})
+    with open(CORRECTIONS + ".tmp", "w", encoding="utf8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CORRECTION_FIELDS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows({k: r.get(k, "") for k in CORRECTION_FIELDS} for r in rows)
+    os.replace(CORRECTIONS + ".tmp", CORRECTIONS)
+
+
 def load():
     with open(DATA, encoding="utf8", newline="") as f:
         reader = csv.DictReader(f)
@@ -240,6 +286,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         try:
             if url.path == "/":
                 self.send(PAGE, "text/html; charset=utf-8")
+            elif url.path == "/relecture":
+                self.send(REVIEW_PAGE, "text/html; charset=utf-8")
+            elif url.path == "/api/relecture":
+                self.send(json.dumps(load_review()), "application/json")
             elif url.path == "/api/jokes":
                 fields, rows = load()
                 ids = {r["ID"] for r in rows}
@@ -280,6 +330,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return self.share_url + name
 
     def do_POST(self):
+        if self.path == "/api/relecture":
+            body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+            with self.lock:
+                decide(body["key"], body["decision"], body.get("text", ""))
+            return self.send(json.dumps({"ok": True}), "application/json")
         if self.path != "/api/save":
             return self.send("not found", "text/plain", 404)
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
@@ -387,6 +442,7 @@ PAGE = r"""<!doctype html>
 <div id="main">
   <div id="bar">
     <button id="save" disabled>Enregistrer data.csv</button>
+    <a href="relecture" style="margin-left:8px">Relecture des sous-titres</a>
     <button id="delete">Supprimer</button>
     <span id="status"></span>
   </div>
@@ -717,6 +773,151 @@ $("save").onclick = doSave;
 document.addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); doSave(); } });
 window.onbeforeunload = (e) => { if (dirty.size) e.preventDefault(); };
 load();
+</script>
+</body>
+</html>
+"""
+
+
+REVIEW_PAGE = r"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Relecture des sous-titres</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; font-family: system-ui, sans-serif; color: #222; background: #fff; }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  #progress { color: #666; font-size: 14px; margin-left: auto; }
+  .meta { color: #666; font-size: 13px; margin-bottom: 8px; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 12px; background: #eee; margin-right: 6px; }
+  .tag.complément { background: #e3f1ff; } .tag.différence { background: #ffe9d6; } .tag.ajout { background: #e5f6e5; }
+  .tag.gemini { background: #d8f5d8; } .tag.dvd { background: #eee; }
+  label { display: block; font-size: 12px; color: #666; margin: 10px 0 3px; }
+  .dvd-text { padding: 8px; background: #f6f6f6; border-radius: 4px; min-height: 1.4em; }
+  .diff { padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 1.4em; }
+  mark { background: #fff1a8; }
+  del { color: #b55; }
+  textarea { width: 100%; box-sizing: border-box; padding: 8px; font: inherit; font-size: 15px; }
+  video { width: 100%; background: #000; margin-top: 10px; max-height: 300px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  button { padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+  #take { font-weight: bold; }
+  .keys { color: #888; font-size: 12px; margin-top: 8px; }
+  #done { color: #2a7; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a href="./">← Éditeur</a>
+    <select id="filter">
+      <option value="todo">À relire</option><option value="all">Toutes</option>
+      <option value="gemini">Gemini retenu</option><option value="dvd">DVD gardé</option>
+    </select>
+    <select id="type">
+      <option value="">Tous les types</option><option value="complément">Compléments</option>
+      <option value="différence">Différences</option><option value="ajout">Ajouts</option>
+    </select>
+    <span id="progress"></span>
+  </header>
+  <div id="card">
+    <div class="meta"><span id="kind" class="tag"></span><span id="status" class="tag"></span><span id="when"></span></div>
+    <video id="clip" controls></video>
+    <label>Sous-titre du DVD</label><div id="dvd" class="dvd-text"></div>
+    <label>Ce qu'entend Gemini (mots en plus surlignés)</label><div id="diff" class="diff"></div>
+    <label>Texte retenu si tu prends Gemini (modifiable)</label><textarea id="text" rows="2"></textarea>
+    <div class="actions">
+      <button id="prev">← Précédente</button>
+      <button id="take">Prendre ce texte (Entrée)</button>
+      <button id="keep">Garder le DVD (D)</button>
+      <button id="skip">Plus tard (→)</button>
+      <button id="replay">Réécouter (espace)</button>
+    </div>
+    <div class="keys">Dans le texte : ⌘/Ctrl + Entrée pour prendre. Les décisions sont enregistrées tout de suite ; « Prendre » écrit dans corrections_sous_titres.csv.</div>
+  </div>
+  <p id="done" hidden>Tout est relu pour ce filtre.</p>
+</main>
+<script>
+let items = [], pos = 0;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const norm = (w) => w.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+const range = (it) => it["Écoute"].split("-").map(Number);
+const visible = () => items.filter((it) => (!$("type").value || it.Type === $("type").value) &&
+  ($("filter").value === "all" ? true : $("filter").value === "todo" ? !it.decision : it.decision === $("filter").value));
+
+function diffHtml(dvd, gem) {
+  // Gemini's words, the ones the DVD subtitle doesn't have highlighted (by order, like a diff)
+  const a = dvd.split(/\s+/).filter(Boolean), b = gem.split(/\s+/).filter(Boolean);
+  const A = a.map(norm), B = b.map(norm);
+  const L = Array.from({length: A.length + 1}, () => new Array(B.length + 1).fill(0));
+  for (let i = A.length - 1; i >= 0; i--) for (let j = B.length - 1; j >= 0; j--)
+    L[i][j] = A[i] && A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const out = []; let i = 0, j = 0;
+  while (i < A.length || j < B.length) {
+    if (i < A.length && j < B.length && A[i] && A[i] === B[j]) { out.push(esc(b[j])); i++; j++; }
+    else if (j < B.length && (i >= A.length || L[i][j + 1] >= L[i + 1][j])) { out.push("<mark>" + esc(b[j]) + "</mark>"); j++; }
+    else { out.push("<del>" + esc(a[i]) + "</del>"); i++; }
+  }
+  return out.join(" ");
+}
+
+function show() {
+  const list = visible();
+  $("progress").textContent = `${items.filter((x) => x.decision).length} / ${items.length} relues · ` +
+    `${items.filter((x) => x.decision === "gemini").length} Gemini · ${items.filter((x) => x.decision === "dvd").length} DVD`;
+  $("card").hidden = !list.length; $("done").hidden = !!list.length;
+  if (!list.length) return;
+  pos = Math.min(Math.max(pos, 0), list.length - 1);
+  const it = list[pos];
+  $("kind").textContent = it.Type; $("kind").className = "tag " + it.Type;
+  $("status").textContent = it.decision === "gemini" ? "Gemini retenu" : it.decision === "dvd" ? "DVD gardé" : "à relire";
+  $("status").className = "tag " + (it.decision || "");
+  $("when").textContent = `${it["Début"]}${it.Personnage ? " · " + it.Personnage : ""} · ${pos + 1} / ${list.length}`;
+  $("dvd").textContent = it.Original || "(aucun sous-titre)";
+  $("diff").innerHTML = diffHtml(it.Original, it.Correction);
+  $("text").value = it.decision === "gemini" ? it.text : it.Correction;
+  const [a, b] = range(it);
+  $("clip").src = `clip?s=${Math.max(0, a)}&e=${b}`;
+  $("clip").play().catch(() => {});
+  for (const next of list.slice(pos + 1, pos + 3)) {  // have the server encode the next clips already
+    const [x, y] = range(next); fetch(`prepare?s=${Math.max(0, x)}&e=${y}`);
+  }
+}
+
+async function decide(decision) {
+  const list = visible(), it = list[pos];
+  if (!it) return;
+  const text = $("text").value.trim();
+  const res = await fetch("api/relecture", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({key: it.key, decision, text})});
+  if (!res.ok) return alert("Pas enregistré");
+  it.decision = decision; it.text = text;
+  if ($("filter").value === "all") pos++;  // with "À relire", the decided item leaves the list
+  show();
+}
+
+$("take").onclick = () => decide("gemini");
+$("keep").onclick = () => decide("dvd");
+$("skip").onclick = () => { pos++; show(); };
+$("prev").onclick = () => { pos--; show(); };
+$("replay").onclick = () => { $("clip").currentTime = 0; $("clip").play(); };
+$("filter").onchange = $("type").onchange = () => { pos = 0; show(); };
+document.addEventListener("keydown", (e) => {
+  if (e.target === $("text")) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); decide("gemini"); }
+    return;
+  }
+  if (e.target.tagName === "SELECT") return;
+  if (e.key === "Enter") { e.preventDefault(); decide("gemini"); }
+  else if (e.key === "d" || e.key === "D") decide("dvd");
+  else if (e.key === "ArrowRight") { pos++; show(); }
+  else if (e.key === "ArrowLeft") { pos--; show(); }
+  else if (e.key === " ") { e.preventDefault(); $("replay").click(); }
+});
+fetch("api/relecture").then((r) => r.json()).then((data) => { items = data; show(); });
 </script>
 </body>
 </html>
