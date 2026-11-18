@@ -114,7 +114,10 @@ def video_filter(ass_path=None):
     return "scale=640:-2,ass=" + ass_path.replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
 
 
-MP4_ARGS = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2", "-movflags", "+faststart"]
+# Video and audio only: without -map_chapters -1, the film's chapters become a third track lasting the
+# whole film, and the file then claims to be 67 min long (Instagram refuses it as "too long").
+MP4_ARGS = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-ac", "2",
+            "-map_chapters", "-1", "-map_metadata", "-1", "-dn", "-sn", "-movflags", "+faststart"]
 
 
 GIF_BUDGET = 8 * 1024 * 1024  # bytes: sendable on WhatsApp or Discord, quick to load on a phone
