@@ -258,14 +258,9 @@ a {
     display: flex;
 }
 
-/* GIF being fetched to share on a phone, then ready to share on the next tap */
-.quote-play.quote-gif.loading {
-    opacity: 0.4;
-}
-
-.quote-play.quote-gif.ready {
-    background: #f0c060;
-    color: #000;
+/* Share button over a GIF: ready to share on the next click (the first one came too late) */
+.quote-gif-actions button.ready {
+    background: #e0a020;
 }
 
 .quote-clip {
