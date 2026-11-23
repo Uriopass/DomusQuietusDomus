@@ -147,7 +147,25 @@ html.st-open, html.st-open body { overflow: hidden; }
     pointer-events: none;
 }
 .st-badge.st-hd { background: rgba(168, 72, 26, 0.9); }
-.st-gif-shown .st-badge, .st-done .st-bigplay { display: none; }
+.st-gif-shown .st-badge, .st-gif-shown .st-mute, .st-done .st-bigplay { display: none; }
+.st-mute {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff !important;
+}
+.st-mute:hover { background: rgba(0, 0, 0, 0.8); }
+.st-mute svg { width: 18px; height: 18px; }
 .st-bigplay {
     position: absolute;
     top: 50%;
@@ -171,7 +189,6 @@ html.st-open, html.st-open body { overflow: hidden; }
 .st-transport { display: flex; align-items: center; gap: 4px; margin-top: 4px; color: var(--st-soft); font-size: 13px; font-variant-numeric: tabular-nums; }
 .st-transport .st-play { color: var(--st-ink); }
 .st-clock { color: var(--st-ink); font-weight: 600; }
-.st-transport .st-mute { margin-left: auto; color: var(--st-ink); }
 
 /* Timeline */
 .st-timeline { padding: 2px 11px 0; }
