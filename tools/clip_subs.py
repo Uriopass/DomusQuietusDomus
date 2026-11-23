@@ -26,7 +26,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,{font},21,&H00FFFFFF,&HFFFFFFFF,&H00000000,&HFF000000,-1,0,0,0,100,100,0,0,1,2,0,2,20,20,10,1
+Style: Default,{font},{size},&H00FFFFFF,&HFFFFFFFF,&H00000000,&HFF000000,-1,0,0,0,100,100,0,0,1,2,0,{align},20,20,10,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -49,11 +49,11 @@ def shown_text(ws):
     return " ".join(x["w"].replace("*", "") for x in ws)
 
 
-def screens(line_words):
-    """Split a line's words into screens of at most two rows, each row at most MAX_ROW characters."""
+def screens(line_words, max_row=MAX_ROW):
+    """Split a line's words into screens of at most two rows, each row at most max_row characters."""
     out, cur = [], []
     for w in line_words:
-        if cur and len(shown_text(cur + [w])) > 2 * MAX_ROW:
+        if cur and len(shown_text(cur + [w])) > 2 * max_row:
             out.append(cur)
             cur = []
         cur.append(w)
@@ -62,14 +62,17 @@ def screens(line_words):
     return out
 
 
-def break_at(screen):
+def break_at(screen, max_row=MAX_ROW):
     """Index of the first word of the second row, or None for a single row."""
-    if len(shown_text(screen)) <= MAX_ROW:
+    if len(shown_text(screen)) <= max_row:
         return None
     return min(range(1, len(screen)), key=lambda k: max(len(shown_text(screen[:k])), len(shown_text(screen[k:]))))
 
 
-def make_ass(words, clip_start, clip_end, font=FONT):
+def make_ass(words, clip_start, clip_end, font=FONT, size=21, top=False, progressive=True):
+    """size: font size (rows hold fewer characters when bigger); top: at the top of the image;
+    progressive=False: each line shows whole instead of word by word."""
+    max_row = round(MAX_ROW * 21 / size)
     inside = [w for w in words if w["s"] < clip_end and w["e"] > clip_start - 10]
     lines = []
     for w in inside:  # consecutive words of the same transcript line
@@ -77,7 +80,7 @@ def make_ass(words, clip_start, clip_end, font=FONT):
             lines[-1].append(w)
         else:
             lines.append([w])
-    shown = [s for line in lines for s in screens(line)]
+    shown = [s for line in lines for s in screens(line, max_row)]
     events = []
     for n, screen in enumerate(shown):
         start = screen[0]["s"]
@@ -85,7 +88,7 @@ def make_ass(words, clip_start, clip_end, font=FONT):
         end = min(screen[-1]["e"] + HOLD, nxt) if nxt is not None else screen[-1]["e"] + HOLD
         if end <= clip_start or start >= clip_end or screen[-1]["s"] < clip_start:
             continue  # outside the clip, or entirely said before it starts
-        brk = break_at(screen)
+        brk = break_at(screen, max_row)
         appear = max(start, clip_start)  # words spoken before the clip starts are already there
         # Each word shows at the moment it is spoken (words said before the clip are there at once).
         # With \\k tags, a word shows once the durations of all the words before it have elapsed.
@@ -97,10 +100,11 @@ def make_ass(words, clip_start, clip_end, font=FONT):
         for k, w in enumerate(screen):
             dur = (reveal[k + 1] if k + 1 < len(screen) else end) - reveal[k]
             sep = "\\N" if k == brk else (" " if k else "")
-            parts.append("%s{\\ko%d}%s" % (sep, round(dur * 100), escape(w["w"])))
+            karaoke = "{\\ko%d}" % round(dur * 100) if progressive else ""
+            parts.append(sep + karaoke + escape(w["w"]))
         events.append("Dialogue: 0,%s,%s,Default,,0,0,0,,%s" % (
             ass_time(appear - clip_start), ass_time(min(end, clip_end) - clip_start), "".join(parts)))
-    return HEADER.format(font=font) + "\n".join(events) + "\n"
+    return HEADER.format(font=font, size=size, align=8 if top else 2) + "\n".join(events) + "\n"
 
 
 def has_subtitles(ass):
