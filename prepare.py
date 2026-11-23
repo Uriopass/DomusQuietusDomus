@@ -124,7 +124,7 @@ def genClipHtml(datum: dict, prefix: str):
     link = (f'<a href="{url}" download="{filename}.mp4" onclick="shareClip(this, event)">'
             f'<img src="{prefix}assets/clip.svg" height="16" width="16" '
             f'alt="Télécharger l\'extrait" title="Télécharger l\'extrait"/></a>')
-    play = (f'<a class="quote-play quote-gif" href="{url[:-4]}.gif" download="{filename}.gif" '
+    play = (f'<a class="quote-play quote-gif" href="{url[:-4]}.gif" download="{filename}.gif" data-id="{datum["id"]}" '
             f'data-link="{SITE}/gif/{datum["id"]}.gif" onclick="shareClip(this, event)" '
             f'title="GIF de l\'extrait, à partager" aria-label="GIF de l\'extrait">GIF</a>'
             f'<button class="quote-play" data-clip="{url}" onclick="playClip(this, event)" '
@@ -188,7 +188,8 @@ def genQuotesPages(data: [dict]):
             cliplink=genClipHtml(datum, '../')[0],
             clipplay=genClipHtml(datum, '../')[1],
             footer=footer,
-            style="style.css?r=" + str(time.time())
+            style="style.css?r=" + str(time.time()),
+            studiov=studioVersion(),
         )
 
         with open(f'build/quotes/{id}.html', 'w', encoding="utf8") as quote_file:
@@ -219,6 +220,26 @@ def genSubtitles(data: [dict], printv=print):
             if clip_subs.has_subtitles(ass):
                 datum['clip_ass'] = ass
                 datum['clip_name'] += '_' + hashlib.sha1(ass.encode()).hexdigest()[:8]
+
+
+def studioVersion() -> str:
+    """Changes with the clip editor's code, so browsers load the new one."""
+    content = b''.join(open(f'front/assets/studio.{ext}', 'rb').read() for ext in ('js', 'css'))
+    return hashlib.sha1(content).hexdigest()[:10]
+
+
+def genStudio(data: [dict], videoFilePath: str, printv=print):
+    """What the clip editor loads for each joke (see tools/studio.py)."""
+    words_path = 'build/sous-titres/mots.json'
+    if not os.path.exists(words_path):
+        printv("no word timings: no clip editor data")
+        return
+    sys.path.insert(0, 'tools')
+    import studio
+    with open(words_path, encoding='utf8') as f:
+        words = json.load(f)
+    studio.build([(d['id'], d['title'].strip(), d['clip_start'], d['clip_end']) for d in data if d['clip_name']],
+                  videoFilePath, words, log=printv)
 
 
 def genClips(data: [dict], videoFilePath: str):
@@ -303,6 +324,7 @@ def genIndex(quotes: str):
     index = index.replace("$content", quotes)
     index = index.replace("$footer", open('front/footer.html', 'r', encoding="utf8").read())
     index = index.replace("$style", "style.css?r=" + str(time.time()))
+    index = index.replace("$studiov", studioVersion())
 
     with open('build/index.html', 'w', encoding="utf8") as index_file:
         index_file.write(index)
@@ -777,6 +799,7 @@ def doTheProcessing(release=False, verbose=True):
         # Before the pages, which link to the clips: a page never points to a clip not encoded yet.
         genClips(data, sys.argv[1])
         printv("clips generated")
+        genStudio(data, sys.argv[1], printv)
 
     quotes = genQuotes(data)
     printv("quotes generated")
