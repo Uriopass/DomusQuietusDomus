@@ -226,15 +226,8 @@
         S.muted = on;
         S.video.muted = on;
         S.el.mute.innerHTML = on ? ICONS.muted : ICONS.sound;
-        const label = on ? 'Activer le son' : 'Couper le son';
-        S.el.mute.setAttribute('aria-label', label);
-        S.el.mute.title = label;
+        S.el.mute.setAttribute('aria-label', on ? 'Activer le son' : 'Couper le son');
     }
-
-    // The sound choice is kept for the next clips, in this browser
-    const savedMuted = () => {
-        try { return localStorage.getItem('studioMuted') === '1'; } catch (e) { return false; }
-    };
 
     // The HD video covers only the original clip: it takes over while the cut stays inside it.
     function syncQuality() {
@@ -857,7 +850,6 @@
               <div class="st-subs" aria-hidden="true"></div>
               <img class="st-result" alt="GIF créé" hidden>
               <span class="st-badge">Chargement…</span>
-              <button class="st-mute"></button>
               <button class="st-bigplay" aria-label="Lecture">${ICONS.play}</button>
             </div>
             <div class="st-edit-only">
@@ -866,6 +858,7 @@
                 <span class="st-clock">0,00 s</span>
                 <span class="st-sep">/</span>
                 <span class="st-length"></span>
+                <button class="st-icon st-mute"></button>
               </div>
               <div class="st-timeline">
                 <div class="st-track">
@@ -986,11 +979,7 @@
         el.low._offset = 0;
         el.high._offset = m.clip_start;
         el.low.src = m.low;
-        el.mute.onclick = (e) => {
-            e.stopPropagation();
-            setMuted(!me.muted);
-            try { localStorage.setItem('studioMuted', me.muted ? '1' : '0'); } catch (err) { /* not kept */ }
-        };
+        el.mute.onclick = () => setMuted(!me.muted);
         el.play.onclick = () => setPlaying(!me.playing);
         el.big.onclick = () => setPlaying(true);
         el.stage.addEventListener('click', (e) => {
@@ -1001,7 +990,7 @@
             if (S !== me) return;
             seek(me.start);
             syncQuality();
-            setMuted(savedMuted());
+            setMuted(false);
             setPlaying(true);
             loadHigh();
         }, {once: true});
