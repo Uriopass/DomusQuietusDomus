@@ -174,6 +174,7 @@
             S.screens.push({words: screen, brk: breakAt(screen, maxRow), appear, end: Math.min(end, S.end), reveal});
         });
         S.drawn = undefined;
+        placeBlocks();
         if (S.view === 'gif') scheduleGif();
     }
 
@@ -198,11 +199,13 @@
         }
     }
 
-    const now = () => S.video.currentTime + S.video._offset;
+    // While the player switches video, the one it switches to is the one that counts
+    const current = () => S.swapTo || S.video;
+    const now = () => current().currentTime + current()._offset;
 
     function seek(t) {
         t = clamp(t, 0, S.meta.duration);
-        S.video.currentTime = Math.max(0, t - S.video._offset);
+        current().currentTime = Math.max(0, t - current()._offset);
         S.lastTime = t;
     }
 
@@ -243,22 +246,26 @@
             S.el.badge.textContent = label;
             S.el.badge.classList.toggle('st-hd', target === S.el.high);
         }
-        if (target === S.video || S.swapping) return;
-        S.swapping = true;
-        const from = S.video, t = clamp(now(), S.start, S.end - 0.01);
-        const done = () => {
-            S && (S.swapping = false);
-            if (!S) return;
-            target.muted = S.muted;
+        if (S.swapTo && S.swapTo !== target) {  // changed its mind: stay on the current video
+            S.swapTo.removeEventListener('seeked', S.swapDone);
+            S.swapTo = null;
+        }
+        if (target === S.video || S.swapTo) return;
+        const me = S, from = S.video, t = clamp(now(), S.start, S.end - 0.01);
+        S.swapTo = target;
+        S.swapDone = () => {
+            if (S !== me) return;
+            me.swapTo = null;
+            target.muted = me.muted || !!me.result;
             from.muted = true;
-            S.video = target;
+            me.video = target;
             target.classList.add('st-on');
             from.classList.remove('st-on');
-            if (S.playing) { const p = target.play(); if (p) p.catch(() => {}); }
+            if (me.playing) { const p = target.play(); if (p) p.catch(() => {}); }
             from.pause();
             syncQuality();
         };
-        target.addEventListener('seeked', done, {once: true});
+        target.addEventListener('seeked', S.swapDone, {once: true});
         target.currentTime = Math.max(0, t - target._offset);
     }
 
@@ -315,6 +322,7 @@
             if (t !== S.lastShown) {
                 S.lastShown = t;
                 S.el.head.style.left = 100 * t / S.meta.duration + '%';
+                S.el.thead.style.left = S.el.head.style.left;
                 S.el.clock.textContent = seconds(Math.max(0, t - S.start));
                 markWord(t);
             }
@@ -329,6 +337,8 @@
         Object.assign(S.el.shadeL.style, {width: a + '%'});
         Object.assign(S.el.shadeR.style, {left: b + '%'});
         Object.assign(S.el.sel.style, {left: a + '%', width: b - a + '%'});
+        S.el.tshadeL.style.width = a + '%';
+        S.el.tshadeR.style.left = b + '%';
         S.el.hStart.style.left = a + '%';
         S.el.hEnd.style.left = b + '%';
         S.el.hStart.setAttribute('aria-valuenow', S.start.toFixed(2));
@@ -343,6 +353,115 @@
         const d = S.meta.duration;
         S.el.ticks.innerHTML = S.lines.flatMap((l) => l.words).map((w) =>
             `<i style="left:${100 * w.s / d}%;width:${Math.max(0.25, 100 * (w.e - w.s) / d)}%"></i>`).join('');
+        paintTextTrack();
+    }
+
+    // ------------------------------------ text track ----------------------------------------------
+    // Each line is a block on the film's time scale: from when it appears to when it leaves the screen
+    // (the lighter end is the time it stays up after its last word).
+
+    const timedLines = () => S.lines.filter((l) => l.words.length).sort((a, b) => a.words[0].s - b.words[0].s);
+    const lastWord = (line) => line.words[line.words.length - 1];
+
+    function placeBlocks() {
+        if (!S.blocks) return;
+        const d = S.meta.duration, ordered = timedLines();
+        for (const {line, el} of S.blocks) {
+            if (!line.words.length) continue;
+            const next = ordered[ordered.indexOf(line) + 1], a = line.words[0].s, b = lastWord(line).e;
+            const end = Math.max(b, Math.min(d, next ? Math.min(b + HOLD, next.words[0].s) : b + HOLD));
+            el.style.left = 100 * a / d + '%';
+            el.style.width = Math.max(0.6, 100 * (end - a) / d) + '%';
+            el.firstChild.style.width = 100 * (b - a) / Math.max(0.01, end - a) + '%';
+            el.classList.toggle('st-out', end <= S.start || a >= S.end);
+            el.classList.toggle('st-sel', line === S.selected);
+        }
+    }
+
+    function paintTextTrack() {
+        if (S.dragLine) return;
+        const box = S.el.tblocks;
+        box.innerHTML = '';
+        S.blocks = timedLines().map((line) => {
+            const el = document.createElement('div');
+            el.className = 'st-tblock';
+            el.title = line.text;
+            el.innerHTML = '<span class="st-tspoken"></span><span class="st-tlabel"></span>' +
+                           '<i class="st-tedge st-tedge-l"></i><i class="st-tedge st-tedge-r"></i>';
+            el.querySelector('.st-tlabel').textContent = line.text.replace(/\*/g, '');
+            bindBlock(el, line);
+            box.appendChild(el);
+            return {line, el};
+        });
+        placeBlocks();
+    }
+
+    // Moves a line, or stretches it from one edge: its words keep their relative pace
+    function applyLineDrag(line, grab, dt) {
+        const first = grab.words[0].s, last = grab.words[grab.words.length - 1].e, [lo, hi] = grab.limits;
+        const shortest = Math.max(0.2, grab.words.length * 0.07);
+        let a = first, b = last;
+        if (grab.mode === 'move') {
+            const shift = clamp(dt, lo - first, hi - last);
+            a += shift;
+            b += shift;
+        } else if (grab.mode === 'left') {
+            a = clamp(first + dt, lo, last - shortest);
+        } else {
+            b = clamp(last + dt, first + shortest, hi);
+        }
+        const ratio = (b - a) / Math.max(0.01, last - first);
+        line.words.forEach((w, k) => {
+            w.s = +(a + (grab.words[k].s - first) * ratio).toFixed(3);
+            w.e = +(a + (grab.words[k].e - first) * ratio).toFixed(3);
+        });
+    }
+
+    function bindBlock(el, line) {
+        let grab = null;
+        dragOn(el, (e) => {
+            if (!grab) {
+                const edge = e.target.closest ? e.target.closest('.st-tedge') : null;
+                const ordered = timedLines(), k = ordered.indexOf(line);
+                const a = line.words[0].s, b = lastWord(line).e;
+                grab = {x: e.clientX, moved: false, playing: S.playing, words: line.words.map((w) => ({...w})),
+                        mode: edge ? (edge.classList.contains('st-tedge-l') ? 'left' : 'right') : 'move',
+                        limits: [Math.min(a, k ? lastWord(ordered[k - 1]).e : 0),
+                                 Math.max(b, k + 1 < ordered.length ? ordered[k + 1].words[0].s : S.meta.duration)]};
+                S.dragLine = line;
+                S.selected = line;
+                placeBlocks();
+                if (S.playing) setPlaying(false);
+                return;
+            }
+            if (!grab.moved && Math.abs(e.clientX - grab.x) < 3) return;
+            grab.moved = true;
+            applyLineDrag(line, grab, (e.clientX - grab.x) / S.el.ttrack.clientWidth * S.meta.duration);
+            layout();
+            const at = grab.mode === 'right' ? lastWord(line).e : line.words[0].s;
+            const bubble = S.el.tbubble;
+            bubble.hidden = false;
+            bubble.style.left = clamp(100 * at / S.meta.duration, 8, 92) + '%';
+            bubble.textContent = at < S.start ? 'avant le début' : at > S.end ? 'après la fin' :
+                (grab.mode === 'right' ? 'finit à ' : 'apparaît à ') + seconds(at - S.start);
+            seek(clamp(grab.mode === 'right' ? at - 0.04 : at + 0.02, S.start, S.end - 0.01));
+        }, () => {
+            const done = grab;
+            grab = null;
+            S.dragLine = null;
+            S.el.tbubble.hidden = true;
+            if (done.moved) {
+                line.base = line.words.map((w) => ({...w}));
+                line.moved = true;
+                S.touched = true;
+            }
+            paintTicks();
+            paintLines();
+            const row = S.el.lines.querySelector('.st-line.st-sel');
+            if (row) row.scrollIntoView({block: 'nearest'});
+            seek(clamp(line.words[0].s - 0.15, S.start, S.end - 0.01));
+            if (done.playing) setPlaying(true);
+        });
     }
 
     function paintStrip() {
@@ -456,7 +575,7 @@
 
     function lineBounds(line) {
         const all = S.lines.filter((l) => l !== line && (l.words.length || l.orig.length));
-        const ref = (line.orig.length ? line.orig : line.words)[0];
+        const ref = (line.words.length ? line.words : line.orig)[0];
         const at = ref ? ref.s : line.at;
         let lo = 0, hi = S.meta.duration;
         for (const l of all) {
@@ -522,6 +641,7 @@
     function selectLine(line, row) {
         S.selected = line;
         S.el.lines.querySelectorAll('.st-line').forEach((x) => x.classList.toggle('st-sel', x === row));
+        placeBlocks();
         paintWords();
     }
 
@@ -992,6 +1112,14 @@
                   <div class="st-handle st-h-start" role="slider" tabindex="0" aria-label="Début de l'extrait"></div>
                   <div class="st-handle st-h-end" role="slider" tabindex="0" aria-label="Fin de l'extrait"></div>
                 </div>
+                <div class="st-text-track" aria-label="Moment où chaque ligne apparaît">
+                  <div class="st-tblocks"></div>
+                  <div class="st-tshade st-tshade-l"></div>
+                  <div class="st-tshade st-tshade-r"></div>
+                  <div class="st-playhead st-thead"></div>
+                  <div class="st-tbubble" hidden></div>
+                </div>
+                <p class="st-track-hint">Glisse une ligne pour choisir quand elle apparaît, étire ses bords pour changer son rythme.</p>
               </div>
               <div class="st-bounds">
                 <div><span>Début</span><button data-nudge="start:-1" aria-label="Début plus tôt">−</button><output class="st-start-v"></output><button data-nudge="start:1" aria-label="Début plus tard">+</button></div>
@@ -1005,7 +1133,7 @@
               <div class="st-section-head"><h3>Texte</h3><button class="st-add">+ Ajouter une ligne</button></div>
               <div class="st-lines"></div>
               <div class="st-words" hidden>
-                <small>Glisse un mot pour changer quand il apparaît</small>
+                <small>Mots de la ligne sélectionnée : glisse-en un pour l'ajuster</small>
                 <div class="st-word-track"></div>
               </div>
             </section>
@@ -1067,7 +1195,8 @@
             length: $('.st-length'), track: $('.st-track'), strip: $('.st-strip'), ticks: $('.st-ticks'),
             shadeL: $('.st-shade-l'), shadeR: $('.st-shade-r'), sel: $('.st-selbox'), head: $('.st-playhead'),
             hStart: $('.st-h-start'), hEnd: $('.st-h-end'), startValue: $('.st-start-v'), endValue: $('.st-end-v'),
-            lines: $('.st-lines'), words: $('.st-words'), options: $('.st-options'), estimate: $('.st-estimate'),
+            ttrack: $('.st-text-track'), tblocks: $('.st-tblocks'), thead: $('.st-thead'), tbubble: $('.st-tbubble'),
+            tshadeL: $('.st-tshade-l'), tshadeR: $('.st-tshade-r'), lines: $('.st-lines'), words: $('.st-words'), options: $('.st-options'), estimate: $('.st-estimate'),
             error: $('.st-error'), create: $('.st-create'), createLabel: $('.st-create-label'), doneInfo: $('.st-done-info'),
             save: $('.st-save'), shareBtn: $('.st-share'),
         };
