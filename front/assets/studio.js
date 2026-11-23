@@ -728,7 +728,16 @@
         me.el.doneInfo.textContent = `GIF prêt${mb ? ' · ' + mb : ''}`;
         me.el.save.href = url;
         me.el.save.download = me.filename;
+        let tries = 0;
         const loaded = new Image();
+        loaded.onerror = () => {  // dropped connection: try again, the buttons work meanwhile
+            if (S !== me || !me.result || me.result.url !== url) return;
+            if (++tries > 4) {
+                me.el.badge.textContent = 'GIF prêt : utilise les boutons';
+                return;
+            }
+            setTimeout(() => { if (S === me) loaded.src = url + '?retry=' + tries; }, 1000 * tries);
+        };
         loaded.onload = () => {
             if (S !== me || !me.result || me.result.url !== url) return;
             me.result.shown = true;
@@ -738,7 +747,8 @@
             me.el.result.src = url;
             me.el.result.hidden = false;
             me.root.classList.add('st-gif-shown');
-            fetch(url).then((r) => r.blob()).then((blob) => {
+            if (!navigator.canShare || slowConnection()) return;  // otherwise fetched only if shared
+            fetch(url, {cache: 'force-cache'}).then((r) => r.blob()).then((blob) => {
                 if (S === me && me.result && me.result.url === url) {
                     me.result.file = new File([blob], me.filename, {type: 'image/gif'});
                 }
@@ -771,7 +781,7 @@
         button.classList.remove('st-ready');
         try {
             if (!r.file) {
-                const blob = await (await fetch(r.url)).blob();
+                const blob = await (await fetch(r.url, {cache: 'force-cache'})).blob();
                 r.file = new File([blob], S.filename, {type: 'image/gif'});
             }
             if (navigator.canShare && navigator.canShare({files: [r.file]})) await navigator.share({files: [r.file]});
