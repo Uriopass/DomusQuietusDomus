@@ -147,7 +147,9 @@ html.st-open, html.st-open body { overflow: hidden; }
     pointer-events: none;
 }
 .st-badge.st-hd { background: rgba(168, 72, 26, 0.9); }
-.st-gif-shown .st-badge, .st-done .st-bigplay { display: none; }
+.st-gif-shown .st-badge, .st-done .st-bigplay, .st-gif-mode .st-bigplay, .st-gif-shown .st-gif-view { display: none; }
+.st-gif-view { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; object-fit: contain; background: #000; cursor: default; }
+.st-gif-mode { cursor: default; }
 .st-bigplay {
     position: absolute;
     top: 50%;
@@ -167,11 +169,15 @@ html.st-open, html.st-open body { overflow: hidden; }
 }
 .st-bigplay svg { width: 30px; height: 30px; }
 .st-paused .st-bigplay { display: flex; }
+.st-done .st-stage .st-bigplay, .st-stage.st-gif-mode .st-bigplay { display: none; }
 
 .st-transport { display: flex; align-items: center; gap: 4px; margin-top: 4px; color: var(--st-soft); font-size: 13px; font-variant-numeric: tabular-nums; }
 .st-transport .st-play { color: var(--st-ink); }
 .st-clock { color: var(--st-ink); font-weight: 600; }
-.st-transport .st-mute { margin-left: auto; color: var(--st-ink); }
+.st-transport .st-mute { color: var(--st-ink); }
+.st-view { display: flex; margin-left: auto; padding: 2px; border-radius: 7px; background: #eadcbc; }
+.st-view button { min-height: 28px; padding: 2px 10px; border: 0; border-radius: 5px; background: transparent; color: var(--st-ink); font-size: 12.5px !important; white-space: nowrap; }
+.st-view button[aria-pressed="true"] { background: var(--st-card); box-shadow: 0 1px 2px rgba(60, 40, 10, 0.3); font-weight: 650; }
 
 /* Timeline */
 .st-timeline { padding: 2px 11px 0; }

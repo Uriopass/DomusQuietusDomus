@@ -174,6 +174,7 @@
             S.screens.push({words: screen, brk: breakAt(screen, maxRow), appear, end: Math.min(end, S.end), reveal});
         });
         S.drawn = undefined;
+        if (S.view === 'gif') scheduleGif();
     }
 
     function drawSubtitles(t) {
@@ -238,8 +239,10 @@
         let label = 'Aperçu rapide';
         if (target === S.el.high) label = 'HD';
         else if (S.highProgress !== null && inside) label = `HD ${S.highProgress} %`;
-        S.el.badge.textContent = label;
-        S.el.badge.classList.toggle('st-hd', target === S.el.high);
+        if (S.view !== 'gif') {
+            S.el.badge.textContent = label;
+            S.el.badge.classList.toggle('st-hd', target === S.el.high);
+        }
         if (target === S.video || S.swapping) return;
         S.swapping = true;
         const from = S.video, t = clamp(now(), S.start, S.end - 0.01);
@@ -619,6 +622,7 @@
         S.el.options.querySelector('input').onchange = (e) => {
             S.opts.fit = e.target.checked;
             estimate();
+            if (S.view === 'gif') scheduleGif();
         };
     }
 
@@ -654,36 +658,141 @@
         S.el.create.style.setProperty('--st-progress', on ? (progress || 0) * 100 + '%' : '0%');
     }
 
-    async function render() {
-        const me = S, o = S.opts;
-        setError('');
-        setBusy(true, 'Envoi…', 0);
+    function renderBody() {
+        const o = S.opts;
         const lines = o.text === 'none' ? [] : S.lines.filter((l) => l.words.length).sort((a, b) => a.words[0].s - b.words[0].s)
             .filter((l) => l.words[l.words.length - 1].e > S.start - 10 && l.words[0].s < S.end)
             .map((l) => ({words: l.words.map((w) => ({w: w.w, s: w.s, e: w.e}))}));
-        const body = {id: S.meta.id, start: S.start, end: S.end, lines,
-                      opts: {width: o.width, fps: o.fps, quality: o.quality, size: o.size, position: o.position,
-                             mode: o.text === 'line' ? 'line' : 'words', subs: o.text !== 'none', fit: o.fit}};
-        try {
-            let state = await postWithRetry(body, me);
-            while (S === me && state.state !== 'done') {
-                if (state.state === 'error') throw new Error(state.error);
-                if (state.state === 'queued') {
-                    setBusy(true, state.position > 1 ? `En file d'attente (${state.position})…` : 'Préparation…', 0.02);
-                } else {
-                    const p = state.progress || 0;
-                    setBusy(true, p >= 0.97 ? 'Finalisation…' : `Rendu ${Math.round(p * 100)} %`, Math.max(0.03, p));
-                }
-                await new Promise((r) => setTimeout(r, 600));
-                state = await pollWithRetry(state.job || me.job, me);
+        return {id: S.meta.id, start: S.start, end: S.end, lines,
+                opts: {width: o.width, fps: o.fps, quality: o.quality, size: o.size, position: o.position,
+                       mode: o.text === 'line' ? 'line' : 'words', subs: o.text !== 'none', fit: o.fit}};
+    }
+
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    // Asks the server for this GIF (instant if already made) and follows it until it is ready
+    async function requestGif(body, me, report) {
+        let state = await postWithRetry(body, me);
+        while (S === me && state.state !== 'done') {
+            if (state.state === 'error') throw new Error(state.error);
+            if (state.state === 'queued') {
+                report(state.position > 1 ? `En file d'attente (${state.position})…` : 'Préparation…', 0.02);
+            } else {
+                const p = state.progress || 0;
+                report(p >= 0.97 ? 'Finalisation…' : `Rendu ${Math.round(p * 100)} %`, Math.max(0.03, p));
             }
+            await wait(600);
+            state = await pollWithRetry(state.job || me.job, me);
+        }
+        return state;
+    }
+
+    const failure = (e) => (e.message && !/fetch|network|load/i.test(e.message) ? e.message : 'Connexion perdue, réessaie.');
+
+    async function render() {
+        const me = S;
+        setError('');
+        setBusy(true, 'Envoi…', 0);
+        try {
+            while (S === me && me.gifBusy) await wait(150);  // one render at a time per visitor
+            if (S !== me) return;
+            const state = await requestGif(renderBody(), me, (label, p) => setBusy(true, label, p));
             if (S !== me) return;
             setBusy(false);
             showResult(state.url, state.bytes);
         } catch (e) {
             if (S !== me || e.name === 'AbortError') return;
             setBusy(false);
-            setError(e.message && !/fetch|network|load/i.test(e.message) ? e.message : 'Connexion perdue, réessaie.');
+            setError(failure(e));
+        }
+    }
+
+    // ------------------------------- the final GIF in place of the preview ---------------------------
+
+    function gifBadge(text, ready) {
+        S.el.badge.textContent = text;
+        S.el.badge.classList.toggle('st-hd', !!ready);
+    }
+
+    function paintGifBadge() {
+        const img = S.el.gifView;
+        if (!S.gifBytes || img.hidden) return;
+        gifBadge(`GIF réel · ${img.naturalWidth} px · ${(S.gifBytes / 1e6).toFixed(1).replace('.', ',')} Mo`, true);
+    }
+
+    function setView(view) {
+        if (S.view === view || S.result) return;
+        S.view = view;
+        S.root.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.view === view));
+        S.el.stage.classList.toggle('st-gif-mode', view === 'gif');
+        if (view === 'gif') {
+            S.resumeAfterGif = S.playing;
+            setPlaying(false);
+            if (S.gifUrl) S.el.gifView.hidden = false;
+            gifBadge('Préparation du GIF…');
+            refreshGif();
+        } else {
+            clearTimeout(S.gifTimer);
+            S.el.gifView.hidden = true;
+            setError('');
+            syncQuality();
+            if (S.resumeAfterGif) setPlaying(true);
+        }
+    }
+
+    // After a change, waits for a pause in the edits so as not to render every intermediate state
+    function scheduleGif() {
+        clearTimeout(S.gifTimer);
+        gifBadge('Mise à jour du GIF…');
+        S.gifTimer = setTimeout(refreshGif, 900);
+    }
+
+    async function refreshGif() {
+        const me = S;
+        if (!me || me.view !== 'gif' || me.result || me.gifBusy) return;
+        const body = renderBody(), sig = JSON.stringify(body);
+        if (sig === me.gifSig) return paintGifBadge();
+        if (sig === me.gifFailed) return;
+        me.gifBusy = true;
+        setError('');
+        try {
+            const state = await requestGif(body, me, (label) => { if (me.view === 'gif') gifBadge('GIF · ' + label); });
+            if (S !== me) return;
+            // Edited meanwhile: skip downloading a GIF that is already out of date
+            if (me.view === 'gif' && JSON.stringify(renderBody()) === sig) {
+                gifBadge('GIF · Chargement…');
+                await new Promise((ok, no) => {
+                    const img = new Image();
+                    img.onload = ok;
+                    img.onerror = () => no(new Error('network'));
+                    img.src = state.url;
+                });
+                if (S !== me) return;
+                me.gifSig = sig;
+                me.gifUrl = state.url;
+                me.gifBytes = state.bytes;
+                me.el.gifView.src = state.url;
+                if (me.view === 'gif') {
+                    me.el.gifView.hidden = false;
+                    await new Promise((ok) => {
+                        if (me.el.gifView.complete) ok();
+                        else me.el.gifView.addEventListener('load', ok, {once: true});
+                    });
+                    if (S === me) paintGifBadge();
+                }
+            }
+        } catch (e) {
+            if (S !== me || e.name === 'AbortError') return;
+            me.gifFailed = sig;
+            if (me.view === 'gif') {
+                gifBadge('GIF indisponible');
+                setError(failure(e));
+            }
+        } finally {
+            if (S === me) {
+                me.gifBusy = false;
+                if (me.view === 'gif' && JSON.stringify(renderBody()) !== me.gifSig) refreshGif();
+            }
         }
     }
 
@@ -721,6 +830,7 @@
     function showResult(url, bytes) {
         const me = S;
         me.result = {url, file: null, shown: false};
+        me.video.muted = true;
         me.root.classList.add('st-done');
         me.el.badge.textContent = 'Chargement du GIF…';
         me.el.badge.classList.remove('st-hd');
@@ -764,6 +874,11 @@
         S.root.classList.remove('st-done', 'st-gif-shown');
         S.el.shareBtn.classList.remove('st-ready');
         S.el.shareBtn.innerHTML = ICONS.share + '<span>Partager</span>';
+        S.video.muted = S.muted;
+        if (S.view === 'gif') {
+            paintGifBadge();
+            return refreshGif();
+        }
         syncQuality();
         setPlaying(true);
     }
@@ -803,6 +918,7 @@
         const me = S;
         S = null;
         cancelAnimationFrame(me.raf);
+        clearTimeout(me.gifTimer);
         me.abort.abort();
         me.el.low.pause();
         me.el.high.pause();
@@ -824,7 +940,7 @@
             else close();
             return;
         }
-        if (e.key === ' ' && !/^(TEXTAREA|INPUT|BUTTON|A)$/.test(document.activeElement.tagName) && !S.result) {
+        if (e.key === ' ' && !/^(TEXTAREA|INPUT|BUTTON|A)$/.test(document.activeElement.tagName) && !S.result && S.view !== 'gif') {
             e.preventDefault();
             setPlaying(!S.playing);
         }
@@ -848,6 +964,7 @@
               <video class="st-low st-on" playsinline preload="auto" muted></video>
               <video class="st-high" playsinline preload="auto" muted></video>
               <div class="st-subs" aria-hidden="true"></div>
+              <img class="st-gif-view" alt="GIF final" hidden>
               <img class="st-result" alt="GIF créé" hidden>
               <span class="st-badge">Chargement…</span>
               <button class="st-bigplay" aria-label="Lecture">${ICONS.play}</button>
@@ -858,6 +975,10 @@
                 <span class="st-clock">0,00 s</span>
                 <span class="st-sep">/</span>
                 <span class="st-length"></span>
+                <div class="st-view" role="group" aria-label="Affichage">
+                  <button data-view="preview" aria-pressed="true">Aperçu</button>
+                  <button data-view="gif" aria-pressed="false">GIF final</button>
+                </div>
                 <button class="st-icon st-mute"></button>
               </div>
               <div class="st-timeline">
@@ -941,7 +1062,7 @@
         document.documentElement.classList.add('st-open');
         const $ = (q) => root.querySelector(q);
         const el = {
-            stage: $('.st-stage'), low: $('.st-low'), high: $('.st-high'), subs: $('.st-subs'), result: $('.st-result'),
+            stage: $('.st-stage'), gifView: $('.st-gif-view'), low: $('.st-low'), high: $('.st-high'), subs: $('.st-subs'), result: $('.st-result'),
             badge: $('.st-badge'), play: $('.st-play'), big: $('.st-bigplay'), mute: $('.st-mute'), clock: $('.st-clock'),
             length: $('.st-length'), track: $('.st-track'), strip: $('.st-strip'), ticks: $('.st-ticks'),
             shadeL: $('.st-shade-l'), shadeR: $('.st-shade-r'), sel: $('.st-selbox'), head: $('.st-playhead'),
@@ -951,7 +1072,7 @@
             save: $('.st-save'), shareBtn: $('.st-share'),
         };
         S = {root, el, opener, filename: filename || id + '.gif', abort: new AbortController(), opts: {...DEFAULTS},
-             lines: [], screens: [], playing: false, muted: false, highReady: false, highProgress: null, result: null,
+             lines: [], screens: [], playing: false, muted: false, highReady: false, highProgress: null, result: null, view: 'preview',
              video: el.low, touched: false, start: 0, end: 1};
         const me = S;
         if (poster) el.low.poster = poster;  // already loaded: shows at once, until the video starts
@@ -980,10 +1101,17 @@
         el.high._offset = m.clip_start;
         el.low.src = m.low;
         el.mute.onclick = () => setMuted(!me.muted);
-        el.play.onclick = () => setPlaying(!me.playing);
+        el.play.onclick = () => {
+            if (me.view === 'gif') {
+                me.resumeAfterGif = true;
+                return setView('preview');
+            }
+            setPlaying(!me.playing);
+        };
+        root.querySelectorAll('[data-view]').forEach((b) => { b.onclick = () => setView(b.dataset.view); });
         el.big.onclick = () => setPlaying(true);
         el.stage.addEventListener('click', (e) => {
-            if (e.target === el.big || el.big.contains(e.target) || me.result) return;
+            if (e.target === el.big || el.big.contains(e.target) || me.result || me.view === 'gif') return;
             setPlaying(!me.playing);
         });
         el.low.addEventListener('loadeddata', () => {
