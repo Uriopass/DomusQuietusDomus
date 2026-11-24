@@ -8,3 +8,4 @@ venv
 views.json
 emissions.npz
 __pycache__
+search.env

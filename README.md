@@ -20,6 +20,10 @@ computed once, on a machine with torch, and placed next to `movie.mkv`; `prepare
 The clip editor (the pencil over a joke's GIF) previews everything in the browser from small videos made by
 `tools/studio.py`; only the final GIF is rendered on the server, by `tools/studio_server.py` (limited and queued).
 
+A public, read-only search over the jokes with a GIF: `GET /api/search?q=<words>&limit=<n>` (`tools/search_api.py`), by
+words, and by meaning (`tools/gif_search.py`) for callers sending the shared key in `X-Search-Key`. The Slack command
+`/cleopatre <words>` uses it; it lives in moniprinter's slackmux.
+
 The server needs ffmpeg with libass (to burn the subtitles in) and gifski (`cargo install gifski`, for the GIFs; without it, ffmpeg and gifsicle make bigger, noisier ones).
 
 ## Copyright
