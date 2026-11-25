@@ -527,7 +527,7 @@
         share.onclick = () => shareGif(link, share);
         const edit = document.createElement('button');
         edit.innerHTML = ICONS.edit;
-        edit.title = 'Modifier le GIF : découpe, texte, options';
+        edit.title = 'Modifier : découpe, texte, GIF ou vidéo';
         edit.onclick = () => openStudio(link, edit);
         actions.append(edit, copy, save, share);
         media.append(gif, actions);

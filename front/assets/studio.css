@@ -150,6 +150,8 @@ html.st-open, html.st-open body { overflow: hidden; }
 .st-gif-shown .st-badge, .st-done .st-bigplay, .st-gif-mode .st-bigplay, .st-gif-shown .st-gif-view { display: none; }
 .st-gif-view { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; object-fit: contain; background: #000; cursor: default; }
 .st-gif-mode { cursor: default; }
+.st-mp4 .st-view { display: none; }
+.st-result-video { cursor: auto; }
 .st-bigplay {
     position: absolute;
     top: 50%;

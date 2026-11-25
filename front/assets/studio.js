@@ -8,12 +8,17 @@
     const API = '/api/clip', MAX_SECONDS = 20, FPS = 24, HOLD = 1.2, MAX_ROW = 38, BUDGET = 8 * 1024 * 1024;
     const FONT_SIZES = {s: 17, m: 21, l: 27};
     const QUALITY_COST = {light: 0.62, normal: 1, high: 1.45};
-    const DEFAULTS = {text: 'words', size: 'm', position: 'bottom', width: 480, fps: 24, quality: 'normal', fit: true};
+    const DEFAULTS = {format: 'gif', text: 'words', size: 'm', position: 'bottom', width: 480, fps: 24, quality: 'normal', fit: true};
+    // A video (mp4 with sound) keeps the film's 24 images/s and can be wider; widths by format
+    const WIDTHS = {gif: [[320, '320'], [400, '400'], [480, '480'], [640, '640']],
+                    mp4: [[480, '480'], [640, '640'], [960, '960'], [1280, '1280']]};
+    const VIDEO_COST = {light: 0.6, normal: 1, high: 1.8};
     const CHOICES = [
+        ['format', 'Format', [['gif', 'GIF'], ['mp4', 'Vidéo, avec le son']]],
         ['text', 'Texte', [['words', 'Mot à mot'], ['line', 'Phrase entière'], ['none', 'Sans texte']]],
         ['size', 'Taille du texte', [['s', 'Petit'], ['m', 'Moyen'], ['l', 'Grand']]],
         ['position', 'Position', [['bottom', 'En bas'], ['top', 'En haut']]],
-        ['width', 'Largeur', [[320, '320'], [400, '400'], [480, '480'], [640, '640']]],
+        ['width', 'Largeur', null],
         ['fps', 'Fluidité', [[12, '12 i/s'], [15, '15 i/s'], [24, '24 i/s']]],
         ['quality', 'Qualité', [['light', 'Légère'], ['normal', 'Normale'], ['high', 'Max']]],
     ];
@@ -723,27 +728,43 @@
 
     // ---------------------------------------- options -----------------------------------------------
 
+    const isVideo = () => S.opts.format === 'mp4';
+    const resultName = () => S.filename.replace(/\.gif$/, isVideo() ? '.mp4' : '.gif');
+
     function paintOptions() {
-        S.el.options.innerHTML = CHOICES.map(([key, label, values]) =>
+        const video = isVideo();
+        S.el.options.innerHTML = CHOICES.filter(([key]) => !(video && key === 'fps')).map(([key, label, values]) =>
             `<div class="st-opt"><span>${label}</span><div class="st-seg" role="radiogroup" aria-label="${label}">` +
-            values.map(([v, text]) => `<button role="radio" aria-checked="${S.opts[key] === v}" data-key="${key}" data-value="${v}">${text}</button>`).join('') +
+            (values || WIDTHS[S.opts.format]).map(([v, text]) =>
+                `<button role="radio" aria-checked="${S.opts[key] === v}" data-key="${key}" data-value="${v}">${text}</button>`).join('') +
             '</div></div>').join('') +
-            `<label class="st-check"><input type="checkbox" ${S.opts.fit ? 'checked' : ''}> Limiter à 8 Mo, pour WhatsApp</label>`;
+            (video ? '' : `<label class="st-check"><input type="checkbox" ${S.opts.fit ? 'checked' : ''}> Limiter à 8 Mo, pour WhatsApp</label>`);
         S.el.options.querySelectorAll('button').forEach((b) => {
             b.onclick = () => {
                 const raw = b.dataset.value;
                 S.opts[b.dataset.key] = /^\d+$/.test(raw) ? Number(raw) : raw;
+                if (b.dataset.key === 'format') setFormat();
                 paintOptions();
                 layout();
                 applySubtitleStyle();
                 estimate();
             };
         });
-        S.el.options.querySelector('input').onchange = (e) => {
+        const fit = S.el.options.querySelector('input');
+        if (fit) fit.onchange = (e) => {
             S.opts.fit = e.target.checked;
             estimate();
             if (S.view === 'gif') scheduleGif();
         };
+    }
+
+    // GIF or video: the widths each allows, the button's words; the "GIF final" view is for GIFs only
+    function setFormat() {
+        const video = isVideo();
+        if (!WIDTHS[S.opts.format].some(([w]) => w === S.opts.width)) S.opts.width = video ? 640 : 480;
+        if (video && S.view === 'gif') setView('preview');
+        S.root.classList.toggle('st-mp4', video);
+        setBusy(false);
     }
 
     function applySubtitleStyle() {
@@ -756,6 +777,12 @@
 
     function estimate() {
         const o = S.opts, seconds_ = S.end - S.start;
+        if (isVideo()) {  // measured: ~0.2 Mbit/s of image at 640 px, ~0.6 at 1280, plus 128 kbit/s of sound
+            const bytes = seconds_ * (0.022e6 * (o.width / 640) ** 1.8 * VIDEO_COST[o.quality] + 16e3);
+            S.el.estimate.textContent = `≈ ${(bytes / 1e6).toFixed(1).replace('.', ',')} Mo · ${seconds(seconds_)} · avec le son`;
+            S.el.estimate.classList.remove('st-warn');
+            return;
+        }
         let bytes = 0.42e6 * seconds_ * (o.width / 480) ** 2 * (o.fps / 24) ** 0.6 * QUALITY_COST[o.quality];
         const capped = o.fit && bytes > BUDGET;
         if (capped) bytes = BUDGET;
@@ -774,7 +801,7 @@
     function setBusy(on, label, progress) {
         S.el.create.disabled = on;
         S.el.create.classList.toggle('st-busy', on);
-        S.el.createLabel.textContent = on ? label : 'Créer le GIF';
+        S.el.createLabel.textContent = on ? label : isVideo() ? 'Créer la vidéo' : 'Créer le GIF';
         S.el.create.style.setProperty('--st-progress', on ? (progress || 0) * 100 + '%' : '0%');
     }
 
@@ -784,7 +811,7 @@
             .filter((l) => l.words[l.words.length - 1].e > S.start - 10 && l.words[0].s < S.end)
             .map((l) => ({words: l.words.map((w) => ({w: w.w, s: w.s, e: w.e}))}));
         return {id: S.meta.id, start: S.start, end: S.end, lines,
-                opts: {width: o.width, fps: o.fps, quality: o.quality, size: o.size, position: o.position,
+                opts: {format: o.format, width: o.width, fps: o.fps, quality: o.quality, size: o.size, position: o.position,
                        mode: o.text === 'line' ? 'line' : 'words', subs: o.text !== 'none', fit: o.fit}};
     }
 
@@ -946,51 +973,76 @@
         }
     }
 
-    // The preview keeps playing while the finished GIF downloads, then the GIF takes its place
+    // The preview keeps playing while the finished GIF or video downloads, then it takes its place
     function showResult(url, bytes) {
-        const me = S;
-        me.result = {url, file: null, shown: false};
+        const me = S, video = /\.mp4$/.test(url), name = resultName(), what = video ? 'La vidéo' : 'Le GIF';
+        me.result = {url, file: null, shown: false, video, name};
         me.video.muted = true;
         me.root.classList.add('st-done');
-        me.el.badge.textContent = 'Chargement du GIF…';
+        me.el.badge.textContent = video ? 'Chargement de la vidéo…' : 'Chargement du GIF…';
         me.el.badge.classList.remove('st-hd');
         const mb = bytes ? (bytes / 1e6).toFixed(1).replace('.', ',') + ' Mo' : '';
-        me.el.doneInfo.textContent = `GIF prêt${mb ? ' · ' + mb : ''}`;
+        me.el.doneInfo.textContent = `${video ? 'Vidéo prête' : 'GIF prêt'}${mb ? ' · ' + mb : ''}`;
         me.el.save.href = url;
-        me.el.save.download = me.filename;
-        let tries = 0;
-        const loaded = new Image();
-        loaded.onerror = () => {  // dropped connection: try again, the buttons work meanwhile
-            if (S !== me || !me.result || me.result.url !== url) return;
-            if (++tries > 4) {
-                me.el.badge.textContent = 'GIF prêt : utilise les boutons';
-                return;
-            }
-            setTimeout(() => { if (S === me) loaded.src = url + '?retry=' + tries; }, 1000 * tries);
-        };
-        loaded.onload = () => {
-            if (S !== me || !me.result || me.result.url !== url) return;
+        me.el.save.download = name;
+        const shown = () => {
+            if (S !== me || !me.result || me.result.url !== url || me.result.shown) return;
             me.result.shown = true;
             setPlaying(false);
             me.el.subs.innerHTML = '';
             me.drawn = undefined;
-            me.el.result.src = url;
-            me.el.result.hidden = false;
+            const el = video ? me.el.resultVideo : me.el.result;
+            el.hidden = false;
+            if (video) {
+                el.muted = me.muted;
+                const p = el.play();
+                if (p) p.catch(() => {});
+            }
             me.root.classList.add('st-gif-shown');
             if (!navigator.canShare || slowConnection()) return;  // otherwise fetched only if shared
             fetch(url, {cache: 'force-cache'}).then((r) => r.blob()).then((blob) => {
                 if (S === me && me.result && me.result.url === url) {
-                    me.result.file = new File([blob], me.filename, {type: 'image/gif'});
+                    me.result.file = new File([blob], name, {type: video ? 'video/mp4' : 'image/gif'});
                 }
             }).catch(() => {});
         };
-        loaded.src = url;
+        let tries = 0;
+        const failed = () => {  // dropped connection: try again, the buttons work meanwhile
+            if (S !== me || !me.result || me.result.url !== url) return;
+            if (++tries > 4) {
+                me.el.badge.textContent = what + ' est prêt : utilise les boutons';
+                return;
+            }
+            setTimeout(() => { if (S === me) load(url + '?retry=' + tries); }, 1000 * tries);
+        };
+        const load = (src) => {
+            if (video) {
+                const el = me.el.resultVideo;
+                el.addEventListener('loadeddata', shown, {once: true});
+                el.addEventListener('error', failed, {once: true});
+                el.src = src;
+                el.load();
+            } else {
+                const img = new Image();
+                img.onload = () => {
+                    if (S === me) me.el.result.src = src;
+                    shown();
+                };
+                img.onerror = failed;
+                img.src = src;
+            }
+        };
+        load(url);
     }
 
     function backToEdit() {
         S.result = null;
         S.el.result.hidden = true;
         S.el.result.removeAttribute('src');
+        S.el.resultVideo.pause();
+        S.el.resultVideo.hidden = true;
+        S.el.resultVideo.removeAttribute('src');
+        S.el.resultVideo.load();
         S.root.classList.remove('st-done', 'st-gif-shown');
         S.el.shareBtn.classList.remove('st-ready');
         S.el.shareBtn.innerHTML = ICONS.share + '<span>Partager</span>';
@@ -1017,7 +1069,7 @@
         try {
             if (!r.file) {
                 const blob = await (await fetch(r.url, {cache: 'force-cache'})).blob();
-                r.file = new File([blob], S.filename, {type: 'image/gif'});
+                r.file = new File([blob], r.name, {type: r.video ? 'video/mp4' : 'image/gif'});
             }
             if (navigator.canShare && navigator.canShare({files: [r.file]})) await navigator.share({files: [r.file]});
             else if (navigator.share) await navigator.share({url});
@@ -1075,7 +1127,7 @@
     const TEMPLATE = `
       <div class="st-modal">
         <header class="st-head">
-          <div><h2>Modifier le GIF</h2><p class="st-title"></p></div>
+          <div><h2>Modifier l'extrait</h2><p class="st-title"></p></div>
           <button class="st-icon st-x" aria-label="Fermer">${ICONS.close}</button>
         </header>
         <div class="st-body">
@@ -1086,6 +1138,7 @@
               <div class="st-subs" aria-hidden="true"></div>
               <img class="st-gif-view" alt="GIF final" hidden>
               <img class="st-result" alt="GIF créé" hidden>
+              <video class="st-result st-result-video" controls playsinline loop hidden></video>
               <span class="st-badge">Chargement…</span>
               <button class="st-bigplay" aria-label="Lecture">${ICONS.play}</button>
             </div>
@@ -1184,13 +1237,13 @@
         root.className = 'st-backdrop';
         root.setAttribute('role', 'dialog');
         root.setAttribute('aria-modal', 'true');
-        root.setAttribute('aria-label', 'Modifier le GIF');
+        root.setAttribute('aria-label', "Modifier l'extrait");
         root.innerHTML = TEMPLATE;
         document.body.appendChild(root);
         document.documentElement.classList.add('st-open');
         const $ = (q) => root.querySelector(q);
         const el = {
-            stage: $('.st-stage'), gifView: $('.st-gif-view'), low: $('.st-low'), high: $('.st-high'), subs: $('.st-subs'), result: $('.st-result'),
+            stage: $('.st-stage'), gifView: $('.st-gif-view'), low: $('.st-low'), high: $('.st-high'), subs: $('.st-subs'), result: $('img.st-result'), resultVideo: $('.st-result-video'),
             badge: $('.st-badge'), play: $('.st-play'), big: $('.st-bigplay'), mute: $('.st-mute'), clock: $('.st-clock'),
             length: $('.st-length'), track: $('.st-track'), strip: $('.st-strip'), ticks: $('.st-ticks'),
             shadeL: $('.st-shade-l'), shadeR: $('.st-shade-r'), sel: $('.st-selbox'), head: $('.st-playhead'),
