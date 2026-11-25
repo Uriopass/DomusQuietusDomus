@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Renders the GIFs made in the site's clip editor. Public behind nginx (/api/clip/), so everything it
+"""Renders the GIFs and videos (mp4 with sound) made in the site's clip editor. Public behind nginx (/api/clip/), so everything it
 receives is checked and bounded:
 
 - a render stays inside the window of a known joke (build/studio/<id>.json), and lasts at most
@@ -49,6 +49,8 @@ JOB_KEPT = 900                # seconds a finished job stays readable
 CACHE_BYTES = 4 * 1024 ** 3
 
 WIDTHS = {320, 400, 480, 640}
+VIDEO_WIDTHS = {480, 640, 960, 1280}
+VIDEO_CRF = {"light": 30, "normal": 26, "high": 22}  # x264: lower is better and bigger
 RATES = {12, 15, 20, 24}
 QUALITIES = {"light": 70, "normal": 85, "high": 95}
 SIZES = {"s": 17, "m": 21, "l": 27}
@@ -100,17 +102,21 @@ def check(body):
     if end - start > longest:
         raise Refused("extrait trop long (%d s max)" % longest)
     opts = body.get("opts") if isinstance(body.get("opts"), dict) else {}
-    width = opts.get("width", 480)
-    fps = opts.get("fps", 24)
+    video = opts.get("format", "gif") == "mp4"
+    if opts.get("format", "gif") not in ("gif", "mp4"):
+        raise Refused("options invalides")
+    width = opts.get("width", 640 if video else 480)
+    fps = 24 if video else opts.get("fps", 24)  # a video keeps the film's images
     quality = opts.get("quality", "normal")
     size = opts.get("size", "m")
-    if width not in WIDTHS or fps not in RATES or quality not in QUALITIES or size not in SIZES:
+    if (width not in (VIDEO_WIDTHS if video else WIDTHS) or fps not in RATES or quality not in QUALITIES
+            or size not in SIZES):
         raise Refused("options invalides")
     spec = {"id": joke, "film_start": meta["film_start"], "start": start, "end": end, "width": width, "fps": fps,
             "quality": quality, "size": size, "top": opts.get("position") == "top",
             "progressive": opts.get("mode", "words") != "line", "subs": opts.get("subs", True) is not False,
-            "fit": opts.get("fit", True) is not False}
-    if width * round(width * ASPECT) * fps * (end - start) > MAX_PIXELS:
+            "fit": not video and opts.get("fit", True) is not False, "format": "mp4" if video else "gif"}
+    if not video and width * round(width * ASPECT) * fps * (end - start) > MAX_PIXELS:
         raise Refused("trop lourd : réduis la largeur, la fluidité ou la durée")
     words, lines = [], body.get("lines")
     if spec["subs"] and isinstance(lines, list):
@@ -134,6 +140,37 @@ def even(n):
     return int(n) // 2 * 2
 
 
+def follow(processes, decoder, frames, job):
+    """Waits for a render, its progress read from ffmpeg's frame count; kills it past RENDER_TIMEOUT."""
+    timer = threading.Timer(RENDER_TIMEOUT, lambda: [p.kill() for p in processes])
+    timer.start()
+    try:
+        for raw in decoder.stderr:
+            if raw.startswith(b"frame="):
+                job["progress"] = min(0.97, int(raw[6:].strip() or 0) / max(1, frames))
+        for p in processes:
+            p.wait()
+    finally:
+        timer.cancel()
+    if any(p.returncode for p in processes):
+        raise RuntimeError("render failed")
+
+
+def render_video(spec, ass_path, target, job):
+    """The cut as an mp4 with its sound and the subtitles burned in (without the film's chapters,
+    which would make it claim the whole film's duration)."""
+    duration = spec["end"] - spec["start"]
+    vf = "scale=%d:-2:flags=lanczos" % spec["width"] + (",ass=" + ass_path if ass_path else "")
+    encoder = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-nostats", "-progress", "pipe:2", "-y",
+                                "-ss", "%.3f" % (spec["film_start"] + spec["start"]), "-t", "%.3f" % duration, "-i", MOVIE,
+                                "-map", "0:v:0", "-map", "0:a:0", "-vf", vf, "-c:v", "libx264", "-preset", "veryfast",
+                                "-crf", str(VIDEO_CRF[spec["quality"]]), "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
+                                "-ac", "2", "-map_chapters", "-1", "-map_metadata", "-1", "-dn", "-sn",
+                                "-movflags", "+faststart", "-f", "mp4", target],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    follow([encoder], encoder, duration * 24, job)
+
+
 def render_once(spec, ass_path, width, target, job):
     a = spec["film_start"] + spec["start"]
     duration = spec["end"] - spec["start"]
@@ -146,24 +183,13 @@ def render_once(spec, ass_path, width, target, job):
     encoder = subprocess.Popen(["gifski", "--quiet", "-Q", str(QUALITIES[spec["quality"]]), "-o", target, "-"],
                                stdin=decoder.stdout, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     decoder.stdout.close()
-    timer = threading.Timer(RENDER_TIMEOUT, lambda: (decoder.kill(), encoder.kill()))
-    timer.start()
-    frames = max(1, duration * spec["fps"])
-    try:
-        for raw in decoder.stderr:
-            if raw.startswith(b"frame="):
-                job["progress"] = min(0.97, int(raw[6:].strip() or 0) / frames)
-        decoder.wait()
-        encoder.wait()
-    finally:
-        timer.cancel()
-    if decoder.returncode or encoder.returncode:
-        raise RuntimeError("render failed")
+    follow([decoder, encoder], decoder, duration * spec["fps"], job)
 
 
 def render(job):
     spec, key = job["spec"], job["key"]
-    final = os.path.join(OUT, key + ".gif")
+    ext = "." + spec["format"]
+    final = os.path.join(OUT, key + ext)
     tmp = os.path.join(OUT, ".%s" % key)
     ass_path = None
     if spec["subs"] and spec["words"]:
@@ -174,26 +200,28 @@ def render(job):
             with open(ass_path, "w", encoding="utf8") as f:
                 f.write(ass)
     try:
-        width = spec["width"]
-        for attempt in range(3):
-            render_once(spec, ass_path, width, tmp + ".gif", job)
-            size = os.path.getsize(tmp + ".gif")
-            if not spec["fit"] or size <= clip_subs.GIF_BUDGET or width <= 240:
-                break
-            # Too big to send in a chat: narrower, by what the size calls for
-            width = max(240, even(width * math.sqrt(0.9 * clip_subs.GIF_BUDGET / size)))
-            job["progress"] = 0
-        os.replace(tmp + ".gif", final)
-        job["bytes"] = size
+        if spec["format"] == "mp4":
+            render_video(spec, ass_path, tmp + ext, job)
+        else:
+            width = spec["width"]
+            for attempt in range(3):
+                render_once(spec, ass_path, width, tmp + ext, job)
+                if not spec["fit"] or os.path.getsize(tmp + ext) <= clip_subs.GIF_BUDGET or width <= 240:
+                    break
+                # Too big to send in a chat: narrower, by what the size calls for
+                width = max(240, even(width * math.sqrt(0.9 * clip_subs.GIF_BUDGET / os.path.getsize(tmp + ext))))
+                job["progress"] = 0
+        job["bytes"] = os.path.getsize(tmp + ext)
+        os.replace(tmp + ext, final)
     finally:
-        for path in (tmp + ".gif", tmp + ".ass"):
+        for path in (tmp + ext, tmp + ".ass"):
             if os.path.exists(path):
                 os.remove(path)
     prune()
 
 
 def prune():
-    files = [os.path.join(OUT, f) for f in os.listdir(OUT) if f.endswith(".gif") and not f.startswith(".")]
+    files = [os.path.join(OUT, f) for f in os.listdir(OUT) if f.endswith((".gif", ".mp4")) and not f.startswith(".")]
     files.sort(key=os.path.getmtime, reverse=True)
     total = 0
     for path in files:
@@ -210,7 +238,7 @@ def worker():
             job["state"] = "running"
         try:
             render(job)
-            job.update(state="done", progress=1, url="/studio/out/%s.gif" % job["key"])
+            job.update(state="done", progress=1, url="/studio/out/%s.%s" % (job["key"], job["spec"]["format"]))
         except Exception as e:
             print("render error", job["key"], e, flush=True)
             job.update(state="error", error="Le rendu a échoué, réessaie.")
@@ -228,10 +256,10 @@ def public(job):
 def submit(body, visitor):
     spec = check(body)
     key = hashlib.sha256(json.dumps(spec, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:32]
-    final = os.path.join(OUT, key + ".gif")
+    final = os.path.join(OUT, "%s.%s" % (key, spec["format"]))
     if os.path.exists(final):
         os.utime(final)
-        return {"state": "done", "progress": 1, "url": "/studio/out/%s.gif" % key, "bytes": os.path.getsize(final)}
+        return {"state": "done", "progress": 1, "url": "/studio/out/%s.%s" % (key, spec["format"]), "bytes": os.path.getsize(final)}
     now = time.time()
     with lock:
         for k in [k for k, j in jobs.items() if j.get("finished", now) < now - JOB_KEPT]:
